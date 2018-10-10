@@ -27,16 +27,14 @@ function set_templates($templates) {
 add_filter('theme_templates', 'set_templates');
 
 function populate_templates_from_gatsby_repo($template_path_from_gatsby_root) {
-    if (file_exists(get_template_directory() . "/gatsby/")) {
-        return populate_templates_from_gatsby_filesystem("gatsby/$template_path_from_gatsby_root");
-    }
+    if (file_exists(get_template_directory() . "/gatsby/")) return false;
+
+    return populate_templates_from_gatsby_filesystem("gatsby/$template_path_from_gatsby_root");
 };
 
 function populate_templates_from_gatsby_filesystem($gatsby_templates_path) {
     $gatsby_templates = [];
     $full_gatsby_templates_path = get_template_directory() . "/" . $gatsby_templates_path;
-
-    write_log($full_gatsby_templates_path);
 
     if (!file_exists($full_gatsby_templates_path)) return write_log("The specified templates directory does not exist. Trying at $full_gatsby_templates_path");
 
