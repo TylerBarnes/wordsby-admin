@@ -32,13 +32,48 @@ acf_add_local_field_group(array(
 			'placeholder' => '',
 		),
 		array(
+			'key' => 'field_5bbd7b3a93827',
+			'label' => 'How should we populate the template dropdown?',
+			'name' => 'how_should_we_populate_the_template_dropdown',
+			'type' => 'select',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				'none' => 'Don\'t populate',
+				'repeater' => 'Values from this page',
+				'gatsby' => 'Gatsby Filesystem',
+			),
+			'default_value' => array(
+			),
+			'allow_null' => 0,
+			'multiple' => 0,
+			'ui' => 0,
+			'return_format' => 'value',
+			'ajax' => 0,
+			'placeholder' => '',
+		),
+		array(
 			'key' => 'field_5bbd6cbdb8620',
 			'label' => 'Templates',
 			'name' => 'templates',
 			'type' => 'repeater',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5bbd7b3a93827',
+						'operator' => '==',
+						'value' => 'repeater',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -89,6 +124,33 @@ acf_add_local_field_group(array(
 					'maxlength' => '',
 				),
 			),
+		),
+		array(
+			'key' => 'field_5bbd7beb93828',
+			'label' => 'Gatsby templates path',
+			'name' => 'gatsby_templates_path',
+			'type' => 'text',
+			'instructions' => 'Enter the path to your templates folder from the theme root.',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5bbd7b3a93827',
+						'operator' => '==',
+						'value' => 'gatsby',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => 'gatsby/sitename/src/templates',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
 		),
 	),
 	'location' => array(
