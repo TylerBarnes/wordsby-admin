@@ -4,6 +4,7 @@ A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 
 ## What does this theme do?
 
+- Runs a webhook on content updates to trigger a build.
 - Fixes the ACF GraphQL error `GraphQL Error Unknown field {field} on type {type}`
 - Discourages search engines from indexing the WP install
 - Redirects all WP pages to the admin login
