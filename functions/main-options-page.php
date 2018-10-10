@@ -2,19 +2,12 @@
 // disable the git pull webhook field
 function disable_acf_load_field( $field ) {
 	$field['disabled'] = 1;
+	$field['default_value'] = get_stylesheet_directory_uri() . "/webhooks/git_pull.php";
 	return $field;
 }
 
 add_filter('acf/load_field/name=git_pull_webhook', 'disable_acf_load_field');
 
-if( function_exists('acf_add_options_page') ) {
-
-	acf_add_options_page([
-		'page_title' => 'Gatsby',
-		'icon_url' => '/wp-content/themes/gatsby-wordpress-admin-theme/assets/icons/gatsby.svg'		
-    ]);
-	
-}
 
 if( function_exists('acf_add_local_field_group') ):
 
@@ -183,6 +176,9 @@ acf_add_local_field_group(array(
 			),
 			'default_value' => '',
 			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
 		),
 		array(
 			'key' => 'field_5bbd8a922931b',
@@ -197,12 +193,39 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'default_value' => get_stylesheet_directory_uri() . "/webhooks/git_pull.php",
+			'default_value' => '',
 			'placeholder' => '',
 			'prepend' => '',
 			'append' => '',
 			'maxlength' => '',
 			'disabled' => 1,
+		),
+		array(
+			'key' => 'field_5bbd9e2670a2a',
+			'label' => 'Gatsby templates path',
+			'name' => 'gatsby_repo_templates_path',
+			'type' => 'text',
+			'instructions' => 'Enter the path to your templates directory relative to the root of your gatsby project',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5bbd7b3a93827',
+						'operator' => '==',
+						'value' => 'gatsby_repo',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => 'src/templates',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
 		),
 	),
 	'location' => array(
@@ -225,4 +248,13 @@ acf_add_local_field_group(array(
 ));
 
 endif;
+
+if( function_exists('acf_add_options_page') ) {
+
+	acf_add_options_page([
+		'page_title' => 'Gatsby',
+		'icon_url' => '/wp-content/themes/gatsby-wordpress-admin-theme/assets/icons/gatsby.svg'		
+    ]);
+	
+}
 ?>
