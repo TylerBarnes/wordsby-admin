@@ -1,25 +1,43 @@
 <?php 
-// helper functions
-function fromCamelCase($camelCaseString) {
-    $re = '/(?<=[a-z])(?=[A-Z])/x';
-    $a = preg_split($re, $camelCaseString);
-    return join($a, " " );
-}
 
-function filenameToTitle($string) {
-    if (!is_string($string)) return write_log('Hmm, a string shouldve been passed in here..');
+function set_templates($templates) {
+    $template_population_method = get_field('how_should_we_populate_the_template_dropdown', 'options');
 
-    $title = preg_replace('/\\.[^.\\s]{3,4}$/', '', $string);
-    $title = fromCamelCase($title);
-    $title = ucfirst($title);
+    if ($template_population_method === 'gatsby') {
+        return populate_templates_from_gatsby_filesystem(
+            get_field('gatsby_templates_path', 'option')
+        );
+    } elseif ($template_population_method === 'repeater') {
+        return populate_templates_from_acf_options(
+            get_field('templates', 'option')
+        );
+    } elseif(
+        $template_population_method === 'gatsby_repo' 
+        && get_field('gatsby_repo_templates_path', 'option')
+        ) {
+        return populate_templates_from_gatsby_repo(
+            get_field('gatsby_repo_templates_path', 'option')
+        );
+    } else {
+        return $templates;
+    }
     
-    return $title;
 }
-// end helper functions
+
+add_filter('theme_templates', 'set_templates');
+
+function populate_templates_from_gatsby_repo($template_path_from_gatsby_root) {
+    if (file_exists(get_template_directory() . "/gatsby/")) {
+        // write_log("gatsby/$template_path_from_gatsby_root");
+        return populate_templates_from_gatsby_filesystem("gatsby/$template_path_from_gatsby_root");
+    }
+};
 
 function populate_templates_from_gatsby_filesystem($gatsby_templates_path) {
     $gatsby_templates = [];
     $full_gatsby_templates_path = get_template_directory() . "/" . $gatsby_templates_path;
+
+    write_log($full_gatsby_templates_path);
 
     if (!file_exists($full_gatsby_templates_path)) return write_log("The specified templates directory does not exist. Trying at $full_gatsby_templates_path");
 
@@ -70,22 +88,22 @@ function populate_templates_from_acf_options($acf_templates) {
     return $gatsby_templates;
 }
 
-function set_templates($templates) {
-    $template_population_method = get_field('how_should_we_populate_the_template_dropdown', 'options');
 
-    if ($template_population_method === 'gatsby') {
-        return populate_templates_from_gatsby_filesystem(
-            get_field('gatsby_templates_path', 'option')
-        );
-    } elseif ($template_population_method === 'repeater') {
-        return populate_templates_from_acf_options(
-            get_field('templates', 'option')
-        );
-    } else {
-        return $templates;
-    }
-    
+// helper functions
+function fromCamelCase($camelCaseString) {
+    $re = '/(?<=[a-z])(?=[A-Z])/x';
+    $a = preg_split($re, $camelCaseString);
+    return join($a, " " );
 }
 
-add_filter('theme_templates', 'set_templates');
+function filenameToTitle($string) {
+    if (!is_string($string)) return write_log('Hmm, a string shouldve been passed in here..');
+
+    $title = preg_replace('/\\.[^.\\s]{3,4}$/', '', $string);
+    $title = fromCamelCase($title);
+    $title = ucfirst($title);
+    
+    return $title;
+}
+// end helper functions
 ?>
