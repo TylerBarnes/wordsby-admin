@@ -28,7 +28,6 @@ add_filter('theme_templates', 'set_templates');
 
 function populate_templates_from_gatsby_repo($template_path_from_gatsby_root) {
     if (file_exists(get_template_directory() . "/gatsby/")) {
-        // write_log("gatsby/$template_path_from_gatsby_root");
         return populate_templates_from_gatsby_filesystem("gatsby/$template_path_from_gatsby_root");
     }
 };
