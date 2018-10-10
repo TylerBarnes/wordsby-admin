@@ -15,4 +15,5 @@ A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 ## For the future
 
 - Instant page previews
+- Git authorization for private gatsby repos
 - Admin UI skin
