@@ -27,9 +27,9 @@ function set_templates($templates) {
 add_filter('theme_templates', 'set_templates');
 
 function populate_templates_from_gatsby_repo($template_path_from_gatsby_root) {
-    if (file_exists(get_template_directory() . "/gatsby/")) return false;
-
-    return populate_templates_from_gatsby_filesystem("gatsby/$template_path_from_gatsby_root");
+    if (file_exists(get_template_directory() . "/gatsby/")) {
+        return populate_templates_from_gatsby_filesystem("gatsby/$template_path_from_gatsby_root");
+    }
 };
 
 function populate_templates_from_gatsby_filesystem($gatsby_templates_path) {
@@ -94,13 +94,24 @@ function fromCamelCase($camelCaseString) {
 }
 
 function filenameToTitle($string) {
-    if (!is_string($string)) return write_log('Hmm, a string shouldve been passed in here..');
+    if (!is_string($string)) {
+        return write_log('Hmm, a string shouldve been passed in here..');
+    }
 
-    $title = preg_replace('/\\.[^.\\s]{3,4}$/', '', $string);
-    $title = fromCamelCase($title);
-    $title = ucfirst($title);
+    // $fileExtension = pathinfo($string, PATHINFO_EXTENSION);
+    // $fileExtensionString = (string)$fileExtension;
+    // write_log($fileExtensionString);
+
+    // if ($fileExtensionString !== 'js') {
+    //     // write_log("$string is not a javascript file");
+    //     return false;
+    // }
+
+    $without_extension = pathinfo($string, PATHINFO_FILENAME);
+    $spaced_decamelcased_title = fromCamelCase($without_extension);
+    $capitalized_title = ucfirst($spaced_decamelcased_title);
     
-    return $title;
+    return $capitalized_title;
 }
 // end helper functions
 ?>
