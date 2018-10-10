@@ -10,6 +10,6 @@ A WordPress theme for Gatsby sites.
 
 ## For the future
 
-- Add sync of WP templates and Gatsby templates to allow easy template switching in WP
+- Easy sync of WP templates and Gatsby templates to allow template switching in WP
 - Instant page previews
 - Admin UI skin
