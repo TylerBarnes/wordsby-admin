@@ -1,4 +1,11 @@
 <?php
+// disable the git pull webhook field
+function disable_acf_load_field( $field ) {
+	$field['disabled'] = 1;
+	return $field;
+}
+
+add_filter('acf/load_field/name=git_pull_webhook', 'disable_acf_load_field');
 
 if( function_exists('acf_add_options_page') ) {
 
@@ -13,7 +20,7 @@ if( function_exists('acf_add_local_field_group') ):
 
 acf_add_local_field_group(array(
 	'key' => 'group_5bbd6668c1ee0',
-	'title' => 'Gatsby Options',
+	'title' => 'Settings',
 	'fields' => array(
 		array(
 			'key' => 'field_5bbd666ed62e4',
@@ -46,8 +53,9 @@ acf_add_local_field_group(array(
 			),
 			'choices' => array(
 				'none' => 'Don\'t populate',
-				'repeater' => 'Values from this page',
+				'gatsby_repo' => 'Gatsby git repo',
 				'gatsby' => 'Gatsby Filesystem',
+				'repeater' => 'Values from this page',
 			),
 			'default_value' => array(
 			),
@@ -151,6 +159,50 @@ acf_add_local_field_group(array(
 			'prepend' => '',
 			'append' => '',
 			'maxlength' => '',
+		),
+		array(
+			'key' => 'field_5bbd8a152931a',
+			'label' => 'Gatsby git repo',
+			'name' => 'gatsby_git_repo',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_5bbd7b3a93827',
+						'operator' => '==',
+						'value' => 'gatsby_repo',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+		),
+		array(
+			'key' => 'field_5bbd8a922931b',
+			'label' => 'Git pull webhook',
+			'name' => 'git_pull_webhook',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => get_stylesheet_directory_uri() . "/webhooks/git_pull.php",
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+			'maxlength' => '',
+			'disabled' => 1,
 		),
 	),
 	'location' => array(
