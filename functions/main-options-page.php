@@ -24,6 +24,22 @@ acf_add_local_field_group(array(
 	'title' => 'Settings',
 	'fields' => array(
 		array(
+			'key' => 'field_5bbda2ed92b36',
+			'label' => 'Gatsby Build',
+			'name' => '',
+			'type' => 'tab',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'placement' => 'left',
+			'endpoint' => 0,
+		),
+		array(
 			'key' => 'field_5bbd666ed62e4',
 			'label' => 'Build Webhook',
 			'name' => 'build_webhook',
@@ -38,6 +54,22 @@ acf_add_local_field_group(array(
 			),
 			'default_value' => '',
 			'placeholder' => '',
+		),
+		array(
+			'key' => 'field_5bbda2fd92b37',
+			'label' => 'Template Dropdown',
+			'name' => '',
+			'type' => 'tab',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'placement' => 'top',
+			'endpoint' => 0,
 		),
 		array(
 			'key' => 'field_5bbd7b3a93827',
@@ -166,7 +198,7 @@ acf_add_local_field_group(array(
 			'label' => 'Gatsby git repo',
 			'name' => 'gatsby_git_repo',
 			'type' => 'text',
-			'instructions' => '',
+			'instructions' => 'If this is a private repo you\'ll need to have an ssh key from your server added to your git account. Check out https://jondavidjohn.com/git-pull-from-a-php-script-not-so-simple/ for help.',
 			'required' => 0,
 			'conditional_logic' => array(
 				array(
@@ -193,7 +225,7 @@ acf_add_local_field_group(array(
 			'label' => 'Git pull webhook',
 			'name' => 'git_pull_webhook',
 			'type' => 'text',
-			'instructions' => '',
+			'instructions' => 'To have this site run git pull every time you update your repo, add this webhook to your git repo so the webhook will be visited every time you push to your repo.',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -256,5 +288,4 @@ acf_add_local_field_group(array(
 ));
 
 endif;
-
 ?>
