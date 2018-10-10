@@ -2,6 +2,8 @@
     add_filter('get_sample_permalink_html', 'perm', '',4);
 
     function perm($return, $id, $new_title, $new_slug){
+        if (get_post_status( $id ) !== 'publish') return '';
+
         $mydomain = get_field('build_site_url', 'option');
         
         // if $mydomain ends in a slash, remove it
