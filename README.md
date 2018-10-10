@@ -1,6 +1,6 @@
 # gatsby-wordpress-admin-theme
 
-A WordPress theme for Gatsby sites.
+A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 
 ## What does this theme do?
 
