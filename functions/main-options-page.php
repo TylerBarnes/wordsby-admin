@@ -8,6 +8,14 @@ function disable_acf_load_field( $field ) {
 
 add_filter('acf/load_field/name=git_pull_webhook', 'disable_acf_load_field');
 
+if( function_exists('acf_add_options_page') ) {
+
+	acf_add_options_page([
+		'page_title' => 'Gatsby',
+		'icon_url' => '/wp-content/themes/gatsby-wordpress-admin-theme/assets/icons/gatsby.svg'		
+    ]);
+	
+}
 
 if( function_exists('acf_add_local_field_group') ):
 
@@ -20,7 +28,7 @@ acf_add_local_field_group(array(
 			'label' => 'Build Webhook',
 			'name' => 'build_webhook',
 			'type' => 'url',
-			'instructions' => '',
+			'instructions' => 'This webhook is visited whenever a page or post is updated. You can use this to build your site when you publish or edit content.',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -36,7 +44,7 @@ acf_add_local_field_group(array(
 			'label' => 'How should we populate the template dropdown?',
 			'name' => 'how_should_we_populate_the_template_dropdown',
 			'type' => 'select',
-			'instructions' => '',
+			'instructions' => 'You have three options. You can manually enter values into this page, you can add your template files to a directory, or you can have this site git clone your gatsby repo and read the templates directory.',
 			'required' => 0,
 			'conditional_logic' => 0,
 			'wrapper' => array(
@@ -193,7 +201,7 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'default_value' => '',
+			'default_value' => 'http://admin.cynthiamedrano.code/wp-content/themes/gatsby-wordpress-admin-theme/webhooks/git_pull.php',
 			'placeholder' => '',
 			'prepend' => '',
 			'append' => '',
@@ -249,12 +257,4 @@ acf_add_local_field_group(array(
 
 endif;
 
-if( function_exists('acf_add_options_page') ) {
-
-	acf_add_options_page([
-		'page_title' => 'Gatsby',
-		'icon_url' => '/wp-content/themes/gatsby-wordpress-admin-theme/assets/icons/gatsby.svg'		
-    ]);
-	
-}
 ?>
