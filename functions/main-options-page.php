@@ -56,6 +56,22 @@ acf_add_local_field_group(array(
 			'placeholder' => '',
 		),
 		array(
+			'key' => 'field_5bbda59d91140',
+			'label' => 'Build Site URL',
+			'name' => 'build_site_url',
+			'type' => 'url',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+		),
+		array(
 			'key' => 'field_5bbda2fd92b37',
 			'label' => 'Template Dropdown',
 			'name' => '',
