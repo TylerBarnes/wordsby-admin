@@ -11,6 +11,7 @@ A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 - Discourages search engines from indexing the WP install
 - Redirects all WP pages to the admin login
 - Uses TGM plugin activation to require ACF, and other useful plugins
+- Page edit permalinks direct to the build site instead of the current WP site.
 
 ## For the future
 
