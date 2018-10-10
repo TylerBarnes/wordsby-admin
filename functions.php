@@ -38,11 +38,13 @@ function my_theme_register_required_plugins() {
 		),
 		array(
 			'name'      => 'Classic Editor',
-			'slug'      => 'classic-editor',
+      'slug'      => 'classic-editor',
+      'force_activation'  => true,
 		),
 		array(
 			'name'      => 'Post Types Order',
-			'slug'      => 'post-types-order',
+      'slug'      => 'post-types-order',
+      'force_activation'  => true,
 		),
 		array(
 			'name'      => 'ACF to REST API',
