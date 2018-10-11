@@ -22,3 +22,4 @@ A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 - Hashed webhook
 - More intuitive gatsby clone process
 - Admin UI skin
+- Simple admin UI customizer for tailoring your backend to the project
