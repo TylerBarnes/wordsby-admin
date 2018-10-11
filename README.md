@@ -1,4 +1,4 @@
-# gatsby-wordpress-admin-theme
+# gatsby-wordpress-admin-theme (Beta)
 
 A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 
