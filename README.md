@@ -13,8 +13,9 @@ A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 - Uses TGM plugin activation to require ACF, and other useful plugins
 - Page edit permalinks direct to the build site instead of the current WP site.
 
-## For the future
+## Things to come
 
+- Highly reusable frontend Gatsby starter to pair with this theme
 - Documentation
 - Instant page previews
 - Reorganized admin menu
