@@ -6,7 +6,7 @@ function wpse_248124_robots_txt($output, $public) {
 
   return "
     User-agent: *
-    Disallow: /page/
+    Disallow: /
   ";
 }
 ?>
