@@ -10,13 +10,13 @@ A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 - Discourages search engines from indexing the WP install
 - Redirects all WP pages to the admin login
 - Uses TGM plugin activation to require ACF, and other useful plugins
-- Admin edit page links link to the build site instead of the current WP site.
+- Admin edit page links go to the build site instead of the current WP site.
 
 ## Things to come
 
 - Highly reusable frontend Gatsby starter to pair with this theme
 - Documentation
-- Instant page previews
+- Instant page previews from page/post edit screens
 - Reorganized admin menu
 - Git authorization for private gatsby repos
 - Hashed webhook
