@@ -1,0 +1,1 @@
+<?php require_once dirname( __FILE__ ) . "/lib/PsychicWindow/single-psychic_window.php"; ?>
