@@ -3,7 +3,7 @@
 A WordPress theme for Gatsby sites built with Advanced Custom Fields.
 
 ## What does this theme do?
-
+- Adds the ability to use WP functionality in gatsby using the [PsychicWindow](https://github.com/TylerBarnes/PsychicWindow) component. Useful for displaying a contact form or WP gated content.
 - Connects WordPress templates dropdown with Gatsby templates. Alternatively template names and paths can be specified in an options page repeater.
 - Visits a webhook on WP content updates to trigger a build.
 - Fixes the ACF GraphQL error `GraphQL Error Unknown field {field} on type {type}`
