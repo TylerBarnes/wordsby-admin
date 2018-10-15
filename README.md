@@ -1,6 +1,6 @@
 # gatsby-wordpress-admin-theme (Beta)
 
-A WordPress theme for Gatsby sites built with Advanced Custom Fields.
+A WordPress theme to make Gatsby development and content creation easier.
 
 ## What does this theme do?
 - Adds the ability to use WP functionality in gatsby using the [PsychicWindow](https://github.com/TylerBarnes/PsychicWindow) component. Useful for displaying a contact form or WP gated content.
