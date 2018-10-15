@@ -1,4 +1,4 @@
-# gatsby-wordpress-admin-theme (Pre-alpha)
+# GatsbyPress Admin (Pre-alpha)
 
 A WordPress theme to make Gatsby development and content creation easier.
 
