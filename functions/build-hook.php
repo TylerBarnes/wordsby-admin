@@ -6,7 +6,7 @@ function build_hook($post_id)
 		return;
 	}
 	$buildHook = get_field('build_webhook', 'options');
-	error_log($buildHook);
+
    	if ($buildHook) {
 		   $response = Requests::post( $buildHook );
 	}
