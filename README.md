@@ -14,7 +14,7 @@ A WordPress theme to make Gatsby development and content creation easier.
 
 ## Things to come
 
-- Highly reusable frontend Gatsby starter to pair with this theme
+- Highly reusable frontend [Gatsby starter](https://github.com/TylerBarnes/GatsbyPress-Starter) to pair with this theme
 - Documentation
 - Instant page previews from page/post edit screens
 - Reorganized admin menu
