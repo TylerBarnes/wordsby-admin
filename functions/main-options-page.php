@@ -10,9 +10,11 @@ add_filter('acf/load_field/name=git_pull_webhook', 'disable_acf_load_field');
 
 if( function_exists('acf_add_options_page') ) {
 
+	$gatsby_icon_url = get_stylesheet_directory_uri() . "/assets/icons/gatsby.svg";
+
 	acf_add_options_page([
 		'page_title' => 'Gatsby',
-		'icon_url' => '/wp-content/themes/gatsby-wordpress-admin-theme/assets/icons/gatsby.svg'		
+		'icon_url' => $gatsby_icon_url
     ]);
 	
 }
