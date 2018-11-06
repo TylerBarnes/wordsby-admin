@@ -10,5 +10,6 @@ require_once dirname( __FILE__ ) . "/functions/main-options-page.php";
 require_once dirname( __FILE__ ) . "/functions/build-hook.php";
 require_once dirname( __FILE__ ) . "/functions/set-templates.php";
 require_once dirname( __FILE__ ) . "/functions/fix-edit-page-permalinks.php";
+require_once dirname( __FILE__ ) . "/functions/menus.php";
 require_once dirname( __FILE__ ) . "/lib/PsychicWindow/psychic-window-posttype.php";
 ?>
