@@ -6,16 +6,31 @@ function custom_api_get_all_posts() {
         'methods' => 'GET',
         'callback' => 'custom_api_get_all_posts_callback'
     ));
+
+    register_rest_route( 'wp/v1', '/collections/(?P<id>\d+)', array(
+        'methods' => 'GET',
+        'callback' => 'custom_api_get_all_posts_callback',
+        'args' => [
+            'id' => [
+                'validate_callback' => function($param, $request, $key) {
+                    return is_numeric($param);
+                }
+            ]
+        ]
+    ));
 }
 
-function custom_api_get_all_posts_callback( $request ) {
+function custom_api_get_all_posts_callback( $data ) {
+    $id_param = $data->get_param('id');
+
     // Initialize the array that will receive the posts' data. 
     $posts_data = array();
 
     // Get the posts using the 'post' and 'news' post types
     $posts = get_posts( array(
             'post_type' => 'any',
-            'posts_per_page' => -1,            
+            'posts_per_page' => -1, 
+            'p' => $id_param           
         )
     ); 
     // Loop through the posts and push the desired data to the array we've initialized earlier in the form of an object
