@@ -6,5 +6,7 @@ $rest_url = get_site_url() . "/wp-json/wp/v2/$rest_base/$post_id/preview/?_wpnon
 
 ?>
 <script>
-    fetch("<?php echo $rest_url; ?>").then(res => res.json()).then(res => console.log(res));
+    fetch("<?php echo $rest_url; ?>")
+        .then(res => res.json())
+        .then(res => console.log(res));
 </script>
