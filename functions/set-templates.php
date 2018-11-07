@@ -1,5 +1,52 @@
 <?php 
 
+// This was supposed to be used to return the templates to our template dropdown automatically. It works but when you preview the field is still null...
+// function acf_load_template_select( $field ) {
+    
+//     // reset choices
+//     $field['choices'] = array();
+    
+    
+//     // // get the textarea value from options page without any formatting
+//     // $choices = get_field('my_select_values', 'option', false);
+
+    
+//     // // explode the value so that each line is a new array piece
+//     // $choices = explode("\n", $choices);
+
+    
+//     // // remove any unwanted white space
+//     // $choices = array_map('trim', $choices);
+
+    
+//     // // loop through array and add to field 'choices'
+//     // if( is_array($choices) ) {
+        
+//     //     foreach( $choices as $choice ) {
+            
+//     //         $field['choices'][ $choice ] = $choice;
+            
+//     //     }
+        
+//     // }
+    
+
+//     // // return the field
+//     // return $field;
+
+//     $gatsby_templates = set_templates([]);
+
+//     $field['choices']['default'] = "Default Template";
+//     foreach($gatsby_templates as $key => $template) {
+//         $field['choices'][$$key] = $template;
+//     }
+
+//     return $field;
+    
+// }
+
+// add_filter('acf/load_field/name=template', 'acf_load_template_select');
+
 function set_templates($templates) {
     $template_population_method = get_field('how_should_we_populate_the_template_dropdown', 'options');
 
