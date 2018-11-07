@@ -59,8 +59,12 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $post->pathname = str_replace(home_url(), '', $permalink); 
         $post->permalink = $permalink;
         $post->featured_img = $post_thumbnail;
-        $post->acf = get_fields($id);
         $post->template_slug = $template;
+        $post->acf = get_fields($id);
+
+        // move the template slug out of the acf field to the root
+        $post->acf_template = $post->acf['template'];
+        unset($post->acf['template']);
 
         $posts_data[] = $post;
     }                  
