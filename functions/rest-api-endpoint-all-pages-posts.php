@@ -35,15 +35,19 @@ function custom_api_get_all_posts_callback( $data ) {
     ); 
     // Loop through the posts and push the desired data to the array we've initialized earlier in the form of an object
     foreach( $posts as $post ) {
-        // write_log((array) $post);
         $id = $post->ID; 
         $post_thumbnail = ( has_post_thumbnail( $id ) ) ? get_the_post_thumbnail_url( $id ) : null;
         $permalink = get_permalink($id);
+        $post_type = $post->post_type;
+        $template_slug = get_page_template_slug($id);
+        $template_slug_no_ext = strstr($template_slug, '.', true);
+        $template = $template_slug_no_ext ? $template_slug_no_ext : "default/$post_type";
 
         $post->pathname = str_replace(home_url(), '', $permalink); 
         $post->permalink = $permalink;
         $post->featured_img = $post_thumbnail;
         $post->acf = get_fields($id);
+        $post->template_slug = $template;
 
         $posts_data[] = $post;
     }                  
