@@ -1,4 +1,20 @@
 <?php
+
+/* 
+   Debug preview with custom fields 
+*/ 
+
+// add_filter('_wp_post_revision_fields', 'add_field_debug_preview');
+// function add_field_debug_preview($fields){
+//    $fields["debug_preview"] = "debug_preview";
+//    return $fields;
+// }
+
+// add_action( 'edit_form_after_title', 'add_input_debug_preview' );
+// function add_input_debug_preview() {
+//    echo '<input type="hidden" name="debug_preview" value="debug_preview">';
+// }
+
 // used ->https://github.com/WP-API/WP-API/issues/2624
 // https://www.envano.com/2014/10/creating-a-custom-preview-post-page-in-wordpress/
 // https://stackoverflow.com/questions/21544161/wordpress-query-for-preview
