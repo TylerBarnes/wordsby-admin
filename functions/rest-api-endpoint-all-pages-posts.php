@@ -23,16 +23,29 @@ function custom_api_get_all_posts() {
 function custom_api_get_all_posts_callback( $data ) {
     $id_param = $data->get_param('id');
 
+    return posts_formatted_for_gatsby($id_param);    
+} 
+
+function posts_formatted_for_gatsby($id_param, $revision = "") {
     // Initialize the array that will receive the posts' data. 
     $posts_data = array();
 
-    // Get the posts using the 'post' and 'news' post types
-    $posts = get_posts( array(
-            'post_type' => 'any',
+    if ($revision === "") {
+        $posts = get_posts( array(
+                'post_type' => 'any',
+                'posts_per_page' => -1, 
+                'p' => $id_param           
+            )
+        ); 
+    } else {
+        $posts = get_posts( array(
+            'post_type' => 'revision',
             'posts_per_page' => -1, 
-            'p' => $id_param           
+            'post_parent' => $id_param,
+            'post_status' => 'any'     
         )
     ); 
+    }
     // Loop through the posts and push the desired data to the array we've initialized earlier in the form of an object
     foreach( $posts as $post ) {
         $id = $post->ID; 
@@ -51,6 +64,6 @@ function custom_api_get_all_posts_callback( $data ) {
 
         $posts_data[] = $post;
     }                  
-    return $posts_data;                   
-} 
+    return $posts_data;   
+}
 ?>
