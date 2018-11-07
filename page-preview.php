@@ -1,22 +1,10 @@
 <?php 
-$post_id = $_GET['preview_id'];
+$post_id = $_GET['preview'];
+$rest_base = $_GET['rest_base'];
+$nonce = $_GET['_wpnonce'];
+$rest_url = get_site_url() . "/wp-json/wp/v2/$rest_base/$post_id/preview/?_wpnonce=$nonce";
 
-// $revisions = wp_get_post_revisions( 
-//     $post_id, 
-//     array( 
-//         // 'check_enabled' => false,
-//         'post_status' => 'any'
-//     ) 
-// );
-
-$revisions2 = get_posts( array(
-              'post_status' => 'any',
-            'post_parent' => intval($post_id),
-            'post_type' => 'revision',
-            'sort_column' => 'ID',
-            'sort_order' => 'desc',
-            'posts_per_page' => 1         
-        )
-    ); 
 ?>
-<pre><?php print_r($revisions2); ?></pre>
+<script>
+    fetch("<?php echo $rest_url; ?>").then(res => res.json()).then(res => console.log(res));
+</script>
