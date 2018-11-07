@@ -1,11 +1,4 @@
 <?php 
-// add_filter( 'preview_post_link', 'the_preview_fix' );
-
-// function the_preview_fix() {
-//     $preview_id = get_the_ID();
-//     return "/preview/?custom_preview_id=$preview_id";
-// }
-
 function custom_preview_page_link($link) {
 	$id = get_the_ID();
 	$nonce = wp_create_nonce( 'wp_rest' );
