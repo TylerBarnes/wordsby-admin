@@ -54,7 +54,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $post_type = $post->post_type;
         $template_slug = get_page_template_slug($id);
         $template_slug_no_ext = strstr($template_slug, '.', true);
-        $template = $template_slug_no_ext ? $template_slug_no_ext : "default/$post_type";
+        $template = $template_slug_no_ext ? $template_slug_no_ext : "single/$post_type";
 
         $post->pathname = str_replace(home_url(), '', $permalink); 
         $post->permalink = $permalink;
