@@ -8,7 +8,6 @@ function custom_preview_page_link($link) {
 	$post_type = get_post_type($id);
 	$obj = get_post_type_object($post_type);
 	$rest_base = !empty($obj->rest_base) ? $obj->rest_base : $obj->name;
-	// $link = "/wp-json/wp/v2/$rest_base/$id/preview/?_wpnonce=$nonce";
 	$link = "/preview/single/$post_type/?rest_base=$rest_base&preview=$id&nonce=$nonce";
 	return $link;
 }
