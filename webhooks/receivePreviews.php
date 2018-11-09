@@ -16,8 +16,6 @@ if ($apikey !== 'yep') {
 $wproot = get_home_path();
 $temp_path = $_FILES['previews']['tmp_name'];
 
-write_log($temp_path);
-
 $zip = new ZipArchive;
 if ($zip->open($temp_path) === TRUE) {
     $zip->extractTo($wproot . "/preview/");
