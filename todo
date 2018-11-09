@@ -1,5 +1,5 @@
-✔ Setup template hierarchy routing. Should only be for single posts using "default/${post_type}". @done(18-11-06 17:39)
-☐ Make sure the attached terms / taxonomies for a post are coming through
-☐ Setup default routing for taxonomy pages. Respect wether they should have an archive or not.
 ☐ Make sure there is atleast one hidden post for each post type
+☐ Set up the template dropdown in the edit page. make sure it changes in the preview. It should be taken from the json file passed from the gatsby site during `yarn wp`. if there is no template selected it should use the default for the post type and if there is no default it should use the index.
 ☐ Add previews to the admin page! :)
+    ☐ make sure there is a private API key for uploading preview files
+    ☐ move receivePreviews.php to the root automatically. Add a "public" api key and just use this to set the name of this file.
