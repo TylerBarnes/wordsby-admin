@@ -3,23 +3,39 @@
 
 (function($) {
   $(document).ready(function() {
-    //     var previewButton = $(".preview.button");
-    //     var previewLink = previewButton.attr("href");
+    const originalurl = $(".preview.button").attr("href");
+    const querystring = originalurl.split("?")[1];
+    const bodyClasses = $("body")
+      .attr("class")
+      .split(" ");
 
-    //     previewButton.remove();
+    const postType = bodyClasses
+      .filter(function(classname) {
+        return (
+          typeof classname == "string" && classname.indexOf("post-type-") > -1
+        );
+      })[0]
+      .replace("post-type-", "");
 
-    //     var previewContainer = $("#preview-action");
+    const doesDefaultSingleExist = !!availableTemplates["single/" + postType];
 
-    //     previewContainer.append(`
-    //     <button class="button" data-href="${previewLink}">Preview</button>`);
+    const availableDefaultTemplate = doesDefaultSingleExist
+      ? "single/" + postType
+      : "single/index";
 
-    //     $(previewButton).on("click", function(e) {
-    //       e.preventDefault();
-    //     });
+    console.log(doesDefaultSingleExist);
+
     $("#page_template").on("change", function() {
-      var selected = $("#page_template").find(":selected");
-      $("#page_template option").removeAttr("selected");
-      $(selected).attr("selected", "selected");
+      const selected = $("#page_template").find(":selected");
+      const selectedAttr = selected.attr("value");
+      const selectedTemplate =
+        selectedAttr === "default" ? availableDefaultTemplate : selectedAttr;
+
+      const previewUrl = "/preview/" + selectedTemplate + "/?" + querystring;
+
+      $(".preview.button").attr("href", previewUrl);
+
+      console.log(selectedTemplate);
     });
   });
 })(jQuery);
