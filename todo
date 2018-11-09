@@ -1,4 +1,4 @@
-☐ Make sure there is atleast one hidden post for each post type
+✘ Make sure there is atleast one hidden post for each post type @cancelled(18-11-08 19:30) I think this doesn't matter anymore because all posts are on the same endpoint!
 ☐ Set up the template dropdown in the edit page. make sure it changes in the preview. It should be taken from the json file passed from the gatsby site during `yarn wp`. if there is no template selected it should use the default for the post type and if there is no default it should use the index.
 ☐ Add previews to the admin page! :)
     ☐ make sure there is a private API key for uploading preview files
