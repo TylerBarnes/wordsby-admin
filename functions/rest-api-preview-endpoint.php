@@ -296,16 +296,16 @@ class WP_REST_Post_Preview_Controller extends WP_REST_Posts_Controller
      */
     public function get_item_permissions_check($request)
     {
+        write_log('test');
+        $post = get_post((int) $request['id']);
 
-        // $post = get_post((int) $request['id']);
+        if ($post && !$this->check_update_permission($post)) {
+            return new WP_Error('rest_forbidden_context', __('Sorry, you are not allowed to preview this post'), array('status' => rest_authorization_required_code()));
+        }
 
-        // if ($post && !$this->check_update_permission($post)) {
-        //     return new WP_Error('rest_forbidden_context', __('Sorry, you are not allowed to preview this post'), array('status' => rest_authorization_required_code()));
-        // }
-
-        // if ($post) {
-        //     return $this->check_read_permission($post);
-        // }
+        if ($post) {
+            return $this->check_read_permission($post);
+        }
 
         return true;
     }
