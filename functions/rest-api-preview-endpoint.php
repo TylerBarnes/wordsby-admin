@@ -296,7 +296,6 @@ class WP_REST_Post_Preview_Controller extends WP_REST_Posts_Controller
      */
     public function get_item_permissions_check($request)
     {
-        write_log('test');
         $post = get_post((int) $request['id']);
 
         if ($post && !$this->check_update_permission($post)) {
