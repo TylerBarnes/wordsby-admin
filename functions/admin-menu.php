@@ -167,12 +167,14 @@ function my_admin_footer_function() {
 
     ?>
     <style>
-    html body input[type=radio] {
+    html body input[type=radio],
+    html body input[type=checkbox] {
         box-shadow: 0 0 30px 0 rgba(0,0,0,0.1) !important;
         border: 2px solid lightgrey !important;
     }
 
-    html body input[type=radio]:checked {
+    html body input[type=radio]:checked,
+    html body input[type=checkbox]:checked {
         border-color: transparent !important;
     }
 
@@ -250,6 +252,10 @@ function my_admin_footer_function() {
         .betternav * {
             color: white !important;
             /* color: #241336 !important; */
+        }
+
+        .betternav img {
+            display: none;
         }
 
         .betternav__section-title {

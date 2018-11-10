@@ -106,7 +106,7 @@ class Replace_WP_Dashboard {
                 padding: 0 40px;
 
                 text-decoration: none;
-                color: black;
+                color: #1F2044;
             }
 
             @supports(display: grid) {
