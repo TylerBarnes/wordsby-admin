@@ -3,6 +3,6 @@
 ✔ make sure templates change in the preview. @done(18-11-08 23:10)
 ✔ It should be taken from the json file passed from the gatsby site during `yarn wp`. if there is no template selected it should use the default for the post type and if there is no default it should use the index. @done(18-11-08 22:04)
 ✔ Add previews to the admin page! :) @done(18-11-08 22:04)
-☐ make sure there is a private API key for uploading preview files
-☐ move receivePreviews.php to the root automatically.
-☐ Add a "public" api key and just use this to set the name of this file.
+✔ make sure there is a private API key for uploading preview files @done(18-11-09 18:01)
+✔ move receivePreviews.php to the root automatically. @done(18-11-09 18:01)
+✔ Add a "public" api key and just use this to set the name of this file. @done(18-11-09 18:01)
