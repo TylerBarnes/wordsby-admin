@@ -1,14 +1,22 @@
 <?php 
-require( '../../../../wp-load.php' );
-require( '../../../../wp-admin/includes/file.php' );
+require( 'wp-load.php' );
+require( 'wp-admin/includes/file.php' );
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    write_log("someone tried to access gatsbypress receivePreviews.php directly");
+    write_log("someone tried to access gatsbypress preview uploader directly");
     die();
 }
 
+if (!defined("GATSBYPRESS_PRIVATE_KEY")) {
+  write_log('GATSBYPRESS_PRIVATE_KEY not defined in wp-config.php');
+  header('HTTP/1.1 500 Internal Server Booboo');
+  header('Content-Type: application/json; charset=UTF-8');
+  die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+};
+
 $apikey = isset($_POST['apikey']) ? $_POST['apikey'] : false;
-if ($apikey !== 'yep') {
+
+if ($apikey !== GATSBYPRESS_PRIVATE_KEY) {
     write_log('wrong api key used in gatsbypress..');
     die();
 };
@@ -30,7 +38,7 @@ if (file_exists($previews_path)) {
       $zip->close();
   } else {
       write_log('gatsbypress previews unzip failed');
-      header('HTTP/1.1 500 Internal Server Booboo');
+      header('HTTP/1.1 500 Preview unzip failed');
           header('Content-Type: application/json; charset=UTF-8');
           die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
   }
