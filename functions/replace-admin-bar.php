@@ -99,6 +99,28 @@ function modify_admin_bar( $wp_admin_bar ){
         align-items: center;
         border-radius: 10%;
         font-weight: bold;
+        min-width: 100px;
+      }
+
+      .gp-new-collection__collections {
+        position: absolute;
+        top: 5px;
+        transform: translateY(-100%);
+        right: 0;
+        display: none;
+      }
+
+      .gp-new-collection:hover .gp-new-collection__collections {
+        display: block;
+      }
+
+      .gp-new-collection__collection {
+        display: block;
+        text-decoration: none;
+        color: black;
+        padding: 20px;
+        background:white;
+        border-bottom: 1px solid grey;
       }
     </style>
 
@@ -121,10 +143,21 @@ function modify_admin_bar( $wp_admin_bar ){
       </div>
 
       <div class="gp-new-collection">
-          <label>+ New Post</label>
+          <label>+ New</label>
 
           <div class="gp-new-collection__collections">
-
+            <?php global $menu;
+            $collections = get_post_types(['public' => true], 'objects'); 
+            foreach($collections as $post_type):
+                ?>
+                <a 
+                    href="<?php echo admin_url('post-new.php?post_type=' . $post_type->name); ?>" 
+                    class="gp-new-collection__collection"
+                    >
+                    New <?php echo $post_type->labels->singular_name; ?>
+                </a>
+                <?php
+            endforeach; ?>
           </div>
       </div>
     </section>

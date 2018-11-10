@@ -419,7 +419,6 @@ function my_admin_footer_function() {
                 </article>
             <?php elseif ($section_menu && count($section_menu) == 1): ?>
                 <article class="betternav__section-title">
-                    <?php //write_log($section_menu); ?>
                     <?php create_section_submenu($section_menu[0]); ?>
                 </article>
             <?php endif; ?>

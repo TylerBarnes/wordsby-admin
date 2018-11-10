@@ -133,10 +133,6 @@ HTML;
                 class="collections__collection"
                 >
                     <?php echo $post_type->label; ?>
-                    <!-- <?php $post_count = wp_count_posts($post_type->name)->publish; ?>
-                    <span class="counter count-<?php echo $post_count ?>">
-                        <span class="counter__post-count"><?php echo $post_count; ?></span>
-                    </span> -->
             </a>
             <?php
         endforeach;
