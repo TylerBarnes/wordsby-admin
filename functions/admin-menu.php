@@ -94,13 +94,10 @@ function create_section_menu($section_menu) {
     <?php
 }
 
-
 add_action('adminmenu', 'my_admin_footer_function');
 function my_admin_footer_function() {
     global $menu, $submenu;
     global $self, $parent_file, $menu;
-
-    // write_log($GLOBALS);
 
     // remove separators
     $menu = array_filter($menu, 'remove_non_menu_items');
@@ -170,11 +167,30 @@ function my_admin_footer_function() {
 
     ?>
     <style>
+    html body input[type=radio] {
+        box-shadow: 0 0 30px 0 rgba(0,0,0,0.1) !important;
+        border: 2px solid lightgrey !important;
+    }
+
+    html body input[type=radio]:checked {
+        border-color: transparent !important;
+    }
+
+    input[type=radio]:checked:before {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
         body {
             background-color: white;
             /* background-color: #f6fafd; */
             /* background-color: #e9eff4; */
             font-size: 16px;
+        }
+
+        #wpbody-content {
+            width: 90%;
+            margin: 0 auto;
         }
 
         #wpadminbar {
@@ -216,6 +232,11 @@ function my_admin_footer_function() {
         html, html * {
             font-family: 'Inter UI', sans-serif;
             border: none !important;
+        }
+
+        div.updated {
+            /* border-left: 4px solid red !important;  */
+            border: 2px solid #FF3366 !important; 
         }
 
         h1, h2, h3, h4, h5 {
@@ -319,8 +340,8 @@ function my_admin_footer_function() {
             background: #401d64;
             background: white;
             /* background: black; */
-            min-height: 70px;
-            margin-bottom: 20px;
+            min-height: 75px;
+            margin-bottom: 150px;
         }
 
         #footer-thankyou {
@@ -401,4 +422,5 @@ function my_admin_footer_function() {
     
     <?php
 }
+
 ?>

@@ -66,25 +66,82 @@ class Replace_WP_Dashboard {
      * Output the content for your custom dashboard
      */
     function page_content() {
-        $content = __( 'Welcome to your new dashboard!' );
+        // $content = __( 'Welcome to your new dashboard!' );
         echo <<<HTML
     <div class="wrap">
         <h2>{$this->title}</h2>
-        <p>{$content}</p>
 
+        <style>
+
+            .counter {
+                background: #222447;
+                color: white;
+                border-radius: 50%;
+                width: 25px;
+                height: 25px;
+                text-align: center;
+                font-size: 14px;
+                line-height: 25px;
+                margin-left: 5px;
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translate(-50%, -50%);
+            }
+
+            .collections-title {
+                margin-top: 50px;    
+            }
+
+            .collections__collection {
+                display: block;
+                min-height: 100px;
+                background: white;
+                box-shadow: 0px 5px 30px 0px rgba(0,0,0,0.1);
+                margin-bottom: 40px;
+                position: relative;
+
+                display: flex;
+                align-items: center;
+                padding: 0 40px;
+
+                text-decoration: none;
+                color: black;
+            }
+
+            @supports(display: grid) {
+                .collections {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    grid-gap: 40px;
+                }
+
+                .collections__collection {
+                    margin-bottom: 0;
+                }
+            }
+        </style>
+        <h3 class="collections-title">Collections</h3>
+        <section class="collections">
 HTML;
         global $menu;
         $collections = get_post_types(['public' => true], 'objects'); 
         foreach($collections as $post_type):
             ?>
-            <a href="<?php echo $post_type->_edit_link; ?>" class="collection">
-                <?php echo $post_type->label; ?>
-                <?php $post_count = wp_count_posts($post_type->name); ?>
-                <?php echo $post_count->publish; ?>
+            <a 
+                href="<?php echo admin_url('edit.php?post_type=' . $post_type->name); ?>" 
+                class="collections__collection"
+                >
+                    <?php echo $post_type->label; ?>
+                    <!-- <?php $post_count = wp_count_posts($post_type->name)->publish; ?>
+                    <span class="counter count-<?php echo $post_count ?>">
+                        <span class="counter__post-count"><?php echo $post_count; ?></span>
+                    </span> -->
             </a>
             <?php
         endforeach;
 echo <<<HTML
+        </section>  
     </div>
 HTML;
     }
@@ -109,12 +166,12 @@ HTML;
         /**
          * Adds a custom page to WordPress
          */
-        add_menu_page( $this->title, '', $this->capability, 'custom-page', array( $this, 'page_content' ) );
+        add_menu_page( $this->title, '', $this->capability, 'gatsbypress', array( $this, 'page_content' ) );
 
         /**
          * Remove the custom page from the admin menu
          */
-        remove_menu_page('custom-page');
+        remove_menu_page('gatsbypress');
 
         /**
          * Make dashboard menu item the active item
@@ -142,7 +199,7 @@ HTML;
      */
     final public function current_screen( $screen ) {
         if( 'dashboard' == $screen->id ) {
-            wp_safe_redirect( admin_url('admin.php?page=custom-page') );
+            wp_safe_redirect( admin_url('admin.php?page=gatsbypress') );
             exit;
         }
     }
