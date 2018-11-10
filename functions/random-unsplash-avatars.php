@@ -1,7 +1,7 @@
 <?php 
 	
 function return_unsplash_image_url() {
-	$url = "https://source.unsplash.com/random/300x300";
+	$url = "https://source.unsplash.com/random/300x300/?nature";
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
