@@ -71,8 +71,6 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
             $post_terms[$taxonomy] = $terms;
         } 
 
-        write_log($post_terms);
-
 
         $post->taxonomies = $post_terms;
         $post->pathname = str_replace(home_url(), '', $permalink); 
