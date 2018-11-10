@@ -207,15 +207,10 @@ function my_admin_footer_function() {
     
     <nav class="betternav">
         <?php foreach($final_menu as $section_title => $section_menu): ?>
-        <?php write_log($section_title); ?>
-        <?php write_log($section_menu); ?>
-            <?php if ($section_title && $section_menu && count($section_menu) > 1): ?>
-
-                <?php 
-                
-
-                             $is_active = false;
-                ?>
+            <?php if ($section_title 
+                    && $section_menu 
+                    && count($section_menu) > 1): ?>
+                <?php $is_active = false; ?>
                 <article class="
                     betternav__section-title
                     <?php if ($is_active) echo "betternav__section-title--active"; ?>
@@ -227,17 +222,8 @@ function my_admin_footer_function() {
                     </div>
                 </article>
             <?php elseif ($section_menu && count($section_menu) == 1): ?>
-            <?php global $parent_file, $self;
-                // write_log($section_title);
-                // write_log($self);
-                // $is_active = ( $parent_file && $section_menu[2] == $parent_file ) 
-                //              || ( empty($typenow) && $self == $section_menu[2] ); ?>
                 <article class="betternav__section-title">
-                    <?php //echo $section_title; ?>
-                        <?php create_section_submenu($section_menu[0]); ?>
-
-                    <!-- <div class="betternav__section-menu">
-                    </div> -->
+                    <?php create_section_submenu($section_menu[0]); ?>
                 </article>
             <?php endif; ?>
         <?php endforeach; ?>
