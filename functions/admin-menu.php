@@ -196,10 +196,6 @@ function my_admin_footer_function() {
             padding: 10px 20px;
         }
 
-        .betternav__item, .betternav__section-title {
-            position: relative;
-        }
-
         .betternav__item--active {
             background: black;
             color: white;
@@ -210,8 +206,10 @@ function my_admin_footer_function() {
             position: absolute;
             right: 0;
             top: 0;
+            height: 100vh;
             transform: translateX(100%);
-            background: black;
+            background: blue;
+            z-index: -1;
         }
 
         .betternav__section-title:hover .betternav__section-menu,
