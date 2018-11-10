@@ -24,8 +24,6 @@ function get_collections_menu_items($menu_item) {
 
     foreach($wp_post_types as $post_type) {
         if($post_type->label === $menu_item[0]) return true;
-        // if($menu_item[5] == 'menu-comments') return true;
-        // if($menu_item[5] == 'menu-users') return true;
     }
 
     return false;
@@ -49,10 +47,13 @@ function create_section_submenu($item) {
                                 <?php echo $item[0]; ?>
                             </a>
                             
-                            <?php if($submenu_items): ?>
+                            <?php if(is_array($submenu_items)): ?>
                                 <nav class="betternav__submenu">
-                                    <pre><?php //create_section_submenu($submenu_items); ?></pre>
-                                    <?php //write_log($submenu_items); ?>
+                                    <?php foreach($submenu_items as $item): ?>
+                                        <a href="<?php echo $item[2]; ?>">
+                                            <?php echo $item[0]; ?>
+                                        </a>
+                                    <?php endforeach; ?>
                                 </nav>
                             <?php endif; 
 }
@@ -95,41 +96,61 @@ function my_admin_footer_function() {
 
     // remove dashboard from menu
     $dashboard = false;
+    $users = false;
+    $comments = false;
     foreach ($menu as $key => $item) {
         if ($item[5] === "menu-dashboard") {
             $dashboard = $item;
             unset($menu[$key]);
-            break;
         }
-    }
 
-    // remove users from menu
-    $users = false;
-    foreach ($menu as $key => $item) {
+        // remove users from menu
         if ($item[5] === "menu-users") {
             $users = $item;
             unset($menu[$key]);
-            break;
         }
-    }
 
-    // remove comments from menu
-    $comments = false;
-    foreach ($menu as $key => $item) {
+        // remove comments from menu
         if ($item[5] === "menu-comments") {
             $comments = $item;
             unset($menu[$key]);
-            break;
         }
+
+        if ($dashboard && $users && $comments) break;
     }
+
 
     $final_menu = array(
         'dashboard' => [$dashboard],
         'collections' => $collections,
         'comments' => [$comments],
         'users' => [$users],
-        'settings' => $menu
+        'development' => $menu
     );
+
+    // use this to set the active class later
+    // $final_menu = array(
+    //     'dashboard' => [
+    //         'filename' => 'index.php',
+    //         'menu' => $dashboard
+    //     ],
+    //     'collections' => [
+    //         'filename' => false,
+    //         'menu' => $collections
+    //     ],
+    //     'comments' => [
+    //         'filename' => false,
+    //         'menu' => $comments
+    //     ],
+    //     'users' => [
+    //         'filename' => false,
+    //         'menu' => $users
+    //     ],
+    //     'settings' => [
+    //         'filename' => false,
+    //         'menu' => $menu
+    //     ]
+    // );
 
     ?>
     <style>
@@ -185,7 +206,9 @@ function my_admin_footer_function() {
     
     <nav class="betternav">
         <?php foreach($final_menu as $section_title => $section_menu): ?>
-            <?php if ($section_menu && count($section_menu) > 1): ?>
+        <?php write_log($section_title); ?>
+        <?php write_log($section_menu); ?>
+            <?php if ($section_title && $section_menu && count($section_menu) > 1): ?>
 
                 <?php 
                 
@@ -204,8 +227,8 @@ function my_admin_footer_function() {
                 </article>
             <?php elseif ($section_menu && count($section_menu) == 1): ?>
             <?php global $parent_file, $self;
-                write_log($section_title);
-                write_log($self);
+                // write_log($section_title);
+                // write_log($self);
                 // $is_active = ( $parent_file && $section_menu[2] == $parent_file ) 
                 //              || ( empty($typenow) && $self == $section_menu[2] ); ?>
                 <article class="betternav__section-title">
