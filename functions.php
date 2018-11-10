@@ -17,6 +17,7 @@ require_once dirname( __FILE__ ) . "/functions/change-post-preview-link.php";
 require_once dirname( __FILE__ ) . "/functions/rest-api-preview-endpoint.php";
 require_once dirname( __FILE__ ) . "/functions/image-settings.php";
 require_once dirname( __FILE__ ) . "/functions/admin-menu.php";
+require_once dirname( __FILE__ ) . "/functions/replace-wp-dashboard.php";
 require_once dirname( __FILE__ ) . "/functions/copy-preview-uploader-to-root.php";
 require_once dirname( __FILE__ ) . "/lib/PsychicWindow/psychic-window-posttype.php";
 ?>
