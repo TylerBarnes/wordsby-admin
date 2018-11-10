@@ -123,7 +123,8 @@ function my_admin_footer_function() {
     $final_menu = array(
         'dashboard' => [$dashboard],
         'collections' => $collections,
-        'comments' => [$comments],
+        // remove comments menu if comments are disabled
+        'comments' => $comments ? [$comments] : [],
         'users' => [$users],
         'development' => $menu
     );
