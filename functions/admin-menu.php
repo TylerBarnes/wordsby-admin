@@ -171,7 +171,9 @@ function my_admin_footer_function() {
     ?>
     <style>
         body {
-            background-color: #f6fafd;
+            background-color: white;
+            /* background-color: #f6fafd; */
+            /* background-color: #e9eff4; */
             font-size: 16px;
         }
 
@@ -217,7 +219,7 @@ function my_admin_footer_function() {
         }
 
         h1, h2, h3, h4, h5 {
-            font-family: 'Amiri', serif;
+            /* font-family: 'Amiri', serif; */
         }
 
         #wpcontent, #wpfooter {
@@ -225,16 +227,20 @@ function my_admin_footer_function() {
         }
 
         .betternav * {
-            color: #241336 !important;
+            color: white !important;
+            /* color: #241336 !important; */
         }
 
+        .betternav__section-title {
+            position: relative;
+        }
         .betternav__section-title > a {
             padding: 0 !important;
         }
 
         
         .betternav__section-menu, .betternav__submenu {
-            box-shadow: inset 21px -20px 60px -10px rgba(0,0,0,.1);
+            box-shadow: -17px 0px 80px 10px rgba(0,0,0,.1);
         }
 
         .betternav__section-title, .betternav__item > a, .betternav__submenu > a {
@@ -262,16 +268,24 @@ function my_admin_footer_function() {
             z-index: 9991;
         }
 
-        .betternav, #wp-content-wrap, #posts-filter, .wp-list-table {
+        .betternav, #wp-content-wrap {
             box-shadow: 0 0 80px -5px rgba(0,0,0,.1) !important;
         }
 
-        #adminmenu .awaiting-mod, #adminmenu .update-plugins {
-            background-color: #401d64;
+        .wp-list-table {
+            box-shadow: 0 0 80px -5px rgba(0,0,0,.1) !important;
         }
 
-        .pending-count, .update-count {
-            color: white !important;
+        .wp-list-table {
+            margin: 20px 0;
+        }
+
+        #adminmenu .awaiting-mod, #adminmenu .update-plugins {
+            background-color: white;
+        }
+
+        .pending-count, .update-count, .plugin-count {
+            color: #222447 !important;
         }
 
 
@@ -279,7 +293,7 @@ function my_admin_footer_function() {
             box-shadow: 0 0 30px -5px rgba(0,0,0,.1);
         }
 
-        #titlewrap input {
+        #titlewrap input, .wp-list-table {
             border: 2px solid rgb(204, 204, 204) !important;
 
         }
@@ -294,31 +308,51 @@ function my_admin_footer_function() {
         .betternav__head {
             background: #663399;
             background: #401d64;
+            background: white;
+            /* background: black; */
             min-height: 70px;
             margin-bottom: 20px;
         }
 
-        .betternav, .betternav__section-menu, .betternav__submenu {
+        #footer-thankyou {
+            display: none;
+        }
+        
+        .betternav {
             height: 100vh;
-            /* height: calc(100vh - 50px); */
-            background: white;
-        }
 
-        .betternav__section-menu, .betternav__section-title > .betternav__submenu {
-            top: 70px;
         }
-
-        .betternav__section-menu .betternav__submenu {
-            top: 0;
+        .betternav {
+            background: #222447;
+            /* background: white; */
         }
 
         .betternav__section-menu, .betternav__submenu {
-            padding-top: 20px;
+            background: #787abe;
+            background: #97d5dc;
+            background: #171717;
+            background: white;
+        }
+
+        .betternav__section-menu a, .betternav__submenu a {
+            padding-left: 20px;
+            padding-right:20px;
+
+            color: black !important;
+        }
+
+        .betternav__section-menu, .betternav__submenu {
+            padding: 20px 0;
             display: none;
             position: absolute;
             right: 0;
+            top: -20px;
             transform: translateX(100%);
             z-index: -1;
+        }
+
+        .betternav__item > .betternav__submenu {
+            top: 0;
         }
 
         .betternav__section-title:hover > .betternav__section-menu,
