@@ -170,30 +170,78 @@ function my_admin_footer_function() {
 
     ?>
     <style>
-        .betternav {
-            /* display: none; */
-            position: fixed;
-            top: 32px;
-            left: 0;
-            z-index: 9991;
-            min-height: 100vh;
-            width: 160px;
-            background: blue;
+        body {
+            background-color: #f6fafd;
+            font-size: 16px;
+        }
+
+        #wpadminbar {
+            height: 50px;
+            background: #241336;
+            display: none;
+        }
+
+        html.wp-toolbar {
+            padding-top: 80px;
+            /* padding-top: 0; */
+        }
+
+        .quicklinks {
+                height: 100% !important;
+                width: 100% !important;
+                display: flex;
+                align-items: center;
+        }
+
+        #wp-admin-bar-top-secondary {
+            margin-left: auto !important;
+            margin-right: 0 !important;
+        }
+
+        .postbox .inside h2, .wrap [class$=icon32]+h2, .wrap h1, .wrap>h2:first-child {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        @import url('https://fonts.googleapis.com/css?family=Amiri:700');
+        @font-face {
+            font-family: 'Inter UI';    
+            src: url("<?php echo get_stylesheet_directory_uri(); ?>/assets/fonts/Inter-ui/Inter-UI-Regular.woff") format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        html, html * {
+            font-family: 'Inter UI', sans-serif;
+            border: none !important;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Amiri', serif;
+        }
+
+        #wpcontent, #wpfooter {
+            margin-left: 200px;
         }
 
         .betternav * {
-            color: white;
+            color: #241336 !important;
         }
 
         .betternav__section-title > a {
             padding: 0 !important;
         }
 
-        .betternav__section-title {
+        
+        .betternav__section-menu, .betternav__submenu {
+            box-shadow: inset 21px -20px 60px -10px rgba(0,0,0,.1);
+        }
+
+        .betternav__section-title, .betternav__item > a, .betternav__submenu > a {
             width: 100%;
             box-sizing: border-box;
             display: block;
-            padding: 10px 20px;
+            padding: 10px 20px !important;
         }
 
         .betternav__item--active {
@@ -201,24 +249,89 @@ function my_admin_footer_function() {
             color: white;
         }
 
+        .betternav, .betternav__section-menu, .betternav__submenu {
+            width: 160px;
+        }
+
+
+        .betternav {
+            position: fixed;
+            top: 0;
+            /* top: 50px; */
+            left: 0;
+            z-index: 9991;
+        }
+
+        .betternav, #wp-content-wrap, #posts-filter, .wp-list-table {
+            box-shadow: 0 0 80px -5px rgba(0,0,0,.1) !important;
+        }
+
+        #adminmenu .awaiting-mod, #adminmenu .update-plugins {
+            background-color: #401d64;
+        }
+
+        .pending-count, .update-count {
+            color: white !important;
+        }
+
+
+        .postbox {
+            box-shadow: 0 0 30px -5px rgba(0,0,0,.1);
+        }
+
+        #titlewrap input {
+            border: 2px solid rgb(204, 204, 204) !important;
+
+        }
+
+
+        #screen-meta-links {
+            position: fixed;
+            top: 0;
+            right: 0;
+        }
+
+        .betternav__head {
+            background: #663399;
+            background: #401d64;
+            min-height: 70px;
+            margin-bottom: 20px;
+        }
+
+        .betternav, .betternav__section-menu, .betternav__submenu {
+            height: 100vh;
+            /* height: calc(100vh - 50px); */
+            background: white;
+        }
+
+        .betternav__section-menu, .betternav__section-title > .betternav__submenu {
+            top: 70px;
+        }
+
+        .betternav__section-menu .betternav__submenu {
+            top: 0;
+        }
+
         .betternav__section-menu, .betternav__submenu {
+            padding-top: 20px;
             display: none;
             position: absolute;
             right: 0;
-            top: 0;
-            height: 100vh;
             transform: translateX(100%);
-            background: blue;
             z-index: -1;
         }
 
-        .betternav__section-title:hover .betternav__section-menu,
-        .betternav__item:hover .betternav__submenu {
+        .betternav__section-title:hover > .betternav__section-menu,
+        .betternav__item:hover > .betternav__submenu,
+        .betternav__section-title:hover > .betternav__submenu {
             display: block;
         }
     </style>
     
     <nav class="betternav">
+        <div class="betternav__head">
+        
+        </div>
         <?php foreach($final_menu as $section_title => $section_menu): ?>
             <?php if ($section_title 
                     && $section_menu 
@@ -236,6 +349,7 @@ function my_admin_footer_function() {
                 </article>
             <?php elseif ($section_menu && count($section_menu) == 1): ?>
                 <article class="betternav__section-title">
+                    <?php //write_log($section_menu); ?>
                     <?php create_section_submenu($section_menu[0]); ?>
                 </article>
             <?php endif; ?>
