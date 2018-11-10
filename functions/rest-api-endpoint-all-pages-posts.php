@@ -56,6 +56,25 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $template_slug_no_ext = strstr($template_slug, '.', true);
         $template = $template_slug_no_ext ? $template_slug_no_ext : "single/$post_type";
 
+        $post_taxonomies = get_post_taxonomies($id);
+
+        $post_terms = array();
+
+        foreach($post_taxonomies as $taxonomy) {
+            $terms = get_the_terms($id, $taxonomy);
+            
+            if (!$terms) continue;
+
+            foreach($terms as $term) {
+                $term->pathname = str_replace(home_url(), "", get_term_link($term));
+            }
+            $post_terms[$taxonomy] = $terms;
+        } 
+
+        write_log($post_terms);
+
+
+        $post->taxonomies = $post_terms;
         $post->pathname = str_replace(home_url(), '', $permalink); 
         $post->permalink = $permalink;
         $post->featured_img = $post_thumbnail;
