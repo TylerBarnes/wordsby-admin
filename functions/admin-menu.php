@@ -140,14 +140,14 @@ function my_admin_footer_function() {
     //         'menu' => $collections
     //     ],
     //     'comments' => [
-    //         'filename' => false,
+    //         'filename' => 'edit-comments.php',
     //         'menu' => $comments
     //     ],
     //     'users' => [
-    //         'filename' => false,
+    //         'filename' => 'users.php',
     //         'menu' => $users
     //     ],
-    //     'settings' => [
+    //     'development' => [
     //         'filename' => false,
     //         'menu' => $menu
     //     ]
