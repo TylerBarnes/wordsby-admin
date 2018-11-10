@@ -1,5 +1,18 @@
 <?php 
 
+function get_menu_link_path($item) {
+            $menu_hook = get_plugin_page_hook( $item[2], 'admin.php' );
+            $menu_file = $item[2];
+            $class = '';
+			if ( false !== ( $pos = strpos( $menu_file, '?' ) ) )
+				$menu_file = substr( $menu_file, 0, $pos );
+			if ( ! empty( $menu_hook ) || ( ( 'index.php' != $item[2] ) && file_exists( WP_PLUGIN_DIR . "/$menu_file" ) && ! file_exists( ABSPATH . "/wp-admin/$menu_file" ) ) ) {
+                return "admin.php?page={$item[2]}";
+			} else {
+                return $item[2];
+			}
+}
+
 function remove_non_menu_items($value) {
     return strpos($value[2], 'separator') === false;
 }
@@ -43,14 +56,14 @@ function create_section_submenu($item) {
             
                             $submenu_items = find_submenu_items($item);
                         ?>
-                            <a href="<?php echo $item[2]; ?>">
+                            <a href="<?php echo get_menu_link_path($item); ?>">
                                 <?php echo $item[0]; ?>
                             </a>
                             
                             <?php if(is_array($submenu_items)): ?>
                                 <nav class="betternav__submenu">
                                     <?php foreach($submenu_items as $item): ?>
-                                        <a href="<?php echo $item[2]; ?>">
+                                        <a href="<?php echo get_menu_link_path($item); ?>">
                                             <?php echo $item[0]; ?>
                                         </a>
                                     <?php endforeach; ?>
@@ -86,6 +99,8 @@ add_action('adminmenu', 'my_admin_footer_function');
 function my_admin_footer_function() {
     global $menu, $submenu;
     global $self, $parent_file, $menu;
+
+    // write_log($menu);
 
     // remove separators
     $menu = array_filter($menu, 'remove_non_menu_items');
