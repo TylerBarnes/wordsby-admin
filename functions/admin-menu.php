@@ -100,7 +100,7 @@ function my_admin_footer_function() {
     global $menu, $submenu;
     global $self, $parent_file, $menu;
 
-    // write_log($menu);
+    // write_log($GLOBALS);
 
     // remove separators
     $menu = array_filter($menu, 'remove_non_menu_items');
@@ -180,7 +180,7 @@ function my_admin_footer_function() {
         #wpadminbar {
             height: 50px;
             background: #241336;
-            display: none;
+            /* display: none; */
         }
 
         html.wp-toolbar {
@@ -239,8 +239,11 @@ function my_admin_footer_function() {
         }
 
         
-        .betternav__section-menu, .betternav__submenu {
+        .betternav__section-menu {
             box-shadow: -17px 0px 80px 10px rgba(0,0,0,.1);
+        }
+        .betternav__submenu {
+            box-shadow: 13px 0px 80px 0px rgba(0,0,0,.1);
         }
 
         .betternav__section-title, .betternav__item > a, .betternav__submenu > a {
@@ -281,11 +284,17 @@ function my_admin_footer_function() {
         }
 
         #adminmenu .awaiting-mod, #adminmenu .update-plugins {
-            background-color: white;
+            background-color: red;
+            background-color: #FF3366;
         }
 
-        .pending-count, .update-count, .plugin-count {
-            color: #222447 !important;
+        .pending-count {
+            /* color: #222447 !important; */
+            color: white !important;
+        }
+
+        .update-count, .plugin-count {
+            color: white !important;
         }
 
 
