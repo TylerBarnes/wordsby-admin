@@ -136,12 +136,12 @@ function my_admin_footer_function() {
 
 
     $final_menu = array(
-        'dashboard' => [$dashboard],
-        'collections' => $collections,
+        'Dashboard' => [$dashboard],
+        'Collections' => $collections,
         // remove comments menu if comments are disabled
-        'comments' => $comments ? [$comments] : [],
-        'users' => [$users],
-        'development' => $menu
+        'Comments' => $comments ? [$comments] : [],
+        'Users' => [$users],
+        'Development' => $menu
     );
 
     // use this to set the active class later
