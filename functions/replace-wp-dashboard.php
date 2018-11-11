@@ -100,6 +100,8 @@ class Replace_WP_Dashboard {
                 box-shadow: 0px 5px 30px 0px rgba(0,0,0,0.1);
                 margin-bottom: 40px;
                 position: relative;
+                font-weight: bold;
+                letter-spacing: .5px;
 
                 display: flex;
                 align-items: center;
