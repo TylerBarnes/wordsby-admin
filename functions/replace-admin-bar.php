@@ -146,9 +146,10 @@ function modify_admin_bar( $wp_admin_bar ){
           <label>+ New</label>
 
           <div class="gp-new-collection__collections">
-            <?php global $menu;
+            <?php global $menu, $collections_blacklist;
             $collections = get_post_types(['public' => true], 'objects'); 
             foreach($collections as $post_type):
+              if (in_array($post_type->label, $collections_blacklist)) continue;
                 ?>
                 <a 
                     href="<?php echo admin_url('post-new.php?post_type=' . $post_type->name); ?>" 

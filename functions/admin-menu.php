@@ -32,8 +32,13 @@ function check_diff_multi($array1, $array2){
     return $result;
 }
 
+$collections_blacklist = array('Psychic Window');
+
 function get_collections_menu_items($menu_item) {
-    global $wp_post_types;
+    global $wp_post_types, $collections_blacklist;
+    
+    
+    if (in_array($menu_item[0], $collections_blacklist)) return false;
 
     foreach($wp_post_types as $post_type) {
         if($post_type->label === $menu_item[0]) return true;

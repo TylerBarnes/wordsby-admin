@@ -51,9 +51,9 @@ class Replace_WP_Dashboard {
     }
 
     function get_collections_menu_items($menu_item) {
-        global $wp_post_types;
+        global $wp_post_types, $collections_blacklist;
 
-        write_log($menu_item);
+        if (in_array($menu_item[0], $collections_blacklist)) return false;
 
         foreach($wp_post_types as $post_type) {
             if($post_type->label === $menu_item[0]) return true;
@@ -126,9 +126,14 @@ class Replace_WP_Dashboard {
         <h3 class="collections-title">Collections</h3>
         <section class="collections">
 HTML;
-        global $menu;
+        global $menu, $collections_blacklist;
         $collections = get_post_types(['public' => true], 'objects'); 
         foreach($collections as $post_type):
+
+            if (in_array($post_type->label, $collections_blacklist)) {
+                write_log('test');
+                continue;
+            };
             ?>
             <a 
                 href="<?php echo admin_url('edit.php?post_type=' . $post_type->name); ?>" 
