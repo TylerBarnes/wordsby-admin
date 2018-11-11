@@ -258,7 +258,8 @@ function my_admin_footer_function() {
 
         div.updated {
             /* border-left: 4px solid red !important;  */
-            border: 2px solid #FF3366 !important; 
+            /* border: 2px solid #FF3366 !important;  */
+            border: 2px solid #47cb9c !important; 
         }
 
         h1, h2, h3, h4, h5 {
