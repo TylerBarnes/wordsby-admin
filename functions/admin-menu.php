@@ -279,9 +279,6 @@ function my_admin_footer_function() {
             display: none;
         }
 
-        .betternav__section-title {
-            position: relative;
-        }
         .betternav__section-title > a {
             padding: 0 !important;
         }
@@ -403,7 +400,10 @@ function my_admin_footer_function() {
             display: none;
             position: absolute;
             right: 0;
-            top: -20px;
+            top: 0;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
             transform: translateX(100%);
             z-index: -1;
         }
@@ -416,6 +416,7 @@ function my_admin_footer_function() {
         .betternav__item:hover > .betternav__submenu,
         .betternav__section-title:hover > .betternav__submenu {
             display: block;
+            display: flex;
         }
     </style>
     
