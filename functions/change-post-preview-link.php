@@ -2,8 +2,6 @@
 function custom_preview_page_link($link) {
 	$id = get_the_ID();
 	$user_id = get_current_user_id();
-	// wp_set_current_user( $user_id);
-	// wp_set_auth_cookie( $user_id );
 	$nonce = wp_create_nonce( 'wp_rest' );
 
 	$available_templates = populate_templates_from_json_file(true);
@@ -28,7 +26,7 @@ function custom_preview_page_link($link) {
 		$available_template = $default_template;
 	}
 	
-	$link = "/preview/$available_template/?rest_base=$rest_base&preview=$id&nonce=$nonce";
+	$link = get_home_url() . "/preview/$available_template/?rest_base=$rest_base&preview=$id&nonce=$nonce";
 	return $link;
 }
 add_filter('preview_post_link', 'custom_preview_page_link');
