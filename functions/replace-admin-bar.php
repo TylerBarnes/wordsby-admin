@@ -90,14 +90,14 @@ function modify_admin_bar( $wp_admin_bar ){
         bottom: 40px;
         right: 50px;
         background: white;
-        color: red;
+        color: #fe3266;
         filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
         width: auto;
         padding: 20px 20px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 10%;
+        border-radius: 7px;
         font-weight: bold;
         min-width: 100px;
       }

@@ -167,8 +167,24 @@ function my_admin_footer_function() {
 
     ?>
     <style>
-    input[type=text] {
-        border: 2px solid lightblue !important;
+    input[type=text], 
+    input[type=search], 
+    html body select {
+        border: 2px solid lightgrey !important;
+        border-radius: 0 !important;
+    }
+
+    .wp-core-ui .button-primary {
+        background: #01BAEF;
+        border-color: none;
+        box-shadow: 0 1px 11px 0 rgba(0,0,0,0.1);
+        color: white;
+        text-decoration: none;
+        text-shadow: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        height: auto;
+        line-height: 1;
     }
 
     html body input[type=radio],
