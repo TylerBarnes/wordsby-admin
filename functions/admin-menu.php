@@ -167,6 +167,10 @@ function my_admin_footer_function() {
 
     ?>
     <style>
+    input[type=text] {
+        border: 2px solid lightblue !important;
+    }
+
     html body input[type=radio],
     html body input[type=checkbox] {
         box-shadow: 0 0 30px 0 rgba(0,0,0,0.1) !important;
