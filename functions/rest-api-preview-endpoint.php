@@ -91,12 +91,16 @@ class WP_REST_Post_Preview_Controller extends WP_REST_Posts_Controller
      */
     public function get_items_permissions_check($request)
     {
+        // return true;
+        // if (defined("GATSBYPRESS_PUBLIC_PREVIEWS") && GATSBYPRESS_PUBLIC_PREVIEWS === true) {
+        //     return true;
+        // } 
 
-        // $post_type = get_post_type_object($this->post_type);
+        $post_type = get_post_type_object($this->post_type);
 
-        // if (!current_user_can($post_type->cap->edit_posts)) {
-        //     return new WP_Error('rest_forbidden_context', __('Sorry, you are not allowed to preview these posts in this post type'), array('status' => rest_authorization_required_code()));
-        // }
+        if (!current_user_can($post_type->cap->edit_posts)) {
+            return new WP_Error('rest_forbidden_context', __('Sorry, you are not allowed to preview these posts in this post type'), array('status' => rest_authorization_required_code()));
+        }
 
         return true;
     }
@@ -296,6 +300,11 @@ class WP_REST_Post_Preview_Controller extends WP_REST_Posts_Controller
      */
     public function get_item_permissions_check($request)
     {
+        // return true;
+        // if (defined("GATSBYPRESS_PUBLIC_PREVIEWS") && GATSBYPRESS_PUBLIC_PREVIEWS === true) {
+        //     return true;
+        // } 
+
         $post = get_post((int) $request['id']);
 
         if ($post && !$this->check_update_permission($post)) {
