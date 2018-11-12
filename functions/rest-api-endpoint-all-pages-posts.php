@@ -53,8 +53,11 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $permalink = get_permalink($id);
         $post_type = $post->post_type;
         $template_slug = get_page_template_slug($id);
-        $template_slug_no_ext = strstr($template_slug, '.', true);
-        $template = $template_slug_no_ext ? $template_slug_no_ext : "single/$post_type";
+
+        $template = $template_slug ? $template_slug : "single/$post_type";
+
+        // write_log($post->post_title);
+        // write_log($template_slug);
 
         $post_taxonomies = get_post_taxonomies($id);
 
