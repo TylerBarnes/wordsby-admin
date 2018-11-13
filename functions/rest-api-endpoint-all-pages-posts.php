@@ -89,7 +89,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
             // array_push($taxonomy_slugs, $taxonomy_pathname);
         } 
 
-
+        $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
         $post->term_slugs = $post_terms;
         $post->taxonomy_slugs = $post_taxonomies;
