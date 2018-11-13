@@ -56,11 +56,9 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
 
         $template = $template_slug ? $template_slug : "single/$post_type";
 
-        // write_log($post->post_title);
-        // write_log($template_slug);
-
         $post_taxonomies = get_post_taxonomies($id);
 
+        $post_taxonomy_terms = array();
         $post_terms = array();
 
         foreach($post_taxonomies as $taxonomy) {
@@ -70,12 +68,31 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
 
             foreach($terms as $term) {
                 $term->pathname = str_replace(home_url(), "", get_term_link($term));
+                array_push($post_terms, $term->slug);
             }
-            $post_terms[$taxonomy] = $terms;
+            
+            $firstTermPathname = $terms[0]->pathname;
+            $firstTermSlug = $terms[0]->slug . "/";
+            
+            $taxonomy_pathname = str_replace($firstTermSlug, "", $firstTermPathname);
+
+            $taxonomy_object = get_taxonomy($taxonomy);
+            
+            $post_taxonomy_terms[$taxonomy] = array(
+                'labels' => array(
+                    'plural' => $taxonomy_object->label,
+                    'single' => $taxonomy_object->labels->singular_name
+                ),
+                'pathname' => $taxonomy_pathname,
+                'terms' => $terms
+            );
+            // array_push($taxonomy_slugs, $taxonomy_pathname);
         } 
 
 
-        $post->taxonomies = $post_terms;
+        $post->taxonomies = $post_taxonomy_terms;
+        $post->term_slugs = $post_terms;
+        $post->taxonomy_slugs = $post_taxonomies;
         $post->pathname = str_replace(home_url(), '', $permalink); 
         $post->permalink = $permalink;
         $post->featured_img = $post_thumbnail;
