@@ -8,7 +8,7 @@ function populate_templates_from_json_file($keep_defaults = '') {
     if (file_exists($templates_json_path)) {
         $templates_json_str = file_get_contents($templates_json_path);
         $templates_json = json_decode($templates_json_str);
-        $default_template_match = '/single\//';
+        $default_template_match = '/single\/|taxonomy\//';
 
         // remove defaults unless $keep_defaults is set
         if ($keep_defaults === '') {
