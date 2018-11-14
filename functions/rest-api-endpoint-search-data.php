@@ -2,7 +2,7 @@
 add_action( 'rest_api_init', 'custom_api_get_search_data' );
 
 function custom_api_get_search_data() {
-    register_rest_route( 'wp/v1', '/collections/search', array(
+    register_rest_route( 'wp/v1', '/searchResults', array(
         'methods' => 'GET',
         'callback' => 'custom_api_get_search_data_callback'
     ));
@@ -36,19 +36,16 @@ function custom_api_get_search_data_callback( $data ) {
           foreach($iterator as $key => $value) {
               if(
                   $value !== null  && $value !== ""  &&   // check for empty strings
-                  strlen($value) > 50 &&                  //remove small strings
-                  substr($value, 0, 4 ) !== "http"        //remove links
+                  strlen($value) > 50 &&                  // remove small strings
+                  substr($value, 0, 4 ) !== "http"        // remove links
               )
               array_push($post->searchData, wp_strip_all_tags($value, true));
           }
         }
 
-        $posts_data[$id] = [
-            'post_title' => $post->post_title,
-            'post_type' => $post->post_type,
-            'pathname' => str_replace(home_url(), '', get_permalink($id)),
-            'search_data' => $post->searchData
-        ];
+        $post->pathname = str_replace(site_url(), '', get_permalink($id));
+
+        $posts_data[] = $post;
 
     }
     return $posts_data;
