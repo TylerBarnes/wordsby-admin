@@ -17,9 +17,7 @@ function rrmdir($dir) {
 add_action('init', 'recievePreviews');
 
 function recievePreviews() {
-  if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    return;
-  }
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if(!isset($_POST['gatsbypress_previews'])) return;
 
@@ -27,24 +25,31 @@ function recievePreviews() {
     write_log('GATSBYPRESS_PRIVATE_KEY not defined in wp-config.php');
     header('HTTP/1.1 500 Internal Server Booboo');
     header('Content-Type: application/json; charset=UTF-8');
-    die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    // return json_encode(array('message' => 'ERROR', 'code' => 1337));
+    wp_die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
   };
 
   $apikey = isset($_POST['apikey']) ? $_POST['apikey'] : false;
 
+  // write_log($apikey);
+  // write_log(GATSBYPRESS_PRIVATE_KEY);
+
   if ($apikey !== GATSBYPRESS_PRIVATE_KEY) {
       write_log('wrong api key used in gatsbypress..');
-      die();
-  };
+      // return;
+      wp_die();
+  } else {
+    $wproot = get_home_path();
+    $previews_path = $wproot . "preview/";
 
-  $wproot = get_home_path();
-  $previews_path = $wproot . "preview/";
+    if (!isset($_FILES)) {
+      // return;
+      wp_die();
+    };
 
-  if (!isset($_FILES)) die();
+    $temp_path = $_FILES['previews']['tmp_name'];
 
-  $temp_path = $_FILES['previews']['tmp_name'];
-
-  if (file_exists($previews_path)) {
+    if (file_exists($previews_path)) {
       rrmdir($previews_path);
     }
 
@@ -56,7 +61,10 @@ function recievePreviews() {
         write_log('gatsbypress previews unzip failed');
         header('HTTP/1.1 500 Preview unzip failed');
             header('Content-Type: application/json; charset=UTF-8');
-            die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+            wp_die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+            return json_encode(array('message' => 'ERROR', 'code' => 1337));
     }
+  };
+  }
 }
 ?>
