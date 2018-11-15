@@ -1,6 +1,24 @@
-<?php 
-add_action( 'rest_api_init', 'custom_api_get_all_posts' );   
+<?php
+function recursivePostLoop( &$element ) {
+    if(is_array($element) || is_object($element)){
+      foreach ( $element as $key => &$value ) {
+            $element[$key] = searchAndReplaceLinks($value);
+            recursivePostLoop($value);
+      }
+    }
+    return $element;
+}
 
+function searchAndReplaceLinks($value){
+    $target_url = rtrim(get_field('build_site_url', 'options'), '/');
+    $this_url = site_url();
+    if(is_string($value)){
+        $value =  preg_replace('('.$this_url.'(?!\\\'wp-content\'|\\\'wp-admin\'))', $target_url, $value); 
+    }
+    return $value;
+}
+
+add_action( 'rest_api_init', 'custom_api_get_all_posts' );   
 function custom_api_get_all_posts() {
     register_rest_route( 'wp/v1', '/collections', array(
         'methods' => 'GET',
@@ -36,6 +54,7 @@ function custom_api_get_all_posts_callback( $data ) {
     // Loop through the posts and push the desired data to the array we've initialized earlier in the form of an object
     foreach( $posts as $post ) {
         $id = $post->ID; 
+
         $post_thumbnail = ( has_post_thumbnail( $id ) ) ? get_the_post_thumbnail_url( $id ) : null;
         $permalink = get_permalink($id);
         $post_type = $post->post_type;
@@ -46,11 +65,22 @@ function custom_api_get_all_posts_callback( $data ) {
         $post->pathname = str_replace(home_url(), '', $permalink); 
         $post->permalink = $permalink;
         $post->featured_img = $post_thumbnail;
-        $post->acf = get_fields($id);
         $post->template_slug = $template;
+
+        // Loop through all post object fields and search and replace url
+        $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($post));
+        foreach($iterator as $key => $value) {
+            $post->$key = searchAndReplaceLinks($value);
+        }
+
+        // Get acf fields and replace link
+        $acf = get_fields($id);
+        $acfLinkReplace = recursivePostLoop($acf);
+        $post->acf = $acfLinkReplace;
 
         $posts_data[] = $post;
     }                  
     return $posts_data;                   
-} 
+}
+
 ?>
