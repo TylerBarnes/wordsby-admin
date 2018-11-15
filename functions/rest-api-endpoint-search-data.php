@@ -10,7 +10,7 @@ function custom_api_get_search_data() {
 
 function custom_api_get_search_data_callback( $data ) {
 
-    $target_url = rtrim(get_field('build_site_url', 'options'), '/');
+    $target_url = '/'; // rtrim(get_field('build_site_url', 'options'), '/');
     $this_url = site_url();
 
     // Initialize the array that will receive the posts' data.

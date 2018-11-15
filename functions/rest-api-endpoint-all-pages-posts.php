@@ -13,7 +13,7 @@ function searchAndReplaceLinks($value){
     $target_url = rtrim(get_field('build_site_url', 'options'), '/');
     $this_url = site_url();
     if(is_string($value)){
-        $value =  preg_replace('('.$this_url.'(?!\\\'wp-content\'|\\\'wp-admin\'))', $target_url, $value); 
+        $value =  preg_replace('/'.preg_quote($this_url, '/').'(?!\/wp-content|\/wp-admin)/', '', $value);
     }
     return $value;
 }
