@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<script src="/wp-content/themes/gatsby-wordpress-admin-theme/lib/PsychicWindow/post-robot.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/lib/PsychicWindow/post-robot.js"></script>
 <?php 
     if ( have_posts() ) {
         
