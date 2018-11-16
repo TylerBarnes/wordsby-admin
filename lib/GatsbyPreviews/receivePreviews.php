@@ -19,32 +19,34 @@ add_action('init', 'recievePreviews');
 function recievePreviews() {
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-  if(!isset($_POST['gatsbypress_previews'])) return;
+  if(!isset($_POST['gatsbypress_previews']) && !isset($_POST['gatsbypress_preview_keycheck'])) {
+    return;
+  };
 
   if (!defined("GATSBYPRESS_PRIVATE_KEY")) {
     write_log('GATSBYPRESS_PRIVATE_KEY not defined in wp-config.php');
-    header('HTTP/1.1 500 Internal Server Booboo');
-    header('Content-Type: application/json; charset=UTF-8');
-    // return json_encode(array('message' => 'ERROR', 'code' => 1337));
-    wp_die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    return;
   };
 
   $apikey = isset($_POST['apikey']) ? $_POST['apikey'] : false;
 
-  // write_log($apikey);
-  // write_log(GATSBYPRESS_PRIVATE_KEY);
-
   if ($apikey !== GATSBYPRESS_PRIVATE_KEY) {
       write_log('wrong api key used in gatsbypress..');
-      // return;
-      wp_die();
+      header('HTTP/1.1 401 unauthorized');
+      echo json_encode('Wrong key..');
+      return;
   } else {
     $wproot = get_home_path();
     $previews_path = $wproot . "preview/";
 
+    if (isset($_POST['gatsbypress_preview_keycheck'])) {
+      // api key == to private key + checking the key
+      echo json_encode('success');
+      return;
+    };
+
     if (!isset($_FILES)) {
-      // return;
-      wp_die();
+      return;
     };
 
     $temp_path = $_FILES['previews']['tmp_name'];
