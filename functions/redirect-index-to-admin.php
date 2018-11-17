@@ -3,7 +3,7 @@ add_filter( 'template_include', 'redirect_index_to_admin', 99 );
 
 function redirect_index_to_admin( $template ) {
 
-      if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['gatsbypress_previews'])) {
+      if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['gatsbypress_previews']) || isset($_POST['gatsbypress_preview_keycheck']))) {
             return;
         }
 
