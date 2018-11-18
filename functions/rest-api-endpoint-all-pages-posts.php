@@ -6,18 +6,6 @@ function custom_api_get_all_posts() {
         'methods' => 'GET',
         'callback' => 'custom_api_get_all_posts_callback'
     ));
-
-    register_rest_route( 'wp/v1', '/collections/(?P<id>\d+)', array(
-        'methods' => 'GET',
-        'callback' => 'custom_api_get_all_posts_callback',
-        'args' => [
-            'id' => [
-                'validate_callback' => function($param, $request, $key) {
-                    return is_numeric($param);
-                }
-            ]
-        ]
-    ));
 }
 
 function custom_api_get_all_posts_callback( $data ) {
