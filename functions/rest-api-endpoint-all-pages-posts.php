@@ -1,13 +1,6 @@
 <?php 
 add_action( 'rest_api_init', 'custom_api_get_all_posts' );   
 
-function nullifyEmptyArray(&$array) {
-    if (count($array) === 0) {
-        $array = null;
-    }
-    return;
-}
-
 function custom_api_get_all_posts() {
     register_rest_route( 'wp/v1', '/collections', array(
         'methods' => 'GET',
@@ -94,12 +87,6 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
                 'terms' => $terms
             );
         } 
-
-
-        nullifyEmptyArray($post_taxonomy_terms);
-        nullifyEmptyArray($post_terms);
-        nullifyEmptyArray($taxonomy_slugs);
-        nullifyEmptyArray($post_taxonomies);
 
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
