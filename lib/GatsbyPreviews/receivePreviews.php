@@ -25,6 +25,7 @@ function recievePreviews() {
 
   if (!defined("GATSBYPRESS_PRIVATE_KEY")) {
     write_log('GATSBYPRESS_PRIVATE_KEY not defined in wp-config.php');
+    echo json_encode('GATSBYPRESS_PRIVATE_KEY not defined');
     return;
   };
 
