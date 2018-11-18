@@ -51,7 +51,7 @@ function cptui_register_my_cpts_dummy() {
 		"capability_type" => "post",
 		"map_meta_cap" => true,
 		"hierarchical" => false,
-		"rewrite" => false,
+		"rewrite" => true,
 		"query_var" => false,
 		"supports" => array( "title", "editor", "thumbnail" ),
 		"taxonomies" => array( "category", "post_tag" ),
