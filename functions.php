@@ -14,6 +14,8 @@ require_once dirname( __FILE__ ) . "/functions/main-options-page.php";
 
 require_once dirname( __FILE__ ) . "/functions/menus.php";
 
+require_once dirname( __FILE__ ) . "/functions/always-one-post-one-term.php";
+
 // previews / editing
 require_once dirname( __FILE__ ) . "/functions/update-nonce-cookie.php";
 require_once dirname( __FILE__ ) . "/functions/build-hook.php";
