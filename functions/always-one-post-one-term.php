@@ -1,8 +1,14 @@
 <?php 
-add_action("init", "alwaysOneDummyPost");
+add_action("init", "alwaysOneDummyPost", 2, 0);
 
 function alwaysOneDummyPost() {
-    $count = wp_count_posts('dummy')->publish;
+	if (!post_type_exists('dummy')) {
+		write_log('dummy post type doesnt exist');
+		return;
+	};
+
+	$count = wp_count_posts('dummy');
+	$publish_count = property_exists($count, 'publish') ? $count->publish : false;
 
     if (!$count && $count === 0) {
         if (!term_exists('dummy', 'category')) wp_insert_term('dummy', 'category');
@@ -60,6 +66,6 @@ function cptui_register_my_cpts_dummy() {
 	register_post_type( "dummy", $args );
 }
 
-add_action( 'init', 'cptui_register_my_cpts_dummy' );
+add_action( 'init', 'cptui_register_my_cpts_dummy', 1, 0 );
 
 ?>
