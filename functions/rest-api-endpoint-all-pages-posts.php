@@ -76,6 +76,8 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
             );
         } 
 
+        $excerpt = wp_trim_words( $post->post_content, $num_words = 100, $more = null );
+
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
         $post->term_slugs = $post_terms;
@@ -83,6 +85,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $post->pathname = str_replace(home_url(), '', $permalink); 
         $post->permalink = $permalink;
         $post->featured_img = $post_thumbnail;
+        $post->excerpt = $excerpt;
         $post->template_slug = $template;
         $post->acf = get_fields($id);
 
