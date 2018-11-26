@@ -131,7 +131,6 @@ HTML;
         foreach($collections as $post_type):
 
             if (in_array($post_type->label, $collections_blacklist)) {
-                write_log('test');
                 continue;
             };
             ?>
