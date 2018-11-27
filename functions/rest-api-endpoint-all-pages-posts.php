@@ -85,6 +85,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $post->featured_img = $post_thumbnail;
         $post->template_slug = $template;
         $post->acf = get_fields($id);
+        $post->post_content = do_shortcode($post->post_content);
 
         // // move the template slug out of the acf field to the root
         // $post->acf_template = $post->acf['template'];
