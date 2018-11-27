@@ -92,6 +92,20 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $post->template_slug = $template;
         $post->acf = $all_acf;
         $post->post_content = replace_urls_with_pathnames(do_shortcode($post->post_content));
+// 26613
+        // remove unneeded data
+        unset($post->post_excerpt);
+        unset($post->ping_status);
+        unset($post->post_password);
+        unset($post->to_ping);
+        unset($post->pinged);
+        unset($post->post_modified_gmt);
+        unset($post->post_date_gmt);
+        unset($post->post_content_filtered);
+        unset($post->guid);
+        unset($post->post_mime_type);
+        unset($post->filter);
+        unset($post->permalink);
 
         $posts_data[] = $post;
     }                  
