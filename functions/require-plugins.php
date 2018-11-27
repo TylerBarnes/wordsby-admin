@@ -28,6 +28,11 @@ function my_theme_register_required_plugins() {
       'force_activation'  => true,
 		),
 		array(
+			'name'      => 'Post Type Select for Advanced Custom Fields',
+      'slug'      => 'post-type-select-for-advanced-custom-fields',
+      'force_activation'  => true,
+		),
+		array(
 			'name'      => 'Post Types Order',
       'slug'      => 'post-types-order',
       'force_activation'  => true,
