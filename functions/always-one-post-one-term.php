@@ -1,7 +1,8 @@
 <?php 
-add_action("init", "alwaysOneDummyPost", 2, 0);
+add_action("admin_init", "alwaysOneDummyPost", 2, 0);
 
 function alwaysOneDummyPost() {
+	write_log('always one');
 	if (!post_type_exists('dummy')) {
 		write_log('dummy post type doesnt exist');
 		return;
@@ -10,7 +11,7 @@ function alwaysOneDummyPost() {
 	$count = wp_count_posts('dummy');
 	$publish_count = property_exists($count, 'publish') ? $count->publish : false;
 
-    if (!$count && $count === 0) {
+    if (!$publish_count && $publish_count === 0) {
         if (!term_exists('dummy', 'category')) wp_insert_term('dummy', 'category');
         
         if (!term_exists('dummy', 'term')) wp_insert_term('dummy', 'term');
@@ -20,11 +21,15 @@ function alwaysOneDummyPost() {
             'post_title' => 'dummy', 
             'post_status' => 'publish',
             'tags_input' => ['dummy']
-            ]);
+			]);
 
         $dummy_term_id = get_term_by('slug', 'dummy', 'category')->term_taxonomy_id;
 
-        wp_set_post_terms($post, [$dummy_term_id], 'category', true);
+		wp_set_post_terms($post, [$dummy_term_id], 'category', true);
+		
+		update_field('is_archive', 1, $post);
+		update_field('posts_per_page', 1, $post);
+		update_field('post_type', 'dummy', $post);
     }
 }
 
