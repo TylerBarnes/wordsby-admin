@@ -2,7 +2,6 @@
 add_action("admin_init", "alwaysOneDummyPost", 2, 0);
 
 function alwaysOneDummyPost() {
-	write_log('always one');
 	if (!post_type_exists('dummy')) {
 		write_log('dummy post type doesnt exist');
 		return;
