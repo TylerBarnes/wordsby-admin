@@ -18,7 +18,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'               => 'ACF Pro',
 			'slug'               => 'advanced-custom-fields-pro',
-			'source'             => get_stylesheet_directory() . '/lib/plugins/advanced-custom-fields-pro.zip', 
+			'source'             => "https://github.com/wp-premium/advanced-custom-fields-pro/archive/master.zip", 
 			'required'           => true, 
 			'force_activation'   => true
 		),
@@ -30,17 +30,6 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'      => 'Post Type Select for Advanced Custom Fields',
       'slug'      => 'post-type-select-for-advanced-custom-fields',
-      'force_activation'  => true,
-		),
-		array(
-			'name'      => 'Post Types Order',
-      'slug'      => 'post-types-order',
-      'force_activation'  => true,
-		),
-		array(
-			'name'      => 'ACF to REST API',
-			'slug'      => 'acf-to-rest-api',
-      'required'  => true,
       'force_activation'  => true,
 		),
 		array(
