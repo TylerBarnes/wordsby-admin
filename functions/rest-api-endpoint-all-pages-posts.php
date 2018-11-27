@@ -76,6 +76,12 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
             );
         } 
 
+        $all_acf = get_fields($id);
+
+        if ($all_acf) {
+            array_walk_recursive($all_acf, 'remove_urls');
+        }
+
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
         $post->term_slugs = $post_terms;
@@ -84,12 +90,8 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $post->permalink = $permalink;
         $post->featured_img = $post_thumbnail;
         $post->template_slug = $template;
-        $post->acf = get_fields($id);
-        $post->post_content = do_shortcode($post->post_content);
-
-        // // move the template slug out of the acf field to the root
-        // $post->acf_template = $post->acf['template'];
-        // unset($post->acf['template']);
+        $post->acf = $all_acf;
+        $post->post_content = replace_urls_with_pathnames(do_shortcode($post->post_content));
 
         $posts_data[] = $post;
     }                  
