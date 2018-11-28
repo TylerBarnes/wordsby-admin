@@ -1,5 +1,6 @@
 <?php 
-	
+require_once dirname( __FILE__ ) . "/class-download-remote-image.php"; 
+
 function return_unsplash_image_url() {
 	$url = "https://source.unsplash.com/random/300x300/?nature";
 
@@ -249,7 +250,7 @@ function save_extra_user_profile_fields( $user_id ) {
 	
 	if (isset($_POST['image_attachment_id'])) {
 		$image_id = $_POST['image_attachment_id'];
-		write_log($image_id);
+		// write_log($image_id);
 		return update_user_meta($user_id, 'local_unsplash_avatar', wp_get_attachment_url($image_id));
 	};
 

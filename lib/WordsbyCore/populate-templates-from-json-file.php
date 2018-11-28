@@ -38,7 +38,7 @@ function fromCamelCase($camelCaseString) {
 
 function filenameToTitle($string) {
     if (!is_string($string)) {
-        return write_log('Hmm, a string shouldve been passed in here..');
+        return error_log('Hmm, a string shouldve been passed in here..');
     }
 
     $without_extension = pathinfo($string, PATHINFO_FILENAME);

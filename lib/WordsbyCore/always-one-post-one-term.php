@@ -3,7 +3,7 @@ add_action("admin_init", "alwaysOneDummyPost", 2, 0);
 
 function alwaysOneDummyPost() {
 	if (!post_type_exists('dummy')) {
-		write_log('dummy post type doesnt exist');
+		error_log('dummy post type doesnt exist');
 		return;
 	};
 
