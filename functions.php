@@ -1,7 +1,10 @@
 <?php 
 require_once dirname( __FILE__ ) . "/lib/class-tgm-plugin-activation.php";
 require_once dirname( __FILE__ ) . "/functions/require-plugins.php";
+require_once dirname( __FILE__ ) . "/functions/replace_urls_with_pathnames.php";
+require_once dirname( __FILE__ ) . "/functions/get_taxonomy_archive_link.php";
 require_once dirname( __FILE__ ) . "/functions/rest-api-endpoint-all-pages-posts.php";
+require_once dirname( __FILE__ ) . "/functions/rest-api-endpoint-all-taxonomies-terms.php";
 require_once dirname( __FILE__ ) . "/functions/write_log.php";
 require_once dirname( __FILE__ ) . "/functions/populate-templates-from-json-file.php";
 
