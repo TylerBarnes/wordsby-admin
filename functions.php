@@ -6,6 +6,7 @@ require_once dirname( __FILE__ ) . "/functions/write_log.php";
 
 require_once dirname( __FILE__ ) . "/functions/discourage-search-engines.php";
 require_once dirname( __FILE__ ) . "/functions/redirect-index-to-admin.php";
+require_once dirname( __FILE__ ) . "/functions/activate-pretty-permalinks.php";
 
 require_once dirname( __FILE__ ) . "/plugins/WordsbyCore/wordsby-core.php";
 
