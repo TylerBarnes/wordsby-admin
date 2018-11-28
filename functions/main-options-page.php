@@ -72,7 +72,39 @@ acf_add_local_field_group(array(
 			),
 			'default_value' => '',
 			'placeholder' => '',
-		)
+		),
+		array(
+			'key' => 'field_5bbda2ed92b361',
+			'label' => 'ACF Options',
+			'name' => '',
+			'type' => 'tab',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'placement' => 'left',
+			'endpoint' => 0,
+		),
+		array(
+			'key' => 'field_5bbd666ed62e41',
+			'label' => 'Google Maps API Key',
+			'name' => 'google_maps_api_key',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => '',
+			'placeholder' => '',
+		),
 	),
 	'location' => array(
 		array(

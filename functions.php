@@ -7,7 +7,6 @@ require_once dirname( __FILE__ ) . "/functions/rest-api-endpoint-all-pages-posts
 require_once dirname( __FILE__ ) . "/functions/rest-api-endpoint-all-taxonomies-terms.php";
 require_once dirname( __FILE__ ) . "/functions/write_log.php";
 require_once dirname( __FILE__ ) . "/functions/populate-templates-from-json-file.php";
-
 require_once dirname( __FILE__ ) . "/functions/acf-nullify-empty.php";
 
 require_once dirname( __FILE__ ) . "/functions/discourage-search-engines.php";
@@ -42,4 +41,6 @@ require_once dirname( __FILE__ ) . "/functions/random-unsplash-avatars.php";
 
 
 require_once dirname( __FILE__ ) . "/lib/PsychicWindow/psychic-window-posttype.php";
+
+require_once dirname( __FILE__ ) . "/functions/acf-google-map-key.php";
 ?>
