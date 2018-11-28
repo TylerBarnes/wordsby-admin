@@ -251,7 +251,7 @@ function my_admin_footer_function() {
         @import url('https://fonts.googleapis.com/css?family=Amiri:700');
         @font-face {
             font-family: 'Inter UI';    
-            src: url("<?php echo get_stylesheet_directory_uri(); ?>/assets/fonts/Inter-ui/Inter-UI-Regular.woff") format('woff');
+            src: url("<?php echo get_stylesheet_directory_uri(); ?>/plugins/BetterAdmin/assets/fonts/Inter-ui/Inter-UI-Regular.woff") format('woff');
             font-weight: 400;
             font-style: normal;
         }

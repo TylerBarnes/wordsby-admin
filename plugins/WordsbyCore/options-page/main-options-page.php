@@ -10,7 +10,7 @@ add_filter('acf/load_field/name=git_pull_webhook', 'disable_acf_load_field');
 
 if( function_exists('acf_add_options_page') ) {
 
-	$gatsby_icon_url = get_stylesheet_directory_uri() . "/assets/icons/gatsby.svg";
+	$gatsby_icon_url = get_stylesheet_directory_uri() . "/plugins/WordsbyCore/options-page/icons/gatsby.svg";
 
 	acf_add_options_page([
 		'page_title' => 'Gatsby',
