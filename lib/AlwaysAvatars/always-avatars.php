@@ -56,7 +56,6 @@ function add_unsplash_image_to_usermeta( $user_id ) {
 
 	$image_id = download_unsplash_image_to_media_return_image();
 	if (is_wp_error($image_id)) return write_log($image_id);
-    // if ( isset( $_POST['first_name'] ) )
         update_user_meta($user_id, 'local_unsplash_avatar', wp_get_attachment_url($image_id));
 
 }
