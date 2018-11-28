@@ -33,9 +33,7 @@ require_once dirname( __FILE__ ) . "/lib/GatsbyPreviews/receivePreviews.php";
 
 require_once dirname( __FILE__ ) . "/functions/image-settings.php";
 
-require_once dirname( __FILE__ ) . "/functions/admin-menu.php";
-require_once dirname( __FILE__ ) . "/functions/replace-admin-bar.php";
-require_once dirname( __FILE__ ) . "/functions/replace-wp-dashboard.php";
+require_once dirname( __FILE__ ) . "/lib/BetterAdmin/entry.php";
 
 require_once dirname( __FILE__ ) . "/lib/class-download-remote-image.php"; 
 require_once dirname( __FILE__ ) . "/functions/random-unsplash-avatars.php";
