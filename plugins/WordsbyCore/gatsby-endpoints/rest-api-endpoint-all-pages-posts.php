@@ -22,7 +22,9 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $posts = get_posts( array(
                 'post_type' => 'any',
                 'posts_per_page' => -1, 
-                'p' => $id_param           
+                'p' => $id_param,
+                'orderby' => 'post_type menu_order date',
+                'order' => 'ASC'       
             )
         ); 
     } else {
