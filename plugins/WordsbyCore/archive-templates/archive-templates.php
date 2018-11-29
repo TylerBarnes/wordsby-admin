@@ -98,7 +98,7 @@ if( function_exists('acf_add_local_field_group') ):
                 ),
             ),
         ),
-        'menu_order' => 0,
+        'menu_order' => 9999,
         'position' => 'side',
         'style' => 'default',
         'label_placement' => 'top',
