@@ -25,8 +25,8 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'               => 'WP REST API Cache',
 			'slug'               => 'wp-rest-api-cache',
-			'required'           => true, 
-			'force_activation'   => true
+			'required'           => false, 
+			'force_activation'   => false
 		),
 		array(
 			'name'      => 'Classic Editor',
