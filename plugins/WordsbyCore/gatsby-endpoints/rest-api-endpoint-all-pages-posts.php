@@ -85,13 +85,14 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
             array_walk_recursive($all_acf, 'remove_urls');
 
             if ($revision !== "") {
-                // checking for flexible content and manipulating flexible fields for gatsby's graphql fragment output structure.
+                // checking for flexible content and manipulating flexible fields to mimic gatsby's graphql fragment output structure.
                 foreach ($all_acf as $key=>$field) {
                     if (
                         is_array($field) && 
                         isset($field[0]) && 
                         is_array($field[0]) && 
                         array_key_exists('acf_fc_layout', $field[0])
+                        // it's a flexible content field if it passes all these checks 
                         ) {
                         if (is_array($field)) {
                             foreach ($field as &$flexlayout) {
