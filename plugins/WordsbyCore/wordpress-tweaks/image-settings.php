@@ -21,6 +21,7 @@ function sgr_filter_image_sizes( $sizes) {
 		
 	unset( $sizes['thumbnail']);
 	unset( $sizes['medium']);
+	unset( $sizes['medium_large']);
 	unset( $sizes['large']);
 	
 	return $sizes;
