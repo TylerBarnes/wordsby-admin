@@ -82,7 +82,15 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
 
         if ($all_acf) {
             array_walk_recursive($all_acf, 'remove_urls');
+
+            foreach ($all_acf as $field) {
+                write_log($field); 
+            }
         }
+
+        // if ($revision !== "") {
+
+        // }
 
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
