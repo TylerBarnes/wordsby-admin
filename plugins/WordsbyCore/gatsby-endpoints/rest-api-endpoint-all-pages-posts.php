@@ -81,16 +81,30 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $all_acf = get_fields($id);
 
         if ($all_acf) {
+            // removing site urls from links to create pathnames in gatsby
             array_walk_recursive($all_acf, 'remove_urls');
 
-            foreach ($all_acf as $field) {
-                write_log($field); 
+            if ($revision !== "") {
+                // checking for flexible content and manipulating flexible fields for gatsby's graphql fragment output structure.
+                foreach ($all_acf as $key=>$field) {
+                    if (
+                        is_array($field) && 
+                        isset($field[0]) && 
+                        is_array($field[0]) && 
+                        array_key_exists('acf_fc_layout', $field[0])
+                        ) {
+                        if (is_array($field)) {
+                            foreach ($field as &$flexlayout) {
+                                $fieldname = $flexlayout['acf_fc_layout'];
+                                $flexlayout['__typename'] = "WordPressAcf_$fieldname";
+                                unset($flexlayout['acf_fc_layout']);
+                            }
+                        }
+                        $all_acf[$key."_collection"] = $field;
+                    }
+                }
             }
         }
-
-        // if ($revision !== "") {
-
-        // }
 
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
