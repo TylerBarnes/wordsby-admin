@@ -168,12 +168,12 @@ HTML;
         /**
          * Adds a custom page to WordPress
          */
-        add_menu_page( $this->title, '', $this->capability, 'gatsbypress', array( $this, 'page_content' ) );
+        add_menu_page( $this->title, '', $this->capability, 'wordsby', array( $this, 'page_content' ) );
 
         /**
          * Remove the custom page from the admin menu
          */
-        remove_menu_page('gatsbypress');
+        remove_menu_page('wordsby');
 
         /**
          * Make dashboard menu item the active item
@@ -201,7 +201,7 @@ HTML;
      */
     final public function current_screen( $screen ) {
         if( 'dashboard' == $screen->id ) {
-            wp_safe_redirect( admin_url('admin.php?page=gatsbypress') );
+            wp_safe_redirect( admin_url('admin.php?page=wordsby') );
             exit;
         }
     }

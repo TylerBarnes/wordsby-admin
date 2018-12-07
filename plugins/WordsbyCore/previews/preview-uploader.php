@@ -23,16 +23,16 @@ function recievePreviews() {
     return;
   };
 
-  if (!defined("GATSBYPRESS_PRIVATE_KEY")) {
-    error_log('GATSBYPRESS_PRIVATE_KEY not defined in wp-config.php');
-    echo json_encode('GATSBYPRESS_PRIVATE_KEY not defined');
+  if (!defined("WORDSBY_PRIVATE_KEY")) {
+    error_log('WORDSBY_PRIVATE_KEY not defined in wp-config.php');
+    echo json_encode('WORDSBY_PRIVATE_KEY not defined');
     return;
   };
 
   $apikey = isset($_POST['apikey']) ? $_POST['apikey'] : false;
 
-  if ($apikey !== GATSBYPRESS_PRIVATE_KEY) {
-      error_log('wrong api key used in gatsbypress..');
+  if ($apikey !== WORDSBY_PRIVATE_KEY) {
+      error_log('wrong api key used in wordsby..');
       header('HTTP/1.1 401 unauthorized');
       echo json_encode('Wrong key..');
       return;
@@ -61,7 +61,7 @@ function recievePreviews() {
         $zip->extractTo($previews_path);
         $zip->close();
     } else {
-        error_log('gatsbypress previews unzip failed');
+        error_log('wordsby previews unzip failed');
         header('HTTP/1.1 500 Preview unzip failed');
             header('Content-Type: application/json; charset=UTF-8');
             wp_die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
