@@ -1,50 +1,50 @@
 <?php 
-add_action("admin_init", "alwaysOneDummyPost", 2, 0);
+add_action("admin_init", "alwaysOneschema_builderPost", 2, 0);
 
-function alwaysOneDummyPost() {
-	if (!post_type_exists('dummy')) {
-		error_log('dummy post type doesnt exist');
+function alwaysOneschema_builderPost() {
+	if (!post_type_exists('schema_builder')) {
+		error_log('schema_builder post type doesnt exist');
 		return;
 	};
 
-	$count = wp_count_posts('dummy');
+	$count = wp_count_posts('schema_builder');
 	$publish_count = property_exists($count, 'publish') ? $count->publish : false;
 
     if (!$publish_count && $publish_count === 0) {
-        if (!term_exists('dummy', 'category')) wp_insert_term('dummy', 'category');
+        if (!term_exists('schema_builder', 'category')) wp_insert_term('schema_builder', 'category');
         
-        if (!term_exists('dummy', 'term')) wp_insert_term('dummy', 'term');
+        if (!term_exists('schema_builder', 'term')) wp_insert_term('schema_builder', 'term');
 
         $post = wp_insert_post([
-            'post_type' => 'dummy', 
-            'post_title' => 'dummy', 
+            'post_type' => 'schema_builder', 
+            'post_title' => 'schema_builder', 
             'post_status' => 'publish',
-            'tags_input' => ['dummy']
+            'tags_input' => ['schema_builder']
 			]);
 
-        $dummy_term_id = get_term_by('slug', 'dummy', 'category')->term_taxonomy_id;
+        $schema_builder_term_id = get_term_by('slug', 'schema_builder', 'category')->term_taxonomy_id;
 
-		wp_set_post_terms($post, [$dummy_term_id], 'category', true);
+		wp_set_post_terms($post, [$schema_builder_term_id], 'category', true);
 		
 		update_field('is_archive', 1, $post);
 		update_field('posts_per_page', 1, $post);
-		update_field('post_type', 'dummy', $post);
+		update_field('post_type', 'schema_builder', $post);
     }
 }
 
-function cptui_register_my_cpts_dummy() {
+function cptui_register_my_cpts_schema_builder() {
 
 	/**
-	 * Post Type: dummy.
+	 * Post Type: schema_builder.
 	 */
 
 	$labels = array(
-		"name" => __( "dummy", "" ),
-		"singular_name" => __( "dummy", "" ),
+		"name" => __( "Schema Builder", "" ),
+		"singular_name" => __( "Schema", "" ),
 	);
 
 	$args = array(
-		"label" => __( "dummy", "" ),
+		"label" => __( "Schema Builder", "" ),
 		"labels" => $labels,
 		"description" => "",
 		"public" => true,
@@ -67,9 +67,9 @@ function cptui_register_my_cpts_dummy() {
 		"taxonomies" => array( "category", "post_tag" ),
 	);
 
-	register_post_type( "dummy", $args );
+	register_post_type( "schema_builder", $args );
 }
 
-add_action( 'init', 'cptui_register_my_cpts_dummy', 1, 0 );
+add_action( 'init', 'cptui_register_my_cpts_schema_builder', 1, 0 );
 
 ?>
