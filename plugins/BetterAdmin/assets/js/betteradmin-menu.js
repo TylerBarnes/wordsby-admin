@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
 
   function activateSubmenu(row) {
     $submenu = $(row).children(".betternav__section-menu, .betternav__submenu");
-    // if (!$submenu) return;
+    if (!$submenu.length) return;
 
     $submenu.css({
       display: "flex"
