@@ -92,7 +92,6 @@ function create_section_menu($section_menu) {
                         
                         <article class="betternav__item">
                             <?php create_section_submenu($item); ?>
-                        
                         </article>
 
                     <?php endforeach; ?>
