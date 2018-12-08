@@ -1,13 +1,14 @@
 input[type="text"],
 input[type="search"],
 html body select {
-  border: 2px solid lightgrey !important;
+  /* border: 2px solid lightgrey !important; */
   border-radius: 0 !important;
 }
 
 .wp-core-ui .button-primary {
   background: #01baef;
   border-color: none;
+  border: none !important;
   box-shadow: 0 1px 11px 0 rgba(0, 0, 0, 0.1);
   color: white;
   text-decoration: none;
@@ -18,11 +19,42 @@ html body select {
   line-height: 1;
 }
 
-html body input[type="radio"],
+.page-title-action,
+.button {
+  border: none !important;
+}
+
+input[type="checkbox"],
+input[type="color"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="datetime"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="radio"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+select,
+textarea {
+  box-shadow: none !important;
+}
+
+#post-status-info {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* html body input[type="radio"],
 html body input[type="checkbox"] {
   box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1) !important;
   border: 2px solid lightgrey !important;
-}
+} */
 
 html body input[type="radio"]:checked,
 html body input[type="checkbox"]:checked {
@@ -47,7 +79,8 @@ body {
 }
 
 #wpadminbar {
-  height: 50px;
+  height: 0;
+  /* height: 50px; */
   background: #241336;
   /* display: none; */
 }
@@ -62,6 +95,15 @@ html.wp-toolbar {
   width: 100% !important;
   display: flex;
   align-items: center;
+}
+
+.has-dfw .quicktags-toolbar#ed_toolbar {
+  /* top: -35px !important; */
+  z-index: 1000;
+}
+
+.wp-media-buttons {
+  padding: 0 7px;
 }
 
 #wp-admin-bar-top-secondary {
@@ -88,7 +130,7 @@ html.wp-toolbar {
 html,
 html * {
   font-family: "Inter UI", sans-serif;
-  border: none !important;
+  /* border: none !important; */
 }
 
 div.updated {
@@ -149,8 +191,10 @@ h5 {
   color: white;
 }
 
-.betternav {
-  width: 160px;
+.betternav,
+.betternav__section-menu,
+.betternav__submenu {
+  min-width: 160px;
 }
 
 .betternav {
@@ -166,9 +210,9 @@ h5 {
   box-shadow: 0 0 80px -5px rgba(0, 0, 0, 0.1) !important;
 }
 
-.wp-list-table {
+/* .wp-list-table {
   box-shadow: 0 0 80px -5px rgba(0, 0, 0, 0.1) !important;
-}
+} */
 
 .wp-list-table {
   margin: 20px 0;
@@ -190,14 +234,14 @@ h5 {
   color: white !important;
 }
 
-.postbox {
+/* .postbox {
   box-shadow: 0 0 30px -5px rgba(0, 0, 0, 0.1);
-}
+} */
 
-#titlewrap input,
+/* #titlewrap input,
 .wp-list-table {
   border: 2px solid rgb(204, 204, 204) !important;
-}
+} */
 
 #screen-meta-links {
   position: fixed;
@@ -261,3 +305,112 @@ h5 {
 .betternav__item > .betternav__submenu {
   top: 0;
 }
+
+/* toolbar */
+#wpadminbar {
+  display: none;
+}
+
+.gp-actions {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.gp-user-avatar {
+  position: fixed;
+  top: 25px;
+  left: 20px;
+  width: 120px;
+  height: auto;
+  display: none;
+  text-align: center;
+  text-decoration: none;
+}
+
+.gp-user-avatar p {
+  font-size: 13px;
+  margin-top: 5px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.gp-user-avatar img {
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+  border-radius: 50%;
+  width: 100%;
+  height: auto;
+}
+
+@media screen and (min-width: 783px) {
+  .gp-user-avatar {
+    display: block;
+  }
+}
+
+.gp-bottom-left-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 160px;
+  background: #1f2044;
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* .gp-bottom-left-actions a:last-child {
+    border-top: 2px solid white !important;
+  } */
+
+.gp-bottom-left-actions a {
+  padding: 5px 20px;
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+}
+
+.gp-new-collection {
+  position: fixed;
+  bottom: 40px;
+  right: 50px;
+  background: white;
+  color: #fe3266;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
+  width: auto;
+  padding: 20px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.gp-new-collection__collections {
+  position: absolute;
+  top: 5px;
+  transform: translateY(-100%);
+  right: 0;
+  display: none;
+}
+
+.gp-new-collection:hover .gp-new-collection__collections {
+  display: block;
+  width: 100%;
+}
+
+.gp-new-collection__collection {
+  display: block;
+  text-decoration: none;
+  color: black;
+  padding: 20px;
+  background: white;
+  border-bottom: 1px solid grey;
+}
+/* end toolbar */
