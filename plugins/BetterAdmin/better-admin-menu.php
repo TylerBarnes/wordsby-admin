@@ -1,11 +1,12 @@
 <?php 
 // check wp-admin/menu-header.php for more
 function get_menu_link_path($item, $submenu = "") {
-            $menu_hook = get_plugin_page_hook( $item[2], 'admin.php' );
+            // $menu_hook = get_plugin_page_hook( $item[2], 'admin.php' );
             $menu_hookname = get_plugin_page_hookname( $item[2], 'admin.php' );
             $menu_file = $item[2];            
 
             if (
+                    // ! empty( $menu_hook ) 
                     ! empty( $menu_hookname ) 
                     &&
                     'index.php' != $menu_file
