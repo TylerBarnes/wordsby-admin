@@ -31,20 +31,20 @@ jQuery(document).ready(function($) {
 
     $submenu.css({
       display: "flex"
-      // position: "fixed",
-      // left: $submenu.offset().left,
-      // top: $submenu.offset().top
     });
 
-    var viewportHeight = $(window).height();
-    var menuHeight = $submenu.outerHeight();
-    console.log(menuHeight);
-    var menuOffset = $submenu.offset().top - $(window).scrollTop();
-    var isOverlappingBottom = menuOffset + menuHeight > viewportHeight;
+    if (!$submenu.hasClass("positioned")) {
+      var viewportHeight = $(window).height();
+      var menuHeight = $submenu.outerHeight();
 
-    if (isOverlappingBottom) {
-      var overlapDistance = menuOffset + menuHeight - viewportHeight;
-      $submenu.css({ top: "-" + overlapDistance + "px" });
+      var menuOffset = $submenu.offset().top - $(window).scrollTop();
+      var isOverlappingBottom = menuOffset + menuHeight > viewportHeight;
+
+      if (isOverlappingBottom) {
+        var overlapDistance = menuOffset + menuHeight - viewportHeight;
+        $submenu.css({ top: "-" + overlapDistance + "px" });
+        $submenu.addClass("positioned");
+      }
     }
   }
   function deactivateSubmenu(row) {
