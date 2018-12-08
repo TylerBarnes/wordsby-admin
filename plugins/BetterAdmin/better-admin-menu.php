@@ -66,7 +66,7 @@ function create_section_submenu($item) {
                             </a>
                             
                             <?php if(is_array($submenu_items)): ?>
-                                <nav class="betternav__submenu">
+                                <nav class="betternav__submenu submenu">
                                     <?php foreach($submenu_items as $item): ?>
                                         <a href="<?php echo get_menu_link_path($item); ?>">
                                             <?php echo $item[0]; ?>
@@ -418,38 +418,40 @@ function my_admin_footer_function() {
             top: 0;
         }
 
-        .betternav__section-title:hover > .betternav__section-menu,
+        /* .betternav__section-title:hover > .betternav__section-menu,
         .betternav__item:hover > .betternav__submenu,
         .betternav__section-title:hover > .betternav__submenu {
             display: block;
-        }
+        } */
     </style>
     
     <nav class="betternav">
         <div class="betternav__head">
         
         </div>
+        <ul class="betternav-menu">
         <?php foreach($final_menu as $section_title => $section_menu): ?>
             <?php if ($section_title 
                     && $section_menu 
                     && count($section_menu) > 1): ?>
                 <?php $is_active = false; ?>
-                <article class="
-                    betternav__section-title
+                <li class="
+                    betternav__section-title betternav__section-title--has-children
                     <?php if ($is_active) echo "betternav__section-title--active"; ?>
                     ">
                     <?php echo $section_title; ?>
 
-                    <div class="betternav__section-menu">
+                    <div class="submenu betternav__section-menu betternav__section-title--has-no-children">
                         <?php create_section_menu($section_menu); ?>
                     </div>
-                </article>
+                </li>
             <?php elseif ($section_menu && count($section_menu) == 1): ?>
-                <article class="betternav__section-title">
+                <li class="betternav__section-title betternav__section-title--has-children">
                     <?php create_section_submenu($section_menu[0]); ?>
-                </article>
+                </li>
             <?php endif; ?>
         <?php endforeach; ?>
+        </ul>
     </nav>
     
     <?php
