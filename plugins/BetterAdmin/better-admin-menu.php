@@ -1,16 +1,30 @@
 <?php 
-
-function get_menu_link_path($item) {
+// check wp-admin/menu-header.php for more
+function get_menu_link_path($item, $submenu = "") {
             $menu_hook = get_plugin_page_hook( $item[2], 'admin.php' );
-            $menu_file = $item[2];
-            $class = '';
-			if ( false !== ( $pos = strpos( $menu_file, '?' ) ) )
-				$menu_file = substr( $menu_file, 0, $pos );
-			if ( ! empty( $menu_hook ) || ( ( 'index.php' != $item[2] ) && file_exists( WP_PLUGIN_DIR . "/$menu_file" ) && ! file_exists( ABSPATH . "/wp-admin/$menu_file" ) ) ) {
+            $menu_hookname = get_plugin_page_hookname( $item[2], 'admin.php' );
+            $menu_file = $item[2];            
+
+            if (
+                    ! empty( $menu_hookname ) 
+                    &&
+                    'index.php' != $menu_file
+                    &&
+                    ! strpos($menu_file, '.php')
+                    // ( 
+                    //     ( 'index.php' != $menu_file ) && 
+                    //     file_exists( WP_PLUGIN_DIR . "/$menu_file" ) && 
+                    //     ! file_exists( ABSPATH . "/wp-admin/$menu_file" ) 
+                    // ) 
+                ) 
+                {
+
+                $admin_is_parent = true;
                 return "admin.php?page={$item[2]}";
-			} else {
+
+            } else {
                 return $item[2];
-			}
+            }
 }
 
 function remove_non_menu_items($value) {
@@ -68,7 +82,7 @@ function create_section_submenu($item) {
                             <?php if(is_array($submenu_items)): ?>
                                 <nav class="betternav__submenu submenu">
                                     <?php foreach($submenu_items as $item): ?>
-                                        <a href="<?php echo get_menu_link_path($item); ?>">
+                                        <a href="<?php echo get_menu_link_path($item, true); ?>">
                                             <?php echo $item[0]; ?>
                                         </a>
                                     <?php endforeach; ?>
