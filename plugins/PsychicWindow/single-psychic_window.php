@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<script src="<?php echo get_stylesheet_directory_uri(); ?>/lib/PsychicWindow/post-robot.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/plugins/PsychicWindow/post-robot.js"></script>
 <?php 
     if ( have_posts() ) {
         

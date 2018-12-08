@@ -3,7 +3,7 @@
 add_action( 'admin_enqueue_scripts', 'admin_scripts' );
 
 function admin_scripts() {
-    wp_register_script('preview', get_template_directory_uri() . "/lib/WordsbyCore/previews/js/preview.js");
+    wp_register_script('preview', get_template_directory_uri() . "/plugins/WordsbyCore/previews/js/preview.js");
 
     wp_enqueue_script( 'preview' );
 
