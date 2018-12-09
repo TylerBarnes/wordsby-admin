@@ -115,7 +115,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $post->permalink = $permalink;
         $post->featured_img = $post_thumbnail;
         $post->template_slug = $template;
-        $post->acf = $all_acf;
+        $post->acf = $all_acf ? $all_acf : [];
         $post->post_content = replace_urls_with_pathnames(do_shortcode($post->post_content));
 
         // remove unneeded data

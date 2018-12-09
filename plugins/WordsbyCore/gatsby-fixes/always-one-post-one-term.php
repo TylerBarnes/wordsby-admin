@@ -2,6 +2,8 @@
 add_action("admin_init", "alwaysOneschema_builderPost", 2, 0);
 
 function alwaysOneschema_builderPost() {
+	if( !class_exists('acf') ) return;
+
 	if (!post_type_exists('schema_builder')) {
 		error_log('schema_builder post type doesnt exist');
 		return;
@@ -22,9 +24,9 @@ function alwaysOneschema_builderPost() {
 			]);
             // 'tags_input' => ['schema_builder']
 
-        // $schema_builder_term_id = get_term_by('slug', 'schema_builder', 'category')->term_taxonomy_id;
+        $schema_builder_term_id = get_term_by('slug', 'uncategorized', 'category')->term_taxonomy_id;
 
-		// wp_set_post_terms($post, [$schema_builder_term_id], 'category', true);
+		wp_set_post_terms($post, [$schema_builder_term_id], 'category', true);
 		
 		update_field('is_archive', 1, $post);
 		update_field('posts_per_page', 1, $post);
