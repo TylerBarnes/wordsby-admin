@@ -102,10 +102,6 @@ html.wp-toolbar {
   z-index: 1000;
 }
 
-.wp-media-buttons {
-  padding: 0 7px;
-}
-
 #wp-admin-bar-top-secondary {
   margin-left: auto !important;
   margin-right: 0 !important;
@@ -207,7 +203,7 @@ h5 {
 }
 
 .betternav,
-#wp-content-wrap {
+#wp-content-editor-container {
   box-shadow: 0 0 80px -5px rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -414,3 +410,113 @@ h5 {
   background: white;
 }
 /* end toolbar */
+
+#comment-link-box,
+#edit-slug-box {
+  padding: 10px 10px 20px;
+}
+
+#edit-slug-box strong {
+  display: none;
+}
+
+.page-title-action {
+  display: none;
+}
+
+.submitbox .submitdelete {
+  color: #fe3266;
+  text-decoration: none;
+}
+
+.wp-core-ui .button,
+.wp-core-ui .button-secondary {
+  color: #47cb9c;
+  box-shadow: none;
+  background: none;
+  border: 1px solid #47cb9c !important;
+}
+
+#wp-content-editor-tools {
+  background: transparent !important;
+}
+
+.mce-toolbar .mce-btn-group .mce-btn.mce-listbox {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+div.mce-toolbar-grp {
+  border-bottom: none !important;
+}
+
+.mce-container-body {
+  background: white !important;
+}
+
+.wp-media-buttons-icon {
+  display: none !important;
+}
+
+#major-publishing-actions {
+  background: white !important;
+}
+
+.wp-editor-expand #post-status-info {
+  background-color: white !important;
+  border-top: 1px solid #e5e5e5 !important;
+}
+
+#screen-meta {
+  border: none;
+  box-shadow: none;
+  padding: 20px 0;
+}
+
+div#ed_toolbar {
+  background: white;
+  border: none;
+}
+
+button#show-settings-link {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#contextual-help-link-wrap,
+#screen-options-link-wrap {
+  box-shadow: none;
+  border: none;
+}
+
+#post-body .misc-pub-post-status:before,
+#post-body #visibility:before,
+.curtime #timestamp:before {
+  content: "";
+}
+
+#minor-publishing {
+  padding: 10px 0px 15px;
+}
+
+#screen-options-wrap {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.plugins .active td,
+.plugins .active th {
+  background-color: unset !important;
+}
+
+.plugin-update-tr.active td,
+.plugins .active th.check-column {
+  border-left: 4px solid #47cb9c;
+}
+
+.user-rich-editing-wrap,
+.user-syntax-highlighting-wrap,
+.user-admin-color-wrap,
+.user-admin-bar-front-wrap {
+  display: none;
+}
