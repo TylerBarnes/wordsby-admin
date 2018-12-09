@@ -7,6 +7,8 @@ function redirect_index_to_admin( $template ) {
             return;
         }
 
+    if (isset($_GET['rest_base']) || isset($_GET['nonce']) || isset($_GET['_wpnonce'])) return;
+
     $template_filename = str_replace(get_template_directory(). "/", '', $template);
 
     if ($template_filename === 'index.php') {
