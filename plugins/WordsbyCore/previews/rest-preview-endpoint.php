@@ -300,10 +300,9 @@ class WP_REST_Post_Preview_Controller extends WP_REST_Posts_Controller
      */
     public function get_item_permissions_check($request)
     {
-        // return true;
-        // if (defined("GATSBYPRESS_PUBLIC_PREVIEWS") && GATSBYPRESS_PUBLIC_PREVIEWS === true) {
-        //     return true;
-        // } 
+        if (defined("DANGEROUS__WORDSBY_PUBLIC_PREVIEWS") && DANGEROUS__WORDSBY_PUBLIC_PREVIEWS === true) {
+            return true;
+        } 
 
         $post = get_post((int) $request['id']);
 
