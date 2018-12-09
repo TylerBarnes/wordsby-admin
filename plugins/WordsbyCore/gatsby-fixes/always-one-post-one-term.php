@@ -11,20 +11,20 @@ function alwaysOneschema_builderPost() {
 	$publish_count = property_exists($count, 'publish') ? $count->publish : false;
 
     if (!$publish_count && $publish_count === 0) {
-        if (!term_exists('schema_builder', 'category')) wp_insert_term('schema_builder', 'category');
+        // if (!term_exists('schema_builder', 'category')) wp_insert_term('schema_builder', 'category');
         
-        if (!term_exists('schema_builder', 'term')) wp_insert_term('schema_builder', 'term');
+        // if (!term_exists('schema_builder', 'term')) wp_insert_term('schema_builder', 'term');
 
         $post = wp_insert_post([
             'post_type' => 'schema_builder', 
             'post_title' => 'schema_builder', 
             'post_status' => 'publish',
-            'tags_input' => ['schema_builder']
 			]);
+            // 'tags_input' => ['schema_builder']
 
-        $schema_builder_term_id = get_term_by('slug', 'schema_builder', 'category')->term_taxonomy_id;
+        // $schema_builder_term_id = get_term_by('slug', 'schema_builder', 'category')->term_taxonomy_id;
 
-		wp_set_post_terms($post, [$schema_builder_term_id], 'category', true);
+		// wp_set_post_terms($post, [$schema_builder_term_id], 'category', true);
 		
 		update_field('is_archive', 1, $post);
 		update_field('posts_per_page', 1, $post);
