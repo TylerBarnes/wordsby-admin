@@ -529,6 +529,11 @@ button#show-settings-link {
 
 .mce-top-part::before {
   content: unset;
-  border: none !important;
-  box-shadow: none !important;
+}
+
+.wp-core-ui .button-primary.focus,
+.wp-core-ui .button-primary.hover,
+.wp-core-ui .button-primary:focus,
+.wp-core-ui .button-primary:hover {
+  background: #47cb9c;
 }
