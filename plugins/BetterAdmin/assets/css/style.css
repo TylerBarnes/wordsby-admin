@@ -522,3 +522,7 @@ button#show-settings-link {
 .user-admin-bar-front-wrap {
   display: none;
 }
+
+.post-type-schema_builder #edit-slug-box {
+  display: none;
+}

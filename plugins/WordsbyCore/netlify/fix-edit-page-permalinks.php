@@ -4,6 +4,7 @@
     function perm($return, $id, $new_title, $new_slug){
         if (get_post_status( $id ) !== 'publish') return '';
         if (get_post_type($id) === 'psychic_window') return $return;
+        if (get_post_type($id) === 'schema_builder') return "";
 
         $mydomain = get_field('build_site_url', 'option');
         
