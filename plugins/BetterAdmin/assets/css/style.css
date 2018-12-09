@@ -526,3 +526,9 @@ button#show-settings-link {
 .post-type-schema_builder #edit-slug-box {
   display: none;
 }
+
+.mce-top-part::before {
+  content: unset;
+  border: none !important;
+  box-shadow: none !important;
+}
