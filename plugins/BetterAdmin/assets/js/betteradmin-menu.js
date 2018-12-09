@@ -34,7 +34,7 @@ jQuery(document).ready(function($) {
     });
 
     if (!$submenu.hasClass("positioned")) {
-      var viewportHeight = $(window).height();
+      var viewportHeight = $(window).height() * 0.9;
       var menuHeight = $submenu.outerHeight();
 
       var menuOffset = $submenu.offset().top - $(window).scrollTop();
