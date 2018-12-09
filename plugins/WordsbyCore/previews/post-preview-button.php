@@ -11,6 +11,7 @@ function custom_preview_page_link($link) {
 	$obj = get_post_type_object($post_type);
 
 	$assigned_template = get_post_meta($id, "_wp_page_template", true);
+	if ($assigned_template === "") $assigned_template = "single/$post_type";
 
 	$rest_base = !empty($obj->rest_base) ? $obj->rest_base : $obj->name;
 	
@@ -27,6 +28,7 @@ function custom_preview_page_link($link) {
 	}
 	
 	$link = get_home_url() . "/preview/$available_template/?rest_base=$rest_base&preview=$id&nonce=$nonce";
+
 	return $link;
 }
 add_filter('preview_post_link', 'custom_preview_page_link');

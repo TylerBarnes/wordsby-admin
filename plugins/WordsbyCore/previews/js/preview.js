@@ -25,15 +25,25 @@
         ? "single/" + postType
         : "single/index";
 
+      function getPreviewUrl(selectedTemplate) {
+        return "/preview/" + selectedTemplate + "/?" + querystring;
+      }
+
+      function setPreviewButtonLink(selectedTemplate) {
+        const previewUrl = getPreviewUrl(selectedTemplate);
+
+        $(".preview.button").attr("href", previewUrl);
+      }
+
+      setPreviewButtonLink(availableDefaultTemplate);
+
       $("#page_template").on("change", function() {
         const selected = $("#page_template").find(":selected");
         const selectedAttr = selected.attr("value");
         const selectedTemplate =
           selectedAttr === "default" ? availableDefaultTemplate : selectedAttr;
 
-        const previewUrl = "/preview/" + selectedTemplate + "/?" + querystring;
-
-        $(".preview.button").attr("href", previewUrl);
+        setPreviewButtonLink(selectedTemplate);
       });
     }
   });
