@@ -116,7 +116,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
         $post->featured_img = $post_thumbnail;
         $post->template_slug = $template;
         $post->acf = $all_acf ? $all_acf : [];
-        $post->post_content = replace_urls_with_pathnames(do_shortcode($post->post_content));
+        $post->post_content = wpautop(replace_urls_with_pathnames(do_shortcode($post->post_content)));
 
         // remove unneeded data
         unset($post->post_excerpt);
