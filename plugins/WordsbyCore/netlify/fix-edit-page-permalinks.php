@@ -7,6 +7,7 @@
         if (get_post_type($id) === 'schema_builder') return "";
 
         $mydomain = get_field('build_site_url', 'option');
+        $mydomain = $mydomain ? $mydomain : "http://localhost:8000";
         
         // if $mydomain ends in a slash, remove it
         if(substr($mydomain, -1) == '/') {
