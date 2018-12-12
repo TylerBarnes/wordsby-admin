@@ -42,7 +42,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
 
         $post_thumbnail = ( has_post_thumbnail( $id ) ) ? get_the_post_thumbnail_url( $id ) : null;
 
-        if (!$post_thumbnail && $revisions !== '') {
+        if (!$post_thumbnail) {
             $post_thumbnail = ( has_post_thumbnail( $id_param ) ) ? get_the_post_thumbnail_url( $id_param ) : null;
         }
         
