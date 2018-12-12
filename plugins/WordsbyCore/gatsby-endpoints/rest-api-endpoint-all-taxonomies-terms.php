@@ -29,9 +29,16 @@ function custom_api_get_all_taxonomies_terms_callback() {
             'pathname' => get_taxonomy_archive_link($taxonomy),
             'terms' => []
         ];
-        $terms = get_terms($taxonomy);
-        // if (count($terms) === 0) $tax_term['terms']['dummy'] = null;
+        $terms = get_terms(array(
+            'taxonomy' => $taxonomy
+        ));
 
+        // update term count
+        // this fixes incorrect terms. Probably this could be made into a wordsby option to fix term counts
+        // $terms_update = get_terms($taxonomy, array('hide_empty' => 0, 'fields' => 'ids'));
+        // wp_update_term_count_now($terms_update, $tax_term['name']);
+        // end update term count
+        
         foreach ($terms as $term) {
             $term_link = get_term_link($term);
             $pathname = $term_link ? str_replace($site_url, '', $term_link) : null;
