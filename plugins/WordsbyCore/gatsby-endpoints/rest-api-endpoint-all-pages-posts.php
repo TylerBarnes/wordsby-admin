@@ -39,7 +39,13 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
     // Loop through the posts and push the desired data to the array we've initialized earlier in the form of an object
     foreach( $posts as $post ) {
         $id = $post->ID; 
+
         $post_thumbnail = ( has_post_thumbnail( $id ) ) ? get_the_post_thumbnail_url( $id ) : null;
+
+        if (!$post_thumbnail && $revisions !== '') {
+            $post_thumbnail = ( has_post_thumbnail( $id_param ) ) ? get_the_post_thumbnail_url( $id_param ) : null;
+        }
+        
         $permalink = get_permalink($id);
         $post_type = $post->post_type;
         $template_slug = get_page_template_slug($id);
