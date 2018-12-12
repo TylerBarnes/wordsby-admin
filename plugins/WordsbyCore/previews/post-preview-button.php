@@ -10,12 +10,20 @@ function custom_preview_page_link($link) {
 	$post_type = get_post_type($id);
 	$obj = get_post_type_object($post_type);
 
+	$is_archive = get_field('is_archive', $id);
+	$archive_post_type = get_field('post_type', $id);
+
 	$assigned_template = get_post_meta($id, "_wp_page_template", true);
-	if ($assigned_template === "") $assigned_template = "single/$post_type";
+	
+	if ($is_archive) {
+		$assigned_template = "archive/$archive_post_type";
+	} elseif ($assigned_template === "") {
+		$assigned_template = "single/$post_type";
+	}
 
 	$rest_base = !empty($obj->rest_base) ? $obj->rest_base : $obj->name;
 	
-	if ($assigned_template === 'default') {
+	if ($assigned_template === 'default' && !$is_archive) {
 		$desired_template = "single/$post_type";
 	} else {
 		$desired_template = $assigned_template;
