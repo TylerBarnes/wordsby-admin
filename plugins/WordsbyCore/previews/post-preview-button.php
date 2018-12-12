@@ -5,7 +5,7 @@ function custom_preview_page_link($link) {
 	$nonce = wp_create_nonce( 'wp_rest' );
 
 	$available_templates = populate_templates_from_json_file(true);
-	$default_template = "single/index";
+	$default_template = "index";
 	
 	$post_type = get_post_type($id);
 	$obj = get_post_type_object($post_type);
