@@ -1,11 +1,16 @@
 # Wordsby Admin (WIP)
 
 A WordPress theme to make Gatsby development and content creation easier.
-This theme is 100% intended to be used with my Gatsby plugin Wordsby.
+This theme is 100% intended to be used with the Gatsby plugin [Wordsby](https://github.com/TylerBarnes/wordsby).
 
 Check out the Wordsby readme for more info.
 
 ![Wordsby Admin logo](screenshot.png?raw=true "Wordsby Admin logo")
+
+## Installation
+
+1. Download this repo as a zip
+2. Upload it to your WP install and activate it as a theme
 
 ## What does this theme do?
 
