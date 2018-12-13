@@ -22,3 +22,7 @@ Check out the Wordsby readme for more info.
 - Uses TGM plugin activation to require mandatory plugins, and other useful plugins
 - Admin edit page links go to the build site instead of the current WP site.
 - Users get avatars downloaded from unsplash automatically.
+
+
+![Wordsby Admin dashboard screenshot](/screenshots/home.png?raw=true)
+![Wordsby Admin page edit screenshot](/screenshots/page.png?raw=true)
