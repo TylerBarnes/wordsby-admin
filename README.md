@@ -4,6 +4,8 @@ A WordPress theme to make Gatsby development and content creation easier.
 This theme is 100% intended to be used with my Gatsby plugin Wordsby.
 Check out the Wordsby readme for more info.
 
+![Wordsby Admin logo](screenshot.png?raw=true "Wordsby Admin logo")
+
 ## What does this theme do?
 
 - Tighter integration with Gatsby
