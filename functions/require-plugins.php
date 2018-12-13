@@ -23,20 +23,15 @@ function my_theme_register_required_plugins() {
 			'force_activation'   => true
 		),
 		array(
-			'name'               => 'WP REST API Cache',
-			'slug'               => 'wp-rest-api-cache',
-			'required'           => true, 
-			'force_activation'   => true
-		),
-		array(
 			'name'      => 'Classic Editor',
 			'slug'      => 'classic-editor',
-			'force_activation'  => true,
+			'force_activation'  => false,
 		),
 		array(
 			'name'      => 'Post Type Select for Advanced Custom Fields',
 			'slug'      => 'post-type-select-for-advanced-custom-fields',
 			'force_activation'  => true,
+			'required'           => true, 
 		),
 		array(
 			'name'      => 'Custom Post Type UI',
