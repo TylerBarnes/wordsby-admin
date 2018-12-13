@@ -8,7 +8,6 @@ Check out the Wordsby readme for more info.
 
 ## What does this theme do?
 
-- Tighter integration with Gatsby
 - Instant page previews from page/post edit screens with live rest api data.
 - Built in rest api endpoints tailored for Gatsby
 - Built in ACF support
