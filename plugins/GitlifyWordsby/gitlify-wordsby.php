@@ -105,8 +105,6 @@ function deleteMedia($id) {
         'author_email' => $username,
         'author_name' => $current_user->user_email
     ));
-
-    write_log($commit); 
 }
 
 add_action('wp_handle_upload', 'commitMedia');
