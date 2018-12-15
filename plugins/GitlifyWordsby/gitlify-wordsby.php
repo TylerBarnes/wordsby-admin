@@ -52,22 +52,29 @@ function commitCollections($id) {
     $client = getGitlabClient();
 
     $collections_exists = isFileInRepo($client, $base_path, 'collections.json');
+    $tax_terms_exists = isFileInRepo($client, $base_path, 'tax-terms.json');
     
-    $action = $collections_exists ? 'update' : 'create';
+    $collections_action = $collections_exists ? 'update' : 'create';
+    $tax_terms_action = $tax_terms_exists ? 'update' : 'create';
 
-    $content = json_encode(posts_formatted_for_gatsby($id));
+    $collections_content = json_encode(posts_formatted_for_gatsby($id));
+    $tax_terms_content = json_encode(custom_api_get_all_taxonomies_terms_callback());
 
-    write_log('$content'); 
-    write_log($content); 
 
     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
         'branch' => $branch, 
         'commit_message' => "\"$title\" [id:$id] — by $username (from $site_url)",
         'actions' => array(
             array(
-                'action' => $action,
+                'action' => $collections_action,
                 'file_path' => $base_path . "collections.json",
-                'content' => $content,
+                'content' => $collections_content,
+                'encoding' => 'text'
+            ),
+            array(
+                'action' => $tax_terms_action,
+                'file_path' => $base_path . "tax-terms.json",
+                'content' => $tax_terms_content,
                 'encoding' => 'text'
             )
         ),
