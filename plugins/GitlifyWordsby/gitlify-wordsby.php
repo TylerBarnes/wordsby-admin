@@ -14,57 +14,173 @@ function getGitlabToken() {
 function getGitlabClient () {
     return \Gitlab\Client::create('https://gitlab.com/api/v4/')
         ->authenticate(getGitlabToken(), \Gitlab\Client::AUTH_URL_TOKEN);
-
-    // $project = $client->api('projects')->create('My Project', array(
-    // 'description' => 'This is a project',
-    // 'issues_enabled' => false
-    // ));
 }
 
-function showProject() {
-    $client = getGitlabClient();
-    $project = $client->api('projects')->show(9933940);
-    return $project;
-    // write_log($project);
+function getTree($client, $base_path) {
+    $tree = $client->api('repositories')->tree(9933940, array(
+        'path' => $base_path,
+        'recursive' => true
+    ));
+
+    return $tree;
 }
 
-function getMasterCommit() {
-    $client = getGitlabClient();
-    $commits = $client->api('repositories')->commits(9933940);
-    write_log($commits); 
+function fileInRepo($client, $base_path, $filename) {
+    $tree = getTree($client, $base_path);
+
+    write_log($tree); 
+
+    return in_array($filename, array_column($tree, 'name'));
 }
 
-function createNewContentBranch() {
-    $client = getGitlabClient();
+
+add_action('save_post', 'commitCollections');
+
+function commitCollections($id) {
+    $site_url = get_site_url();
+    $current_user = wp_get_current_user()->data;
+    $username = $current_user->user_nicename;
+    $title = get_the_title($id);
+    $base_path = "wordsby/data/";
     
-    $client->api('repositories')->createBranch(9933940, 'new-content-branch', ['ref' => 'master']);
-}
-
-function commitNewContent() {
     $client = getGitlabClient();
-    write_log($client->api('repositories')->createCommit(9933940, array(
-        'branch' => 'new-content-branch2', 
-        'start_branch'=> 'master',
-        'commit_message' => 'Content update from site.com',
+
+    $collections_exists = fileInRepo($client, $base_path, 'collections.json');
+    
+    $action = $collections_exists ? 'update' : 'create';
+
+    $commit = $client->api('repositories')->createCommit(9933940, array(
+        'branch' => 'master', 
+        'commit_message' => "\"$title\" [id:$id] — by $username (from $site_url)",
         'actions' => array(
             array(
-                'action' => 'create',
-                'file_path' => 'test',
-                'content' => 'commiting from php!',
+                'action' => $action,
+                'file_path' => $base_path . "collections.json",
+                'content' => json_encode(posts_formatted_for_gatsby(1)),
                 'encoding' => 'text'
             )
         ),
-        'author_email' => 'tyler@test.com',
-        'author_name' => 'test!'
-    ))); 
+        'author_email' => $username,
+        'author_name' => $current_user->user_email
+    ));
+
+    return $commit; 
 
 }
 
-// prevent init from being called twice!
-remove_filter('wp_head','adjacent_posts_rel_link_wp_head',10);
+// // prevent init from being called twice.
+// remove_filter('wp_head','adjacent_posts_rel_link_wp_head',10);
 
-add_action('init', 'commitNewContent');
-// add_action('init', 'createNewContentBranch');
-// add_action('save_post', 'connectToGitlab');
+// add_action('wp_handle_upload_prefilter', 'commitMedia');
+// function commitMedia($file) {
+//     $filename = $file['name'];
+//     $subdir = wp_upload_dir()["subdir"];
+//     $base_path = 'wordsby/uploads';
+//     $file_dir = "$base_path$subdir";
+//     $filepath = "$file_dir/$filename";
+
+//     $site_url = get_site_url();
+//     $current_user = wp_get_current_user()->data;
+//     $username = $current_user->user_nicename;
+
+//     $client = getGitlabClient();
+
+//     $media_exists = fileInRepo($client, $file_dir, $filename);
+
+//     $action = $media_exists ? 'update' : 'create';
+
+//     $commit = $client->api('repositories')->createCommit(9933940, array(
+//         'branch' => 'master', 
+//         'commit_message' => "\"$filename\" — by $username (from $site_url)",
+//         'actions' => array(
+//             array(
+//                 'action' => $action,
+//                 'file_path' => $filepath,
+//                 'content' => base64_encode(file_get_contents($file['tmp_name'])),
+//                 'encoding' => 'base64'
+//             )
+//         ),
+//         'author_email' => $username,
+//         'author_name' => $current_user->user_email
+//     ));
+
+//     return $file;
+// }
+
+add_action('delete_attachment', 'deleteMedia');
+function deleteMedia($id) {
+    $site_url = get_site_url();
+    $current_user = wp_get_current_user()->data;
+    $username = $current_user->user_nicename;
+
+    $filepath = wp_get_attachment_metadata($id)['file'];
+    $filename = basename($filepath);
+    $filedirectory = dirname($filepath); 
+
+    $base_path = 'wordsby/uploads';
+
+    $fulldirectory = "$base_path/$filedirectory/";
+    $full_filepath = "$fulldirectory$filename";
+
+    $client = getGitlabClient();
+
+    $media_exists = fileInRepo($client, $fulldirectory, $filename);
+
+    if (!$media_exists) return;
+
+    $commit = $client->api('repositories')->createCommit(9933940, array(
+        'branch' => 'master', 
+        'commit_message' => "\"$filename\" deleted — by $username (from $site_url)",
+        'actions' => array(
+            array(
+                'action' => 'delete',
+                'file_path' => $full_filepath
+            )
+        ),
+        'author_email' => $username,
+        'author_name' => $current_user->user_email
+    ));
+
+    write_log($commit); 
+}
+
+add_action('wp_handle_upload', 'commitMedia');
+
+function commitMedia($upload) {
+    $initial_filepath = explode("uploads/",$upload['file'])[1];
+    $filename = basename($initial_filepath);
+    $subdir = dirname($initial_filepath);
+    
+    $base_path = 'wordsby/uploads';
+    $file_dir = "$base_path/$subdir";
+    $filepath = "$file_dir/$filename";
+
+    $site_url = get_site_url();
+    $current_user = wp_get_current_user()->data;
+    $username = $current_user->user_nicename;
+
+    $client = getGitlabClient();
+
+    $media_exists = fileInRepo($client, $file_dir, $filename);
+
+    $action = $media_exists ? 'update' : 'create';
+
+    $commit = $client->api('repositories')->createCommit(9933940, array(
+        'branch' => 'master', 
+        'commit_message' => "\"$filename\" — by $username (from $site_url)",
+        'actions' => array(
+            array(
+                'action' => $action,
+                'file_path' => $filepath,
+                'content' => base64_encode(file_get_contents($upload['file'])),
+                'encoding' => 'base64'
+            )
+        ),
+        'author_email' => $username,
+        'author_name' => $current_user->user_email
+    ));
+
+    return $upload;
+}
 
 ?>
