@@ -70,45 +70,6 @@ function commitCollections($id) {
 
 }
 
-// // prevent init from being called twice.
-// remove_filter('wp_head','adjacent_posts_rel_link_wp_head',10);
-
-// add_action('wp_handle_upload_prefilter', 'commitMedia');
-// function commitMedia($file) {
-//     $filename = $file['name'];
-//     $subdir = wp_upload_dir()["subdir"];
-//     $base_path = 'wordsby/uploads';
-//     $file_dir = "$base_path$subdir";
-//     $filepath = "$file_dir/$filename";
-
-//     $site_url = get_site_url();
-//     $current_user = wp_get_current_user()->data;
-//     $username = $current_user->user_nicename;
-
-//     $client = getGitlabClient();
-
-//     $media_exists = fileInRepo($client, $file_dir, $filename);
-
-//     $action = $media_exists ? 'update' : 'create';
-
-//     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
-//         'branch' => 'master', 
-//         'commit_message' => "\"$filename\" — by $username (from $site_url)",
-//         'actions' => array(
-//             array(
-//                 'action' => $action,
-//                 'file_path' => $filepath,
-//                 'content' => base64_encode(file_get_contents($file['tmp_name'])),
-//                 'encoding' => 'base64'
-//             )
-//         ),
-//         'author_email' => $username,
-//         'author_name' => $current_user->user_email
-//     ));
-
-//     return $file;
-// }
-
 add_action('delete_attachment', 'deleteMedia');
 function deleteMedia($id) {
     if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
