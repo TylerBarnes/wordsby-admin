@@ -29,7 +29,7 @@ function getTree($client, $base_path) {
     return $tree;
 }
 
-function fileInRepo($client, $base_path, $filename) {
+function isFileInRepo($client, $base_path, $filename) {
     $tree = getTree($client, $base_path);
 
     return in_array($filename, array_column($tree, 'name'));
@@ -51,7 +51,7 @@ function commitCollections($id) {
     
     $client = getGitlabClient();
 
-    $collections_exists = fileInRepo($client, $base_path, 'collections.json');
+    $collections_exists = isFileInRepo($client, $base_path, 'collections.json');
     
     $action = $collections_exists ? 'update' : 'create';
 
@@ -102,7 +102,7 @@ function deleteMedia($id) {
 
     $client = getGitlabClient();
 
-    $media_exists = fileInRepo($client, $fulldirectory, $filename);
+    $media_exists = isFileInRepo($client, $fulldirectory, $filename);
 
     if (!$media_exists) return;
 
@@ -141,7 +141,7 @@ function commitMedia($upload) {
 
     $client = getGitlabClient();
 
-    $media_exists = fileInRepo($client, $file_dir, $filename);
+    $media_exists = isFileInRepo($client, $file_dir, $filename);
 
     $action = $media_exists ? 'update' : 'create';
 
