@@ -17,7 +17,7 @@ function getGitlabClient () {
 }
 
 function getTree($client, $base_path) {
-    $tree = $client->api('repositories')->tree(9933940, array(
+    $tree = $client->api('repositories')->tree(WORDSBY_GITLAB_PROJECT_ID, array(
         'path' => $base_path,
         'recursive' => true
     ));
@@ -37,6 +37,8 @@ function fileInRepo($client, $base_path, $filename) {
 add_action('save_post', 'commitCollections');
 
 function commitCollections($id) {
+    if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
+    
     $site_url = get_site_url();
     $current_user = wp_get_current_user()->data;
     $username = $current_user->user_nicename;
@@ -49,7 +51,7 @@ function commitCollections($id) {
     
     $action = $collections_exists ? 'update' : 'create';
 
-    $commit = $client->api('repositories')->createCommit(9933940, array(
+    $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
         'branch' => 'master', 
         'commit_message' => "\"$title\" [id:$id] — by $username (from $site_url)",
         'actions' => array(
@@ -89,7 +91,7 @@ function commitCollections($id) {
 
 //     $action = $media_exists ? 'update' : 'create';
 
-//     $commit = $client->api('repositories')->createCommit(9933940, array(
+//     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
 //         'branch' => 'master', 
 //         'commit_message' => "\"$filename\" — by $username (from $site_url)",
 //         'actions' => array(
@@ -109,6 +111,8 @@ function commitCollections($id) {
 
 add_action('delete_attachment', 'deleteMedia');
 function deleteMedia($id) {
+    if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
+
     $site_url = get_site_url();
     $current_user = wp_get_current_user()->data;
     $username = $current_user->user_nicename;
@@ -128,7 +132,7 @@ function deleteMedia($id) {
 
     if (!$media_exists) return;
 
-    $commit = $client->api('repositories')->createCommit(9933940, array(
+    $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
         'branch' => 'master', 
         'commit_message' => "\"$filename\" deleted — by $username (from $site_url)",
         'actions' => array(
@@ -147,6 +151,8 @@ function deleteMedia($id) {
 add_action('wp_handle_upload', 'commitMedia');
 
 function commitMedia($upload) {
+    if (!defined("WORDSBY_GITLAB_PROJECT_ID")) return $upload;
+
     $initial_filepath = explode("uploads/",$upload['file'])[1];
     $filename = basename($initial_filepath);
     $subdir = dirname($initial_filepath);
@@ -165,7 +171,7 @@ function commitMedia($upload) {
 
     $action = $media_exists ? 'update' : 'create';
 
-    $commit = $client->api('repositories')->createCommit(9933940, array(
+    $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
         'branch' => 'master', 
         'commit_message' => "\"$filename\" — by $username (from $site_url)",
         'actions' => array(
