@@ -4,6 +4,8 @@ require_once dirname( __FILE__ ) . "/functions/require-plugins.php";
 
 require_once dirname( __FILE__ ) . "/functions/write_log.php";
 
+require_once dirname( __FILE__ ) . "/functions/prevent-init-being-called-twice.php";
+
 require_once dirname( __FILE__ ) . "/functions/discourage-search-engines.php";
 require_once dirname( __FILE__ ) . "/functions/redirect-index-to-admin.php";
 require_once dirname( __FILE__ ) . "/functions/activate-pretty-permalinks.php";
