@@ -64,21 +64,26 @@ function commitCollections($id) {
         posts_formatted_for_gatsby(false), JSON_UNESCAPED_SLASHES
     );
 
-    $url = preg_quote(get_site_url(), "/");
+    
+    function makeImagesRelative($json) {
+        $url = preg_quote(get_site_url(), "/");
 
-    $collections_content = preg_replace(
-        "/$url\/wp-content\//", '../', $collections
-    );
+        return preg_replace(
+            "/$url\/wp-content\//", '../', $json
+        );
+    }
+
+    $collections_content = makeImagesRelative($collections);
     
     $tax_terms_content = json_encode(
         custom_api_get_all_taxonomies_terms_callback(), 
         JSON_UNESCAPED_SLASHES
     );
 
-    $options_content = json_encode(
+    $options_content = makeImagesRelative(json_encode(
         custom_api_get_all_options_callback(),
         JSON_UNESCAPED_SLASHES
-    );
+    ));
 
 
     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
@@ -297,6 +302,7 @@ function format_menu_item( $menu_item, $children = false, $menu = array() ) {
 
     $menu_item = array(
         'id'          => abs( $item['ID'] ),
+        'wordpress_id'          => abs( $item['ID'] ),
         'order'       => (int) $item['menu_order'],
         'parent'      => abs( $item['menu_item_parent'] ),
         'title'       => $item['title'],
@@ -340,6 +346,7 @@ function get_menus() {
 
         $rest_menus[ $i ]                = $menu;
         $rest_menus[ $i ]['ID']          = $id;
+        $rest_menus[ $i ]['wordpress_id']          = $id;
         $rest_menus[ $i ]['name']        = $menu['name'];
         $rest_menus[ $i ]['slug']        = $menu['slug'];
         $rest_menus[ $i ]['description'] = $menu['description'];
