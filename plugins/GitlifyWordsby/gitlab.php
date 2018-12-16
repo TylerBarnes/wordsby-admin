@@ -36,9 +36,9 @@ function isFileInRepo($client, $base_path, $filename) {
 }
 
 
-add_action('save_post', 'commitCollections');
+add_action('save_post', 'commitData');
 
-function commitCollections($id) {
+function commitData($id) {
     if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
 
     global $branch;
