@@ -36,7 +36,7 @@ function isFileInRepo($client, $base_path, $filename) {
 }
 
 
-add_action('save_post', 'commitData');
+add_action('acf/save_post', 'commitData');
 
 function commitData($id) {
     if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
