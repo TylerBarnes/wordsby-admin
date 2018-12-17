@@ -40,6 +40,7 @@ add_action('save_post', 'commitData');
 
 function commitData($id) {
     if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
+    if (isset($_POST) && isset($_POST['wp-preview']) && $_POST['wp-preview'] === 'dopreview') return $id;
 
     global $branch;
     
@@ -58,6 +59,9 @@ function commitData($id) {
                                 ? 'update' : 'create';
 
     $options_action = isFileInRepo($client, $base_path, 'options.json') 
+                                ? 'update' : 'create';
+
+    $site_meta_action = isFileInRepo($client, $base_path, 'site-meta.json') 
                                 ? 'update' : 'create';
 
     $collections = json_encode(
@@ -85,10 +89,27 @@ function commitData($id) {
         JSON_UNESCAPED_SLASHES
     ));
 
+    
+
+    $site_meta_content = json_encode(array(
+        array(
+            'key' => 'url',
+            'value' => get_bloginfo('url')
+        ),
+        array(
+            'key' => 'name',
+            'value' => get_bloginfo('name')
+        ),
+        array(
+            'key' => 'description',
+            'value' => get_bloginfo('description')
+        ),
+    ));
+
 
     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
         'branch' => $branch, 
-        'commit_message' => "\"$title\" [id:$id] — by $username (from $site_url)",
+        'commit_message' => "Post \"$title\" updated [id:$id] — by $username (from $site_url)",
         'actions' => array(
             array(
                 'action' => $collections_action,
@@ -107,7 +128,13 @@ function commitData($id) {
                 'file_path' => $base_path . "options.json",
                 'content' => $options_content,
                 'encoding' => 'text'
-            )
+            ),
+            array(
+                'action' => $site_meta_action,
+                'file_path' => $base_path . "site-meta.json",
+                'content' => $site_meta_content,
+                'encoding' => 'text'
+            ),
         ),
         'author_email' => $username,
         'author_name' => $current_user->user_email
