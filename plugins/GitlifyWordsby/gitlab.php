@@ -23,7 +23,8 @@ function getTree($client, $base_path) {
     $tree = $client->api('repositories')->tree(WORDSBY_GITLAB_PROJECT_ID, array(
         'path' => $base_path,
         'recursive' => true,
-        'ref' => $branch
+        'ref' => $branch,
+        'per_page' => 9999999
     ));
 
     return $tree;
