@@ -17,13 +17,25 @@ add_filter('jpeg_quality', function() {
  * @return $sizes, modified array of image sizes
  * @author Ade Walker http://www.studiograsshopper.ch
  */
-function sgr_filter_image_sizes( $sizes) {
-		
-	unset( $sizes['thumbnail']);
-	unset( $sizes['medium']);
-	unset( $sizes['medium_large']);
-	unset( $sizes['large']);
+function unsetSizes($sizes) {
+	unset($sizes['thumbnail']);
+	unset($sizes['medium']);
+	unset($sizes['medium_large']);
+	unset($sizes['large']);
 	
+	return $sizes;
+}
+
+function sgr_filter_image_sizes( $sizes) {
+	if (!function_exists('get_field')) {
+		write_log('no get field'); 
+		return unsetSizes($sizes);
+	} else if (
+		function_exists('get_field') && get_field('disable_generate_thumbnails', 'option')
+	) {
+		write_log('no get field and dont generate thumbnails'); 
+		return unsetSizes($sizes);
+	}
 	return $sizes;
 }
 add_filter('intermediate_image_sizes_advanced', 'sgr_filter_image_sizes');
