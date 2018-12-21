@@ -241,7 +241,7 @@ function commitMedia($upload) {
  * @param bool  $depth          Gives all children or direct children only
  * @return array	returns filtered array of nav_menu_items
  */
-function get_nav_menu_item_children( $parent_id, $nav_menu_items, $depth = true ) {
+function wordlify_get_nav_menu_item_children( $parent_id, $nav_menu_items, $depth = true ) {
 
     $nav_menu_item_list = array();
 
@@ -249,10 +249,10 @@ function get_nav_menu_item_children( $parent_id, $nav_menu_items, $depth = true 
 
         if ( $nav_menu_item->menu_item_parent == $parent_id ) :
 
-            $nav_menu_item_list[] = format_menu_item( $nav_menu_item, true, $nav_menu_items );
+            $nav_menu_item_list[] = wordlify_format_menu_item( $nav_menu_item, true, $nav_menu_items );
 
             if ( $depth ) {
-                if ( $children = get_nav_menu_item_children( $nav_menu_item->ID, $nav_menu_items ) ) {
+                if ( $children = wordlify_get_nav_menu_item_children( $nav_menu_item->ID, $nav_menu_items ) ) {
                     $nav_menu_item_list = array_merge( $nav_menu_item_list, $children );
                 }
             }
@@ -291,7 +291,7 @@ function has_children( $items, $id ) {
  * @param  $parent
  * @return array
  */
-function nested_menu_items( &$menu_items, $parent = null ) {
+function wordlify_nested_menu_items( &$menu_items, $parent = null ) {
 
     $parents = array();
     $children = array();
@@ -308,7 +308,7 @@ function nested_menu_items( &$menu_items, $parent = null ) {
     foreach ( $parents as &$parent ) {
 
         if ( has_children( $children, $parent['id'] ) ) {
-            $parent['children'] = nested_menu_items( $children, $parent['id'] );
+            $parent['children'] = wordlify_nested_menu_items( $children, $parent['id'] );
         }
     }
 
@@ -325,7 +325,7 @@ function nested_menu_items( &$menu_items, $parent = null ) {
  * @param  array        $menu       The menu the item belongs to (used when $children is set to true)
  * @return array	a formatted menu item for REST
  */
-function format_menu_item( $menu_item, $children = false, $menu = array() ) {
+function wordlify_format_menu_item( $menu_item, $children = false, $menu = array() ) {
 
     $item = (array) $menu_item;
 
@@ -350,10 +350,10 @@ function format_menu_item( $menu_item, $children = false, $menu = array() ) {
     );
 
     if ( $children === true && ! empty( $menu ) ) {
-        $menu_item['children'] = get_nav_menu_item_children( $item['ID'], $menu );
+        $menu_item['children'] = wordlify_get_nav_menu_item_children( $item['ID'], $menu );
     }
 
-    return apply_filters( 'rest_menus_format_menu_item', $menu_item );
+    return apply_filters( 'rest_menus_wordlify_format_menu_item', $menu_item );
 }
 
 /**
@@ -363,7 +363,7 @@ function format_menu_item( $menu_item, $children = false, $menu = array() ) {
  * @return array All registered menus
  * borrowed from wp-api-menus plugin
  */
-function get_menus() {
+function wordlify_get_menus() {
     $wp_menus = wp_get_nav_menus();
 
     $i = 0;
@@ -388,10 +388,10 @@ function get_menus() {
 
         $rest_menu_items = array();
         foreach ( $wp_menu_items as $item_object ) {
-            $rest_menu_items[] = format_menu_item( $item_object );
+            $rest_menu_items[] = wordlify_format_menu_item( $item_object );
         }
 
-        $rest_menu_items = nested_menu_items($rest_menu_items, 0);
+        $rest_menu_items = wordlify_nested_menu_items($rest_menu_items, 0);
         $rest_menus[ $i ]['items']       = $rest_menu_items;
 
 
@@ -423,7 +423,7 @@ function commitMenus($id) {
     ? 'update' : 'create';
 
     $menus = json_encode(
-        get_menus(), JSON_UNESCAPED_SLASHES
+        wordlify_get_menus(), JSON_UNESCAPED_SLASHES
     );
 
     $url = preg_quote(get_site_url(), "/");
