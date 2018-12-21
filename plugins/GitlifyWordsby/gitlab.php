@@ -36,10 +36,20 @@ function isFileInRepo($client, $base_path, $filename) {
     return in_array($filename, array_column($tree, 'name'));
 }
 
+function makeImagesRelative($json) {
+    $url = preg_quote(get_site_url(), "/");
+
+    return preg_replace(
+        "/$url\/wp-content\//", '../', $json
+    );
+}
+
 
 add_action('acf/save_post', 'commitData');
 
 function commitData($id) {
+    if (isset($_POST['nav-menu-data'])) return;
+
     if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
     if (isset($_POST) && isset($_POST['wp-preview']) && $_POST['wp-preview'] === 'dopreview') return $id;
 
@@ -68,15 +78,6 @@ function commitData($id) {
     $collections = json_encode(
         posts_formatted_for_gatsby(false), JSON_UNESCAPED_SLASHES
     );
-
-    
-    function makeImagesRelative($json) {
-        $url = preg_quote(get_site_url(), "/");
-
-        return preg_replace(
-            "/$url\/wp-content\//", '../', $json
-        );
-    }
 
     $collections_content = makeImagesRelative($collections);
     
@@ -345,6 +346,7 @@ function format_menu_item( $menu_item, $children = false, $menu = array() ) {
         'object_slug' => get_post( $item['object_id'] )->post_name,
         'type'        => $item['type'],
         'type_label'  => $item['type_label'],
+        'acf'         => get_fields($item['ID'] ) ?  get_fields($item['ID'] ) : null
     );
 
     if ( $children === true && ! empty( $menu ) ) {
@@ -415,6 +417,7 @@ function commitMenus($id) {
     $base_path = "wordsby/data/";
     
     $client = getGitlabClient();
+
     
     $menus_action = isFileInRepo($client, $base_path, 'menus.json') 
     ? 'update' : 'create';
@@ -426,7 +429,7 @@ function commitMenus($id) {
     $url = preg_quote(get_site_url(), "/");
 
     $menus_content = preg_replace(
-        "/$url/", '', $menus
+        "/$url/", '', makeImagesRelative($menus)
     );
 
     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
