@@ -336,6 +336,7 @@ function wordlify_format_menu_item( $menu_item, $children = false, $menu = array
         'parent'      => abs( $item['menu_item_parent'] ),
         'title'       => $item['title'],
         'url'         => $item['url'],
+        'pathname'         => $item['url'],
         'attr'        => $item['attr_title'],
         'target'      => $item['target'],
         'classes'     => implode( ' ', $item['classes'] ),
