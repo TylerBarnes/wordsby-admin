@@ -11,6 +11,8 @@ require_once dirname( __FILE__ ) . "/functions/redirect-index-to-admin.php";
 require_once dirname( __FILE__ ) . "/functions/activate-pretty-permalinks.php";
 require_once dirname( __FILE__ ) . "/functions/add-theme-support.php";
 
+require_once dirname( __FILE__ ) . "/plugins/AdminNotices/admin-notices.php";
+
 require_once dirname( __FILE__ ) . "/plugins/WordsbyCore/wordsby-core.php";
 
 require_once dirname( __FILE__ ) . "/plugins/BetterAdmin/better-admin.php";
