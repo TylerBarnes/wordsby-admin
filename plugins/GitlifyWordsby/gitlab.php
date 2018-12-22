@@ -209,7 +209,6 @@ function commitMedia($upload) {
     $media_exists = isFileInRepo($client, $file_dir, $filename);
 
     $action = $media_exists ? 'update' : 'create';
-
     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
         'branch' => $branch, 
         'commit_message' => "\"$filename\" — by $username (from $site_url)",
@@ -335,7 +334,7 @@ function wordlify_format_menu_item( $menu_item, $children = false, $menu = array
         'order'       => (int) $item['menu_order'],
         'parent'      => abs( $item['menu_item_parent'] ),
         'title'       => $item['title'],
-        'pathname'         => $item['url'],
+        'pathname'    => $item['url'],
         'attr'        => $item['attr_title'],
         'target'      => $item['target'],
         'classes'     => implode( ' ', $item['classes'] ),
