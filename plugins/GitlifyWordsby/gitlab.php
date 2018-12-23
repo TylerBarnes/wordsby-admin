@@ -304,18 +304,15 @@ function commitData($id) {
                 // $client = getGitlabClient();
                 $approved_merge_request = $client->api('merge_requests')->merge(
                     WORDSBY_GITLAB_PROJECT_ID,
-                    $merge_request['iid']
+                    $merge_request['iid'],
+                    "$commit_message [MERGE MEDIA]"
                 );
-    
-                write_log($approved_merge_request);
     
                 // delete media branch
                 $deleted_branch = $client->api('repositories')->deleteBranch(
                     WORDSBY_GITLAB_PROJECT_ID,
                     $mediaBranch   
                 );
-    
-                write_log($deleted_branch); 
             } catch (Exception $e) {
                 write_log($e);
             }
