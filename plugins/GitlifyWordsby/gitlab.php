@@ -47,6 +47,48 @@ function getTree($client, $base_path) {
     return $tree;
 }
 
+function createMediaBranchIfItDoesntExist
+(
+$client, 
+$desiredBranch = 'wordlify-media--automatic-branch'
+) {
+    if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return false;
+    global $branch;
+
+    $branches = $client->api('repositories')->branches(WORDSBY_GITLAB_PROJECT_ID);  
+
+    $desiredBranchExists = in_array(
+        $desiredBranch, array_column($branches, 'name')
+    );
+
+    $response = [
+        'branch' => $desiredBranch
+    ];
+
+    if (!$desiredBranchExists) {
+        $branch = $client->api('repositories')->createBranch(
+            WORDSBY_GITLAB_PROJECT_ID,
+            $desiredBranch,
+            $branch
+        );
+        $response['action'] = 'created';
+    } else {
+        $response['action'] = 'exists';
+    }
+
+    return $response;
+}
+
+// add_action('admin_init', 'test');
+
+// function test() {
+//     $branch = createMediaBranchIfItDoesntExist(
+//         getGitlabClient()
+//     );
+
+//     write_log($branch);
+// }
+
 function isFileInRepo($client, $base_path, $filename) {
     $tree = getTree($client, $base_path);
 
