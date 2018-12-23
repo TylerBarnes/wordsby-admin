@@ -201,9 +201,14 @@ function commitData($id) {
     ));
 
 
-    $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
+    $commit = $client->api('repositories')->createCommit(
+        WORDSBY_GITLAB_PROJECT_ID, 
+        array(
         'branch' => $branch, 
-        'commit_message' => "Post \"$title\" updated [id:$id] — by $username (from $site_url)",
+        'commit_message' => "
+                        Post \"$title\" updated [id:$id] 
+                        — by $username (from $site_url)
+        ",
         'actions' => array(
             array(
                 'action' => $collections_action,
@@ -232,7 +237,8 @@ function commitData($id) {
         ),
         'author_email' => $username,
         'author_name' => $current_user->user_email
-    ));
+        )
+    );
 
     return $commit; 
 
