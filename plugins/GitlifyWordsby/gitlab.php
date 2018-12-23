@@ -53,29 +53,34 @@ function isFileInRepo($client, $base_path, $filename) {
     return in_array($filename, array_column($tree, 'name'));
 }
 
+function getAllEditedFileVersionsInRepo($client, $base_path, $filename) {
+    $tree = getTree($client, $base_path);
+
+    $match = '/-e([0-9]+)/';
+    
+    $normalized_filename = preg_replace( 
+            $match, '', $filename 
+        );
+    
+    $allEditedVersions = [];
+
+    foreach($tree as $file) {
+        $normalized_tree_filename = preg_replace( 
+            $match, '', $file['name'] 
+        );
+        if ($normalized_tree_filename === $normalized_filename) {
+            array_push($allEditedVersions, $file);
+        }
+    }
+
+    return $allEditedVersions;
+}
+
 function array_search_partial($arr, $keyword) {
     foreach($arr as $index => $string) {
         if (strpos($string, $keyword) !== FALSE)
             return $index;
     }
-}
-
-function findPotentiallyEditedFileByOriginalName(
-    $client, $base_path, $original_filename
-    ) {
-    $tree = getTree($client, $base_path);
-
-    foreach($tree as $file) {
-        $tree_filename = $file['name'];
-        if (strpos($tree_filename, $original_filename) !== false) {
-            return $file;
-            break;
-        } else {
-            write_log("couldn't find $original_filename in $tree_filename during image update");
-        }
-    }
-
-    return false;
 }
 
 function makeImagesRelative($json) {
@@ -218,15 +223,30 @@ function deleteMedia($id) {
 
     if (!$media_exists) return;
 
+    $actions = array();
+
+    $edited_file_versions = getAllEditedFileVersionsInRepo(
+        $client, $fulldirectory, $filename
+    );
+
+    if (count($edited_file_versions) > 0) {
+        foreach($edited_file_versions as $file) {
+            array_push($actions, [
+                'action' => 'delete',
+                'file_path' => $file['path']
+            ]);
+        }
+    } else {
+        array_push($actions, array(
+            'action' => 'delete',
+            'file_path' => $full_filepath
+        ));
+    }
+
     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
         'branch' => $branch, 
         'commit_message' => "\"$filename\" deleted — by $username (from $site_url)",
-        'actions' => array(
-            array(
-                'action' => 'delete',
-                'file_path' => $full_filepath
-            )
-        ),
+        'actions' => $actions,
         'author_email' => $username,
         'author_name' => $current_user->user_email
     ));
@@ -322,13 +342,12 @@ function commitEditedMedia($full_filepath) {
         'author_name' => $current_user->user_email
     ));
 
-    return $filename;
+    return $full_filepath;
 }
 
 
 add_action('wp_handle_upload', 'commitMedia');
 function commitMedia($upload) {
-    write_log('uploading media'); 
     if (!defined("WORDSBY_GITLAB_PROJECT_ID")) return $upload;
 
     global $branch;
