@@ -74,10 +74,7 @@ function createMediaBranch($client, $desiredBranch = "") {
     );
 }
 
-function createMediaBranchIfItDoesntExist
-(
-$client
-) {
+function createMediaBranchIfItDoesntExist($client) {
     if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return false;
 
     global $branch;
