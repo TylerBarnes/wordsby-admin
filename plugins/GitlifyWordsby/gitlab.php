@@ -24,9 +24,15 @@ function getGitlabClient () {
         return false;
     }
 
-
-    return \Gitlab\Client::create($gitlab_url)
+    try {
+        return \Gitlab\Client::create($gitlab_url)
         ->authenticate(getGitlabToken(), \Gitlab\Client::AUTH_URL_TOKEN);
+    } catch (Exception $e) {
+        write_log($e); 
+        jp_notices_add_error($e);
+        return false;
+    }
+
 }
 
 function getTree($client, $base_path) {
@@ -47,6 +53,31 @@ function isFileInRepo($client, $base_path, $filename) {
     return in_array($filename, array_column($tree, 'name'));
 }
 
+function array_search_partial($arr, $keyword) {
+    foreach($arr as $index => $string) {
+        if (strpos($string, $keyword) !== FALSE)
+            return $index;
+    }
+}
+
+function findPotentiallyEditedFileByOriginalName(
+    $client, $base_path, $original_filename
+    ) {
+    $tree = getTree($client, $base_path);
+
+    foreach($tree as $file) {
+        $tree_filename = $file['name'];
+        if (strpos($tree_filename, $original_filename) !== false) {
+            return $file;
+            break;
+        } else {
+            write_log("couldn't find $original_filename in $tree_filename during image update");
+        }
+    }
+
+    return false;
+}
+
 function makeImagesRelative($json) {
     $url = preg_quote(get_site_url(), "/");
 
@@ -62,6 +93,7 @@ function commitData($id) {
     if (isset($_POST['nav-menu-data'])) return;
 
     if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
+
     if (isset($_POST) && isset($_POST['wp-preview']) && $_POST['wp-preview'] === 'dopreview') return $id;
 
     global $branch;
@@ -200,9 +232,103 @@ function deleteMedia($id) {
     ));
 }
 
-add_action('wp_handle_upload', 'commitMedia');
 
+add_filter('image_make_intermediate_size', 'commitEditedMedia');
+function commitEditedMedia($full_filepath) {
+    // bail out if this is an upload
+    if (
+        isset($_POST) && 
+        isset($_POST['action']) && 
+        $_POST['action'] !== 'image-editor'
+        ) return $full_filepath;
+
+    // bail out if this is an intermediate image size. 
+    // gatsby creates our image sizes so we only commit full size images to the repo.
+    if (
+        !preg_match(
+            '/^(?!.*-\d{2,4}x\d{2,4}).*\.(jpg|png|bmp|gif|ico)$/', $full_filepath
+            )
+        ) return $full_filepath;
+
+    // bail if the file doesn't exist. It should, but just in case.
+    if (!file_exists($full_filepath)) {
+        jp_notices_add_error("There was an error saving your image. Please try again.");
+        return $full_filepath;
+    };
+
+	$dirname  = pathinfo( $full_filepath, PATHINFO_DIRNAME );
+	$ext      = pathinfo( $full_filepath, PATHINFO_EXTENSION );
+    $filename = pathinfo( $full_filepath, PATHINFO_FILENAME );
+
+    $repo_full_filepath = "wordsby/" . substr($full_filepath, strpos($full_filepath, "/uploads/") + 1);  
+
+    $repo_filename = pathinfo( $repo_full_filepath, PATHINFO_BASENAME );
+	$repo_dirname  = pathinfo( $repo_full_filepath, PATHINFO_DIRNAME );
+
+
+    global $branch;
+
+    $client = getGitlabClient();
+    if (!$client) return null; 
+
+
+    $media_exists = isFileInRepo($client, $repo_dirname, $repo_filename);
+    $action = $media_exists ? 'update' : 'create';
+
+    $original_filename = preg_replace( 
+        '/-e([0-9]+)$/', '', $filename 
+        ) . ".$ext";
+
+    $repo_original_filepath = "$repo_dirname/$original_filename";
+    $original_media_exists = isFileInRepo($client, $repo_dirname, $original_filename);
+
+
+    $site_url = get_site_url();
+    $current_user = wp_get_current_user()->data;
+    $username = $current_user->user_nicename;
+
+    $commit_message = "
+            \"$filename\" edited (\"$repo_filename\") 
+            — by $username (from $site_url)
+        ";
+
+    $actions = array(
+        array(
+            'action' => $action,
+            'file_path' => $repo_full_filepath,
+            'content' => base64_encode(file_get_contents($full_filepath)),
+            'encoding' => 'base64'
+        )
+    );
+
+    // delete the original media file from the repo if 
+    // IMAGE_EDIT_OVERWRITE is true.
+    if (
+        defined( 'IMAGE_EDIT_OVERWRITE' ) && 
+        IMAGE_EDIT_OVERWRITE &&
+        $original_media_exists
+        ) {
+        array_push($actions, array(
+            'action' => 'delete',
+            'file_path' => $repo_original_filepath,
+        ));
+    }
+
+    $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
+        'branch' => $branch, 
+        'commit_message' => $commit_message,
+        'actions' => $actions,
+        'author_email' => $username,
+        'author_name' => $current_user->user_email
+    ));
+
+    return $filename;
+}
+
+
+add_action('wp_handle_upload', 'commitMedia');
 function commitMedia($upload) {
+    write_log('uploading media'); 
     if (!defined("WORDSBY_GITLAB_PROJECT_ID")) return $upload;
 
     global $branch;
@@ -224,8 +350,8 @@ function commitMedia($upload) {
     if (!$client) return;
 
     $media_exists = isFileInRepo($client, $file_dir, $filename);
-
     $action = $media_exists ? 'update' : 'create';
+
     $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
         'branch' => $branch, 
         'commit_message' => "\"$filename\" — by $username (from $site_url)",
