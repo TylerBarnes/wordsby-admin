@@ -44,14 +44,18 @@ function getGitlabClient () {
 
 }
 
-function getTree($client, $base_path) {
-    global $branch;
+function getTree($client, $base_path, $desired_branch = "") {
+    if ($desired_branch === "") {
+        global $branch;
+        $desired_branch = $branch;
+    }
+
     $tree = $client->api('repositories')->tree(
         WORDSBY_GITLAB_PROJECT_ID, 
         array(
             'path' => $base_path,
             'recursive' => true,
-            'ref' => $branch,
+            'ref' => $desired_branch,
             'per_page' => 9999999
         )
     );
@@ -74,12 +78,11 @@ function createMediaBranch($client, $desiredBranch = "") {
     );
 }
 
-function createMediaBranchIfItDoesntExist($client) {
-    if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return false;
-
-    global $branch;
-    global $mediaBranch;
-    $desiredBranch = $mediaBranch;
+function desiredBranchExists($client, $desiredBranch = "") {
+    if ($desiredBranch === "") {
+        global $mediaBranch;
+        $desiredBranch = $mediaBranch;
+    }
 
     $branches = $client->api('repositories')->branches(
         WORDSBY_GITLAB_PROJECT_ID
@@ -89,38 +92,44 @@ function createMediaBranchIfItDoesntExist($client) {
         $desiredBranch, array_column($branches, 'name')
     );
 
+    return $desiredBranchExists;
+}
+
+function createMediaBranchIfItDoesntExist($client) {
+    if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return false;
+
+    global $branch;
+    global $mediaBranch;
+    $desiredBranch = $mediaBranch;
+
     $response = [
         'branch' => $desiredBranch
     ];
 
-    if (!$desiredBranchExists) {
+    if (desiredBranchExists($client)) {
+        $response['action'] = 'exists';
+    } else {
         createMediaBranch($client);
         $response['action'] = 'created';
-    } else {
-        $response['action'] = 'exists';
     }
 
     return $response;
 }
 
-// add_action('admin_init', 'test');
 
-// function test() {
-//     $branch = createMediaBranchIfItDoesntExist(
-//         getGitlabClient()
-//     );
-
-//     write_log($branch);
-// }
-
-function isFileInRepo($client, $base_path, $filename) {
-    $tree = getTree($client, $base_path);
+function isFileInRepo($client, $base_path, $filename, $branch = "") {
+    $tree = getTree($client, $base_path, $branch);
 
     return in_array($filename, array_column($tree, 'name'));
 }
 
-function getAllEditedFileVersionsInRepo($client, $base_path, $filename) {
-    $tree = getTree($client, $base_path);
+function getAllEditedFileVersionsInRepo(
+    $client, 
+    $base_path, 
+    $filename, 
+    $branch = ""
+) {
+    $tree = getTree($client, $base_path, $branch);
 
     $match = '/-e([0-9]+)/';
     
@@ -182,7 +191,15 @@ function commitData($id) {
     $client = getGitlabClient();
 
     if (!$client) return;
-    
+
+    $media_branch_exists = desiredBranchExists($client);
+    if ($media_branch_exists) {
+        global $mediaBranch;
+        $used_branch = $mediaBranch;
+    } else {
+        $used_branch = $branch;
+    }
+
     $collections_action = isFileInRepo($client, $base_path, 'collections.json') 
                                 ? 'update' : 'create';
 
@@ -211,8 +228,7 @@ function commitData($id) {
         custom_api_get_all_options_callback(),
         JSON_UNESCAPED_SLASHES
     ));
-
-    
+ 
 
     $site_meta_content = json_encode(array(
         array(
@@ -229,15 +245,15 @@ function commitData($id) {
         ),
     ));
 
+    $commit_message = "Post \"$title\" updated [id:$id] 
+                       — by $username (from $site_url)";
+
 
     $commit = $client->api('repositories')->createCommit(
         WORDSBY_GITLAB_PROJECT_ID, 
         array(
-        'branch' => $branch, 
-        'commit_message' => "
-                        Post \"$title\" updated [id:$id] 
-                        — by $username (from $site_url)
-        ",
+        'branch' => $used_branch, 
+        'commit_message' => $commit_message,
         'actions' => array(
             array(
                 'action' => $collections_action,
@@ -269,6 +285,43 @@ function commitData($id) {
         )
     );
 
+    if ($media_branch_exists) {
+        // create merge request now that we've commited our data 
+        // and delete media branch while we're at it.
+        $merge_request = $client->api('merge_requests')->create(
+            WORDSBY_GITLAB_PROJECT_ID,  // project_id
+            $mediaBranch,               // source_branch
+            $branch,                    // target_branch
+            $commit_message,            // title
+            null,                       // assignee_id
+            null,                       // target_project_id
+            null                        // description
+        );
+
+        // immediately approve merge request
+        if (isset($merge_request['iid'])) {
+            try {
+                // $client = getGitlabClient();
+                $approved_merge_request = $client->api('merge_requests')->merge(
+                    WORDSBY_GITLAB_PROJECT_ID,
+                    $merge_request['iid']
+                );
+    
+                write_log($approved_merge_request);
+    
+                // delete media branch
+                $deleted_branch = $client->api('repositories')->deleteBranch(
+                    WORDSBY_GITLAB_PROJECT_ID,
+                    $mediaBranch   
+                );
+    
+                write_log($deleted_branch); 
+            } catch (Exception $e) {
+                write_log($e);
+            }
+        }
+    }
+
     return $commit; 
 
 }
@@ -276,8 +329,6 @@ function commitData($id) {
 add_action('delete_attachment', 'deleteMedia');
 function deleteMedia($id) {
     if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
-
-    global $branch;
 
     $site_url = get_site_url();
     $current_user = wp_get_current_user()->data;
@@ -296,14 +347,20 @@ function deleteMedia($id) {
 
     if (!$client) return;
 
-    $media_exists = isFileInRepo($client, $fulldirectory, $filename);
+    createMediaBranchIfItDoesntExist($client);
+    
+    global $mediaBranch;
+
+    $media_exists = isFileInRepo(
+        $client, $fulldirectory, $filename, $mediaBranch
+    );
 
     if (!$media_exists) return;
 
     $actions = array();
 
     $edited_file_versions = getAllEditedFileVersionsInRepo(
-        $client, $fulldirectory, $filename
+        $client, $fulldirectory, $filename, $mediaBranch
     );
 
     if (count($edited_file_versions) > 0) {
@@ -323,7 +380,7 @@ function deleteMedia($id) {
     $commit = $client->api('repositories')->createCommit(
         WORDSBY_GITLAB_PROJECT_ID, 
         array(
-            'branch' => $branch, 
+            'branch' => $mediaBranch, 
             'commit_message' => "
                         \"$filename\" deleted 
                         — by $username (from $site_url)
@@ -372,13 +429,17 @@ function commitEditedMedia($full_filepath) {
 	$repo_dirname  = pathinfo( $repo_full_filepath, PATHINFO_DIRNAME );
 
 
-    global $branch;
-
     $client = getGitlabClient();
     if (!$client) return null; 
 
+    createMediaBranchIfItDoesntExist($client);
+    
+    global $mediaBranch;
 
-    $media_exists = isFileInRepo($client, $repo_dirname, $repo_filename);
+
+    $media_exists = isFileInRepo(
+        $client, $repo_dirname, $repo_filename, $mediaBranch
+    );
     $action = $media_exists ? 'update' : 'create';
 
     $original_filename = preg_replace( 
@@ -388,7 +449,7 @@ function commitEditedMedia($full_filepath) {
     $repo_original_filepath = "$repo_dirname/$original_filename";
     
     $original_media_exists = isFileInRepo(
-        $client, $repo_dirname, $original_filename
+        $client, $repo_dirname, $original_filename, $mediaBranch
     );
 
 
@@ -426,7 +487,7 @@ function commitEditedMedia($full_filepath) {
     $commit = $client->api('repositories')->createCommit(
         WORDSBY_GITLAB_PROJECT_ID, 
         array(
-            'branch' => $branch, 
+            'branch' => $mediaBranch, 
             'commit_message' => $commit_message,
             'actions' => $actions,
             'author_email' => $username,
@@ -442,9 +503,7 @@ add_action('wp_handle_upload', 'commitMedia');
 function commitMedia($upload) {
     if (!defined("WORDSBY_GITLAB_PROJECT_ID")) return $upload;
 
-    global $branch;
-
-    $initial_filepath = explode("uploads/",$upload['file'])[1];
+    $initial_filepath = explode("uploads/", $upload['file'])[1];
     $filename = basename($initial_filepath);
     $subdir = dirname($initial_filepath);
     
@@ -460,13 +519,17 @@ function commitMedia($upload) {
 
     if (!$client) return;
 
-    $media_exists = isFileInRepo($client, $file_dir, $filename);
+    createMediaBranchIfItDoesntExist($client);
+
+    global $mediaBranch;
+
+    $media_exists = isFileInRepo($client, $file_dir, $filename, $mediaBranch);
     $action = $media_exists ? 'update' : 'create';
 
     $commit = $client->api('repositories')->createCommit(
         WORDSBY_GITLAB_PROJECT_ID, 
         array(
-        'branch' => $branch, 
+        'branch' => $mediaBranch, 
         'commit_message' => "
                     \"$filename\" 
                     — by $username (from $site_url)
