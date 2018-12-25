@@ -4,7 +4,7 @@
 
 add_action('acf/save_post', 'commitData');
 
-function commitData() {
+function commitData($id) {
     // dont create commits when saving menus
     if (isset($_POST['nav-menu-data'])) return;
 
@@ -82,7 +82,7 @@ function commitData() {
             WORDLIFY_GITHUB_OWNER, 
             WORDLIFY_GITHUB_REPO,
             [
-                'message' => 'testing wordlify git3', 
+                'message' => createCommitMessage($id), 
                 'tree' => $tree['sha'], 
                 'parents' => [$head_commit['sha']]
             ]
