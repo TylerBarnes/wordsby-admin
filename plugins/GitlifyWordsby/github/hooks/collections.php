@@ -5,10 +5,20 @@
 add_action('acf/save_post', 'commitData');
 
 function commitData() {
+    // dont create commits when saving menus
+    if (isset($_POST['nav-menu-data'])) return;
+
+    // dont create commits when saving preview revisions.
+    if (
+        isset($_POST['wp-preview']) && 
+        $_POST['wp-preview'] === 'dopreview'
+    ) return $id;
+
     $branch = "heads/" . WORDLIFY_BRANCH;
     
     try{
         $client = getGitHubClient(); 
+        if (!$client) return;
 
         $head_reference = 
         $client->api('gitData')->references()->show(
