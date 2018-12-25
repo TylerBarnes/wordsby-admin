@@ -43,6 +43,16 @@ function commitData() {
                 'encoding' => 'utf-8'
             ]
         );
+
+        $tax_terms_blob = 
+        $client->api('gitData')->blobs()->create(
+            WORDLIFY_GITHUB_OWNER, 
+            WORDLIFY_GITHUB_REPO, 
+            [
+                'content' => getTaxTermsJSON(), 
+                'encoding' => 'utf-8'
+            ]
+        );
         
         $tree = 
         $client->api('gitData')->trees()->create(
@@ -56,6 +66,12 @@ function commitData() {
                         'mode' => '100644',
                         'type' => 'blob',
                         'sha' => $collections_blob['sha']
+                    ],
+                    [
+                        'path' => 'wordsby/data/tax-terms.json',
+                        'mode' => '100644',
+                        'type' => 'blob',
+                        'sha' => $tax_terms_blob['sha']
                     ],
                 ]
             ]
