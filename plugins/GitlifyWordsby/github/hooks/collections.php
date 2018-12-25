@@ -63,6 +63,16 @@ function commitData($id) {
                 'encoding' => 'utf-8'
             ]
         );
+
+        $site_meta_blob = 
+        $client->api('gitData')->blobs()->create(
+            WORDLIFY_GITHUB_OWNER, 
+            WORDLIFY_GITHUB_REPO, 
+            [
+                'content' => getSiteMetaJSON(), 
+                'encoding' => 'utf-8'
+            ]
+        );
         
         $tree = 
         $client->api('gitData')->trees()->create(
@@ -88,6 +98,12 @@ function commitData($id) {
                         'mode' => '100644',
                         'type' => 'blob',
                         'sha' => $options_blob['sha']
+                    ],
+                    [
+                        'path' => 'wordsby/data/site-meta.json',
+                        'mode' => '100644',
+                        'type' => 'blob',
+                        'sha' => $site_meta_blob['sha']
                     ],
                 ]
             ]
