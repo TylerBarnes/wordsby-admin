@@ -14,9 +14,10 @@ function commitData($id) {
         $_POST['wp-preview'] === 'dopreview'
     ) return $id;
 
-    $branch = "heads/" . WORDLIFY_BRANCH;
+    global $branch;
+    $branch_path = "heads/$branch";
     
-    try{
+    try {
         $client = getGitHubClient(); 
         if (!$client) return;
 
@@ -24,7 +25,7 @@ function commitData($id) {
         $client->api('gitData')->references()->show(
             WORDLIFY_GITHUB_OWNER, 
             WORDLIFY_GITHUB_REPO, 
-            $branch
+            $branch_path
         );
 
         $head_commit = 
@@ -124,7 +125,7 @@ function commitData($id) {
         $client->api('gitData')->references()->update(
             WORDLIFY_GITHUB_OWNER, 
             WORDLIFY_GITHUB_REPO,
-            $branch, 
+            $branch_path, 
             [
                 'sha' => $commit['sha'],
                 'force' => false
