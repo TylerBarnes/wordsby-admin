@@ -53,6 +53,16 @@ function commitData($id) {
                 'encoding' => 'utf-8'
             ]
         );
+
+        $options_blob = 
+        $client->api('gitData')->blobs()->create(
+            WORDLIFY_GITHUB_OWNER, 
+            WORDLIFY_GITHUB_REPO, 
+            [
+                'content' => getOptionsJSON(), 
+                'encoding' => 'utf-8'
+            ]
+        );
         
         $tree = 
         $client->api('gitData')->trees()->create(
@@ -72,6 +82,12 @@ function commitData($id) {
                         'mode' => '100644',
                         'type' => 'blob',
                         'sha' => $tax_terms_blob['sha']
+                    ],
+                    [
+                        'path' => 'wordsby/data/options.json',
+                        'mode' => '100644',
+                        'type' => 'blob',
+                        'sha' => $options_blob['sha']
                     ],
                 ]
             ]
