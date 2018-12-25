@@ -34,12 +34,12 @@ function commitData() {
             $head_reference['object']['sha']
         );
 
-        $blob = 
+        $collections_blob = 
         $client->api('gitData')->blobs()->create(
             WORDLIFY_GITHUB_OWNER, 
             WORDLIFY_GITHUB_REPO, 
             [
-                'content' => 'Test content3', 
+                'content' => getCollectionsJSON(), 
                 'encoding' => 'utf-8'
             ]
         );
@@ -52,11 +52,11 @@ function commitData() {
                 'base_tree' => $head_commit['tree']['sha'],
                 'tree' => [
                     [
-                        'path' => 'test.md',
+                        'path' => 'wordsby/data/collections.json',
                         'mode' => '100644',
                         'type' => 'blob',
-                        'sha' => $blob['sha']
-                    ]
+                        'sha' => $collections_blob['sha']
+                    ],
                 ]
             ]
         );
