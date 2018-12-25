@@ -1,4 +1,17 @@
 <?php 
+
+function getMenusJSON() {
+    $site_url = get_site_url();
+    $url = preg_quote(get_site_url(), "/");
+
+    return preg_replace(
+        "/$url/", '', makeImagesRelative(
+            json_encode(
+                wordlify_get_menus(), JSON_UNESCAPED_SLASHES
+            )
+        )
+    );
+}
 // 
 // This code was adapted from the WP-API-Menus plugin.
 

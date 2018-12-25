@@ -1,12 +1,20 @@
 <?php 
 
-function createCommitMessage($post_id) {
+function createCommitMessage($post_id, $title = "", $post_type = "Post") {
     $site_url = get_site_url();
-    $title = get_the_title($post_id);
+    
+    if ($title === "") {
+        $title = get_the_title($post_id);
+    } elseif ($title === "menu") {
+        $title = wp_get_nav_menu_object($post_id)->name;
+    }
+
     $username = getCurrentUser()['name'];
 
-    return "Post \"$title\" updated [id:$post_id] 
-    — by $username (from $site_url)";
+    return "
+            $post_type \"$title\" updated [id:$post_id] 
+            — by $username (from $site_url)
+    ";
 }
 
 ?>
