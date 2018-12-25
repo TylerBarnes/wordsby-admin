@@ -2,7 +2,7 @@
 
 function getGitlabToken() {
     // https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html
-    $gitlab_token = defined('WORDSBY_GITLAB_API_TOKEN') ? WORDSBY_GITLAB_API_TOKEN : false;
+    $gitlab_token = defined('WORDLIFY_GITLAB_API_TOKEN') ? WORDLIFY_GITLAB_API_TOKEN : false;
     
     if (!$gitlab_token) return;
     return $gitlab_token;

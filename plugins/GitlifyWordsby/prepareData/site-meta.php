@@ -1,6 +1,6 @@
 <?php 
 
-function getOptionsJSON() {
+function getSiteMetaJSON() {
     return json_encode(array(
         array(
             'key' => 'url',

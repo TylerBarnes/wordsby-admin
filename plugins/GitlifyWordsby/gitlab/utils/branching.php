@@ -9,7 +9,7 @@ function createMediaBranch($client, $desiredBranch = "") {
     }
 
     return $client->api('repositories')->createBranch(
-        WORDSBY_GITLAB_PROJECT_ID,
+        WORDLIFY_GITLAB_PROJECT_ID,
         $desiredBranch,
         $branch
     );
@@ -22,7 +22,7 @@ function desiredBranchExists($client, $desiredBranch = "") {
     }
 
     $branches = $client->api('repositories')->branches(
-        WORDSBY_GITLAB_PROJECT_ID
+        WORDLIFY_GITLAB_PROJECT_ID
     );  
 
     $desiredBranchExists = in_array(
@@ -33,7 +33,7 @@ function desiredBranchExists($client, $desiredBranch = "") {
 }
 
 function createMediaBranchIfItDoesntExist($client) {
-    if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return false;
+    if (!defined('WORDLIFY_GITLAB_PROJECT_ID')) return false;
 
     global $branch;
     global $mediaBranch;

@@ -7,7 +7,7 @@ function getTree($client, $base_path, $desired_branch = "") {
     }
 
     $tree = $client->api('repositories')->tree(
-        WORDSBY_GITLAB_PROJECT_ID, 
+        WORDLIFY_GITLAB_PROJECT_ID, 
         array(
             'path' => $base_path,
             'recursive' => true,
@@ -52,15 +52,6 @@ function getAllEditedFileVersionsInRepo(
     }
 
     return $allEditedVersions;
-}
-
-
-function makeImagesRelative($json) {
-    $url = preg_quote(get_site_url(), "/");
-
-    return preg_replace(
-        "/$url\/wp-content\//", '../', $json
-    );
 }
 
 function updateOrCreate($client, $base_path, $filename) {

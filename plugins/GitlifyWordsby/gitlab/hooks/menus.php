@@ -2,7 +2,7 @@
 
 add_action('wp_update_nav_menu', 'commitMenus');
 function commitMenus($id) {
-    if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
+    if (!defined('WORDLIFY_GITLAB_PROJECT_ID')) return $id;
 
     global $branch;
 
@@ -32,7 +32,7 @@ function commitMenus($id) {
         "/$url/", '', makeImagesRelative($menus)
     );
 
-    $commit = $client->api('repositories')->createCommit(WORDSBY_GITLAB_PROJECT_ID, array(
+    $commit = $client->api('repositories')->createCommit(WORDLIFY_GITLAB_PROJECT_ID, array(
         'branch' => $branch, 
         'commit_message' => "Menu $menus_action \"$title\" [id:$id] — by $username (from $site_url)",
         'actions' => array(

@@ -2,7 +2,7 @@
 
 add_action('delete_attachment', 'deleteMedia');
 function deleteMedia($id) {
-    if (!defined('WORDSBY_GITLAB_PROJECT_ID')) return $id;
+    if (!defined('WORDLIFY_GITLAB_PROJECT_ID')) return $id;
 
     $site_url = get_site_url();
     $current_user = wp_get_current_user()->data;
@@ -52,7 +52,7 @@ function deleteMedia($id) {
     }
 
     $commit = $client->api('repositories')->createCommit(
-        WORDSBY_GITLAB_PROJECT_ID, 
+        WORDLIFY_GITLAB_PROJECT_ID, 
         array(
             'branch' => $mediaBranch, 
             'commit_message' => "
@@ -159,7 +159,7 @@ function commitEditedMedia($full_filepath) {
     }
 
     $commit = $client->api('repositories')->createCommit(
-        WORDSBY_GITLAB_PROJECT_ID, 
+        WORDLIFY_GITLAB_PROJECT_ID, 
         array(
             'branch' => $mediaBranch, 
             'commit_message' => $commit_message,
@@ -175,7 +175,7 @@ function commitEditedMedia($full_filepath) {
 
 add_action('wp_handle_upload', 'commitMedia');
 function commitMedia($upload) {
-    if (!defined("WORDSBY_GITLAB_PROJECT_ID")) return $upload;
+    if (!defined("WORDLIFY_GITLAB_PROJECT_ID")) return $upload;
 
     $initial_filepath = explode("uploads/", $upload['file'])[1];
     $filename = basename($initial_filepath);
@@ -201,7 +201,7 @@ function commitMedia($upload) {
     $action = $media_exists ? 'update' : 'create';
 
     $commit = $client->api('repositories')->createCommit(
-        WORDSBY_GITLAB_PROJECT_ID, 
+        WORDLIFY_GITLAB_PROJECT_ID, 
         array(
         'branch' => $mediaBranch, 
         'commit_message' => "
