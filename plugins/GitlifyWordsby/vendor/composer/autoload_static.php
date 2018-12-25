@@ -23,6 +23,7 @@ class ComposerStaticInit6c8714c5045eecd78780d581c988dee3
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Cache\\' => 10,
         ),
         'H' => 
         array (
@@ -30,6 +31,7 @@ class ComposerStaticInit6c8714c5045eecd78780d581c988dee3
             'Http\\Message\\MultipartStream\\' => 29,
             'Http\\Message\\' => 13,
             'Http\\Discovery\\' => 15,
+            'Http\\Client\\Common\\Plugin\\' => 26,
             'Http\\Client\\Common\\' => 19,
             'Http\\Client\\' => 12,
             'Http\\Adapter\\Guzzle6\\' => 21,
@@ -40,6 +42,7 @@ class ComposerStaticInit6c8714c5045eecd78780d581c988dee3
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
             'Gitlab\\' => 7,
+            'Github\\' => 7,
         ),
         'C' => 
         array (
@@ -55,6 +58,10 @@ class ComposerStaticInit6c8714c5045eecd78780d581c988dee3
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'Http\\Promise\\' => 
         array (
@@ -72,6 +79,10 @@ class ComposerStaticInit6c8714c5045eecd78780d581c988dee3
         'Http\\Discovery\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-http/discovery/src',
+        ),
+        'Http\\Client\\Common\\Plugin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-http/cache-plugin/src',
         ),
         'Http\\Client\\Common\\' => 
         array (
@@ -100,6 +111,10 @@ class ComposerStaticInit6c8714c5045eecd78780d581c988dee3
         'Gitlab\\' => 
         array (
             0 => __DIR__ . '/..' . '/m4tthumphrey/php-gitlab-api/lib/Gitlab',
+        ),
+        'Github\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/knplabs/github-api/lib/Github',
         ),
         'Clue\\StreamFilter\\' => 
         array (
