@@ -32,46 +32,46 @@ function commitData($id) {
 
     $commit = $client->api('repositories')->createCommit(
         WORDLIFY_GITLAB_PROJECT_ID, 
-        array(
-        'branch' => $used_branch, 
-        'commit_message' => $commit_message,
-        'actions' => array(
-            array(
-                'action' => updateOrCreate(
-                    $client, $base_path, 'collections.json'
-                ),
-                'file_path' => $base_path . "collections.json",
-                'content' => getCollectionsJSON(),
-                'encoding' => 'text'
-            ),
-            array(
-                'action' => updateOrCreate(
-                    $client, $base_path, 'tax-terms.json'
-                ),
-                'file_path' => $base_path . "tax-terms.json",
-                'content' => getTaxTermsJSON(),
-                'encoding' => 'text'
-            ),
-            array(
-                'action' => updateOrCreate(
-                    $client, $base_path, 'options.json'
-                ),
-                'file_path' => $base_path . "options.json",
-                'content' => getOptionsJSON(),
-                'encoding' => 'text'
-            ),
-            array(
-                'action' => updateOrCreate(
-                    $client, $base_path, 'site-meta.json'
-                ),
-                'file_path' => $base_path . "site-meta.json",
-                'content' => getSiteMetaJSON(),
-                'encoding' => 'text'
-            ),
-        ),
-        'author_email' => $user['name'],
-        'author_name' => $user['email']
-        )
+        [
+            'branch' => $used_branch, 
+            'commit_message' => $commit_message,
+            'actions' => [
+                [
+                    'action' => updateOrCreate(
+                        $client, $base_path, 'collections.json'
+                    ),
+                    'file_path' => $base_path . "collections.json",
+                    'content' => getCollectionsJSON(),
+                    'encoding' => 'text'
+                ],
+                [
+                    'action' => updateOrCreate(
+                        $client, $base_path, 'tax-terms.json'
+                    ),
+                    'file_path' => $base_path . "tax-terms.json",
+                    'content' => getTaxTermsJSON(),
+                    'encoding' => 'text'
+                ],
+                [
+                    'action' => updateOrCreate(
+                        $client, $base_path, 'options.json'
+                    ),
+                    'file_path' => $base_path . "options.json",
+                    'content' => getOptionsJSON(),
+                    'encoding' => 'text'
+                ],
+                [
+                    'action' => updateOrCreate(
+                        $client, $base_path, 'site-meta.json'
+                    ),
+                    'file_path' => $base_path . "site-meta.json",
+                    'content' => getSiteMetaJSON(),
+                    'encoding' => 'text'
+                ],
+            ],
+            'author_email' => $user['name'],
+            'author_name' => $user['email']
+        ]
     );
 
     if ($media_branch_exists) {
