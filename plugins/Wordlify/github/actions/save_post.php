@@ -2,9 +2,9 @@
 // made with the help of 
 // https://www.levibotelho.com/development/commit-a-file-with-the-github-api/
 
-add_action('acf/save_post', 'commitData');
+add_action('acf/save_post', 'commitJSON');
 
-function commitData($id) {
+function commitJSON($id) {
     // dont create commits when saving menus
     if (isset($_POST['nav-menu-data'])) return;
 
@@ -13,128 +13,32 @@ function commitData($id) {
         isset($_POST['wp-preview']) && 
         $_POST['wp-preview'] === 'dopreview'
     ) return $id;
-
-    global $branch;
-    $branch_path = "heads/$branch";
     
-    try {
-        $client = getGitHubClient(); 
-        if (!$client) return;
-
-        $head_reference = 
-        $client->api('gitData')->references()->show(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
-            $branch_path
-        );
-
-        $head_commit = 
-        $client->api('gitData')->commits()->show(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
-            $head_reference['object']['sha']
-        );
-
-        $collections_blob = 
-        $client->api('gitData')->blobs()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
+    commit(
+        $id,
+        [
             [
+                'path' => 'wordsby/data/collections.json',
                 'content' => getCollectionsJSON(), 
                 'encoding' => 'utf-8'
-            ]
-        );
-
-        $tax_terms_blob = 
-        $client->api('gitData')->blobs()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
+            ],
             [
+                'path' => 'wordsby/data/tax-terms.json',
                 'content' => getTaxTermsJSON(), 
                 'encoding' => 'utf-8'
-            ]
-        );
-
-        $options_blob = 
-        $client->api('gitData')->blobs()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
+            ],
             [
+                'path' => 'wordsby/data/options.json',
                 'content' => getOptionsJSON(), 
                 'encoding' => 'utf-8'
-            ]
-        );
-
-        $site_meta_blob = 
-        $client->api('gitData')->blobs()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
+            ],
             [
+                'path' => 'wordsby/data/site-meta.json',
                 'content' => getSiteMetaJSON(), 
                 'encoding' => 'utf-8'
             ]
-        );
-        
-        $tree = 
-        $client->api('gitData')->trees()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO,
-            [
-                'base_tree' => $head_commit['tree']['sha'],
-                'tree' => [
-                    [
-                        'path' => 'wordsby/data/collections.json',
-                        'mode' => '100644',
-                        'type' => 'blob',
-                        'sha' => $collections_blob['sha']
-                    ],
-                    [
-                        'path' => 'wordsby/data/tax-terms.json',
-                        'mode' => '100644',
-                        'type' => 'blob',
-                        'sha' => $tax_terms_blob['sha']
-                    ],
-                    [
-                        'path' => 'wordsby/data/options.json',
-                        'mode' => '100644',
-                        'type' => 'blob',
-                        'sha' => $options_blob['sha']
-                    ],
-                    [
-                        'path' => 'wordsby/data/site-meta.json',
-                        'mode' => '100644',
-                        'type' => 'blob',
-                        'sha' => $site_meta_blob['sha']
-                    ],
-                ]
-            ]
-        );
-
-        $commit = 
-        $client->api('gitData')->commits()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO,
-            [
-                'message' => createCommitMessage($id), 
-                'tree' => $tree['sha'], 
-                'parents' => [$head_commit['sha']]
-            ]
-        );
-
-        $update_head_to_new_commit = 
-        $client->api('gitData')->references()->update(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO,
-            $branch_path, 
-            [
-                'sha' => $commit['sha'],
-                'force' => false
-            ]
-        );
-
-    } catch (Exception $e) {
-        write_log($e); 
-    }
+        ]
+    );
 }
 
 ?>
