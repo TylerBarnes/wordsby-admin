@@ -20,55 +20,62 @@ require_once __DIR__ . '/prepareData/prepareData.php';
 // 
 // Include gitlab
 // 
-if (
-    defined('WORDLIFY_GIT_HOST') && WORDLIFY_GIT_HOST === 'gitlab'
-    ) {
+function gitlab() {
     if (
-        !defined('WORDLIFY_GITLAB_API_TOKEN') 
-        || (
-            defined('WORDLIFY_GITLAB_API_TOKEN') && 
-            !WORDLIFY_GITLAB_API_TOKEN
-            )
-    ) return;
-    if (
-        !defined('WORDLIFY_GITLAB_PROJECT_ID') 
-        || (
-            defined('WORDLIFY_GITLAB_PROJECT_ID') && !WORDLIFY_GITLAB_PROJECT_ID
-            )
-    ) return;
-    // If git host is set to gitlab and a project id and api token is set, include gitlab.
-    require_once __DIR__ . "/gitlab/gitlab.php";
+        defined('WORDLIFY_GIT_HOST') && WORDLIFY_GIT_HOST === 'gitlab'
+        ) {
+        if (
+            !defined('WORDLIFY_GITLAB_API_TOKEN') 
+            || (
+                defined('WORDLIFY_GITLAB_API_TOKEN') && 
+                !WORDLIFY_GITLAB_API_TOKEN
+                )
+        ) return;
+        if (
+            !defined('WORDLIFY_GITLAB_PROJECT_ID') 
+            || (
+                defined('WORDLIFY_GITLAB_PROJECT_ID') && !WORDLIFY_GITLAB_PROJECT_ID
+                )
+        ) return;
+        // If git host is set to gitlab and a project id and api token is set, include gitlab.
+        require_once __DIR__ . "/gitlab/gitlab.php";
+    }
 }
 
+gitlab();
 
 // 
 // Include Github
 // 
 
-if (
-    defined('WORDLIFY_GIT_HOST') && WORDLIFY_GIT_HOST === 'github'
-    ) {
+function github() {
     if (
-        !defined('WORDLIFY_GITHUB_API_TOKEN') 
-        || (
-            defined('WORDLIFY_GITHUB_API_TOKEN') && !WORDLIFY_GITHUB_API_TOKEN
-            )
-    ) return;
-    if (
-        !defined('WORDLIFY_GITHUB_OWNER') 
-        || (
-            defined('WORDLIFY_GITHUB_OWNER') && !WORDLIFY_GITHUB_OWNER
-            )
-    ) return;
-    if (
-        !defined('WORDLIFY_GITHUB_REPO') 
-        || (
-            defined('WORDLIFY_GITHUB_REPO') && !WORDLIFY_GITHUB_REPO
-            )
-    ) return;
-    // If git host is set to github and an owner, api token, and repo is set, include github.
-    require_once __DIR__ . "/github/github.php";
+        defined('WORDLIFY_GIT_HOST') && WORDLIFY_GIT_HOST === 'github'
+        ) {
+        if (
+            !defined('WORDLIFY_GITHUB_API_TOKEN') 
+            || (
+                defined('WORDLIFY_GITHUB_API_TOKEN') && !WORDLIFY_GITHUB_API_TOKEN
+                )
+        ) return;
+        if (
+            !defined('WORDLIFY_GITHUB_OWNER') 
+            || (
+                defined('WORDLIFY_GITHUB_OWNER') && !WORDLIFY_GITHUB_OWNER
+                )
+        ) return;
+        if (
+            !defined('WORDLIFY_GITHUB_REPO') 
+            || (
+                defined('WORDLIFY_GITHUB_REPO') && !WORDLIFY_GITHUB_REPO
+                )
+        ) return;
+        // If git host is set to github and an owner, api token, and repo is set, include github.
+        require_once __DIR__ . "/github/github.php";
+    }
 }
+
+github();
 
 
 ?>
