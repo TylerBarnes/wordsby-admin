@@ -10,9 +10,13 @@ function commitMedia($upload) {
     $file_dir = "$base_path/$subdir";
     $filepath = "$file_dir/$filename";
 
+    write_log($upload); 
+
+    $upload_type = $upload['type'];
+
     commit(
         createCommitMessage(
-            null, "upload", "Upload ", $upload['type']
+            null, $filename, "Uploaded ", $upload_type
         ),
         [
             [

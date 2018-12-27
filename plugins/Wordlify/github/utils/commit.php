@@ -13,6 +13,8 @@ function commit($commit_message, $files) {
         $client = getGithubClient();
         if (!$client) return;
 
+        $user = getCurrentUser();
+
         // check if the media branch exists.
         $media_branch_exists = desiredBranchExists($client);
     
@@ -93,7 +95,11 @@ function commit($commit_message, $files) {
             [
                 'message' => $commit_message, 
                 'tree' => $tree['sha'], 
-                'parents' => [$head_commit['sha']]
+                'parents' => [$head_commit['sha']],
+                'author' => [
+                    'name' => 'WP user ' . $user['name'],
+                    'email' => $user['email']
+                ]
             ]
         );
 
