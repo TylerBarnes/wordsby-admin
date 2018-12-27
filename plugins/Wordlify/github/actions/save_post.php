@@ -1,7 +1,4 @@
 <?php 
-// made with the help of 
-// https://www.levibotelho.com/development/commit-a-file-with-the-github-api/
-
 add_action('acf/save_post', 'commitJSON');
 
 function commitJSON($id) {

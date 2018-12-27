@@ -1,5 +1,7 @@
 <?php 
 
+// made with the help of 
+// https://www.levibotelho.com/development/commit-a-file-with-the-github-api/
 function commit($commit_message, $files) {
     global $branch;
     $branch_path = "heads/$branch";
