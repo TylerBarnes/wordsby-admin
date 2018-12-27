@@ -15,7 +15,7 @@ function commitJSON($id) {
     ) return $id;
     
     commit(
-        $id,
+        createCommitMessage($id),
         [
             [
                 'path' => 'wordsby/data/collections.json',

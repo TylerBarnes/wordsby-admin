@@ -1,38 +1,54 @@
 <?php 
 
-function commit($id, $files, $branch = "", $mediaBranch = "") {
-    if ($branch === "") {
-        global $branch;
-        $branch_path = "heads/$branch";
-    }
+function commit($commit_message, $files) {
+    global $branch;
+    $branch_path = "heads/$branch";
 
-    $client = getGithubClient();
-
-    // check if the media branch exists
-    $media_branch_exists = desiredBranchExists($client);
-
-    // check if this is a media only commit
-        // array filter the $files arg to check for base64 vs utf-8
-
-    // if it is then commit to the media branch
-
-    // if it isn't then commit to the media branch if it exists
-        // commit to the media branch
-        // merge the media branch into the main branch
-        // delete the media branch
-
-    // if it isn't a media commit and the media branch doesn't exist then just commit to the main branch.
-
+    global $mediaBranch;
+    $media_branch_path = "heads/$mediaBranch";
 
     try {
-        $client = getGitHubClient(); 
+        $client = getGithubClient();
         if (!$client) return;
+
+        // check if the media branch exists.
+        $media_branch_exists = desiredBranchExists($client);
+    
+        // check if there are any text files in the commit.
+        $is_media_only_commit = !in_array(
+            'utf-8', array_column($files, 'encoding')
+        );
+    
+        if ($is_media_only_commit && !$media_branch_exists) {
+            createMediaBranch($client);
+        }
+    
+        // if there are no text files in the commit or the media branch exists then we want to commit to the media branch.
+        // This is to trigger the least amount of builds possible on the main branch.
+        // Media files are commited to their own branch if the commit doesn't conain any JSON files. 
+        // Once JSON is commited, the media branch gets merged triggering a site build from our main branch.
+        // If we trigger a build for every commit then the build times could be 2 to 3 times longer.
+        $should_commit_to_media_branch = 
+        $is_media_only_commit || $media_branch_exists;
+    
+        if ($should_commit_to_media_branch) {
+            $commit_branch = $media_branch_path;
+        } else {
+            $commit_branch = $branch_path;
+        }
+    
+        // if it isn't then commit to the media branch if it exists
+            // commit to the media branch
+            // merge the media branch into the main branch
+            // delete the media branch
+    
+        // if it isn't a media commit and the media branch doesn't exist then just commit to the main branch.
 
         $head_reference = 
         $client->api('gitData')->references()->show(
             WORDLIFY_GITHUB_OWNER, 
             WORDLIFY_GITHUB_REPO, 
-            $branch_path
+            $commit_branch
         );
 
         $head_commit = 
@@ -78,7 +94,7 @@ function commit($id, $files, $branch = "", $mediaBranch = "") {
             WORDLIFY_GITHUB_OWNER, 
             WORDLIFY_GITHUB_REPO,
             [
-                'message' => createCommitMessage($id), 
+                'message' => $commit_message, 
                 'tree' => $tree['sha'], 
                 'parents' => [$head_commit['sha']]
             ]
@@ -88,12 +104,45 @@ function commit($id, $files, $branch = "", $mediaBranch = "") {
         $client->api('gitData')->references()->update(
             WORDLIFY_GITHUB_OWNER, 
             WORDLIFY_GITHUB_REPO,
-            $branch_path, 
+            $commit_branch, 
             [
                 'sha' => $commit['sha'],
                 'force' => false
             ]
         );
+
+        if (!$is_media_only_commit && $media_branch_exists) {
+            $owner = WORDLIFY_GITHUB_OWNER;
+            $repo = WORDLIFY_GITHUB_REPO;
+
+            write_log("repos/$owner/$repo/merges"); 
+            write_log($mediaBranch); 
+            write_log($branch); 
+
+            // merge the media branch to the main branch.
+            $request = $client->getHttpClient()->post(
+                "repos/$owner/$repo/merges",
+                [],
+                json_encode([
+                    'base' => $branch,
+                    'head' => $mediaBranch,
+                    'commit_message' => "$commit_message [MERGE MEDIA]"
+                ])
+            );
+            $merge_response = Github\HttpClient\Message\
+                    ResponseMediator::getContent($request);
+            write_log($merge_response); 
+
+            $delete_branch = $client->getHttpClient()->delete(
+                "repos/$owner/$repo/git/refs/heads/$mediaBranch"
+            );
+
+            $delete_response = Github\HttpClient\Message\
+                    ResponseMediator::getContent($delete_branch);
+            write_log($delete_response); 
+
+            // repos/<myuserid>/<myreponame>/git/refs/heads/develop
+        }
 
     } catch (Exception $e) {
         write_log($e); 

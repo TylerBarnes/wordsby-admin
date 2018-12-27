@@ -16,69 +16,75 @@ function commitMedia($upload) {
         $base_path = 'wordsby/uploads';
         $file_dir = "$base_path/$subdir";
         $filepath = "$file_dir/$filename";
-    
-        $site_url = get_site_url();
-        $current_user = wp_get_current_user()->data;
-        $username = $current_user->user_nicename;
-    
-        createMediaBranchIfItDoesntExist($client);
 
-        global $mediaBranch;
-        $branch_path = "heads/$mediaBranch";
-
-        $head_reference = 
-        $client->api('gitData')->references()->show(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
-            $branch_path
-        );
-
-        $head_commit = 
-        $client->api('gitData')->commits()->show(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
-            $head_reference['object']['sha']
-        );
-
-        $media_blob = 
-        $client->api('gitData')->blobs()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO, 
+        commit(
+            createCommitMessage(
+                null, "upload", "Upload ", $upload['type']
+            ),
             [
-                'content' => base64_encode(file_get_contents($upload['file'])), 
-                'encoding' => 'base64'
-            ]
-        ); 
-        
-        $tree = 
-        $client->api('gitData')->trees()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO,
-            [
-                'base_tree' => $head_commit['tree']['sha'],
-                'tree' => [
-                    [
-                        'path' => $filepath,
-                        'mode' => '100644',
-                        'type' => 'blob',
-                        'sha' => $media_blob['sha']
-                    ],
+                [
+                    'path' => $filepath,
+                    'content' => base64_encode(
+                        file_get_contents($upload['file'])
+                    ), 
+                    'encoding' => 'base64'
                 ]
             ]
-        ); 
-
-        $commit = 
-        $client->api('gitData')->commits()->create(
-            WORDLIFY_GITHUB_OWNER, 
-            WORDLIFY_GITHUB_REPO,
-            [
-                'message' => createCommitMessage(
-                    null, "upload", "Upload ", $upload['type']
-                ), 
-                'tree' => $tree['sha'], 
-                'parents' => [$head_commit['sha']]
-            ]
         );
+
+        // $head_reference = 
+        // $client->api('gitData')->references()->show(
+        //     WORDLIFY_GITHUB_OWNER, 
+        //     WORDLIFY_GITHUB_REPO, 
+        //     $branch_path
+        // );
+
+        // $head_commit = 
+        // $client->api('gitData')->commits()->show(
+        //     WORDLIFY_GITHUB_OWNER, 
+        //     WORDLIFY_GITHUB_REPO, 
+        //     $head_reference['object']['sha']
+        // );
+
+        // $media_blob = 
+        // $client->api('gitData')->blobs()->create(
+        //     WORDLIFY_GITHUB_OWNER, 
+        //     WORDLIFY_GITHUB_REPO, 
+        //     [
+        //         'content' => base64_encode(file_get_contents($upload['file'])), 
+        //         'encoding' => 'base64'
+        //     ]
+        // ); 
+        
+        // $tree = 
+        // $client->api('gitData')->trees()->create(
+        //     WORDLIFY_GITHUB_OWNER, 
+        //     WORDLIFY_GITHUB_REPO,
+        //     [
+        //         'base_tree' => $head_commit['tree']['sha'],
+        //         'tree' => [
+        //             [
+        //                 'path' => $filepath,
+        //                 'mode' => '100644',
+        //                 'type' => 'blob',
+        //                 'sha' => $media_blob['sha']
+        //             ],
+        //         ]
+        //     ]
+        // ); 
+
+        // $commit = 
+        // $client->api('gitData')->commits()->create(
+        //     WORDLIFY_GITHUB_OWNER, 
+        //     WORDLIFY_GITHUB_REPO,
+        //     [
+        //         'message' => createCommitMessage(
+        //             null, "upload", "Upload ", $upload['type']
+        //         ), 
+        //         'tree' => $tree['sha'], 
+        //         'parents' => [$head_commit['sha']]
+        //     ]
+        // );
 
         $update_head_to_new_commit = 
         $client->api('gitData')->references()->update(
