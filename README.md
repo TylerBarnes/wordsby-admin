@@ -13,7 +13,7 @@ Check out the [Wordsby readme](https://github.com/TylerBarnes/wordsby) for more 
 
 1. Download this repo as a zip
 2. Upload it to your WP install and activate it as a theme
-3. [Connect your install to Github or Gitlab](#github-gitlab-connection)
+3. [Connect your install to Github or Gitlab](#githubgitlab-connection)
 4. [Follow the setup instructions for Wordsby](https://github.com/TylerBarnes/wordsby#set-up)
 
 ## Github/Gitlab connection
