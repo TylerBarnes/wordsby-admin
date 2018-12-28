@@ -24,5 +24,5 @@ require_once dirname( __FILE__ ) . "/plugins/PsychicWindow/psychic-window-postty
 
 require_once dirname( __FILE__ ) . "/functions/acf-google-map-key.php";
 
-require_once dirname( __FILE__ ) . "/plugins/GitlifyWordsby/gitlify-wordsby.php";
+require_once dirname( __FILE__ ) . "/plugins/Wordlify/wordlify.php";
 ?>
