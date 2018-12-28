@@ -21,13 +21,15 @@ Check out the [Wordsby readme](https://github.com/TylerBarnes/wordsby) for more 
 In `wp-config.php`, add any of the following applicable lines.
 ```php
 // for Gitlab
-define('WORDLIFY_GITLAB_API_TOKEN', 'your-api-token');
+// https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#doc-nav
+define('WORDLIFY_GITLAB_API_TOKEN', 'your-api-token'); 
 define('WORDLIFY_GITLAB_PROJECT_ID', 'your-project-id');
 
 // for Github
-define('WORDLIFY_GITHUB_API_TOKEN', '');
+// https://github.com/settings/tokens
+define('WORDLIFY_GITHUB_API_TOKEN', 'your-api-token'); 
 define('WORDLIFY_GITHUB_OWNER', 'your-github-username');
-define('WORDLIFY_GITHUB_REPO', 'wordlifytest');
+define('WORDLIFY_GITHUB_REPO', 'your-repo-name');
 
 // for both
 define('WORDLIFY_GIT_HOST', 'github'); // or "gitlab"
