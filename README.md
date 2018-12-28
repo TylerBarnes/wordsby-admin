@@ -1,34 +1,41 @@
 # Wordsby Admin (WIP)
 
-A WordPress theme to make Gatsby development and content creation easier.
-This theme is 100% intended to be used with the Gatsby plugin [Wordsby](https://github.com/TylerBarnes/wordsby).
+A WordPress theme to make Gatsby development and content creation in WordPress easier.
+Features include a template hierarchy, usage of the WP permalink structure in gatsby, instant page previews and much more.
+Instead of using `gatsby-source-wordpress`, this theme commits images and data directly to your git repo (Github and Gitlab are supported). This means your 5,000 page site can run on $2 shared hosting and get the performance of a finely tuned VPS.
+It also means running  `gatsby develop` on large WP sites doesn't require repeatedly downloading your entire media library.
 
-Check out the Wordsby readme for more info.
+This theme is intended to be used with Gatsby plugin [Wordsby](https://github.com/TylerBarnes/wordsby).
 
-![Wordsby Admin logo](screenshot.png?raw=true "Wordsby Admin logo")
+Check out the [Wordsby readme](https://github.com/TylerBarnes/wordsby) for more info.
 
 ## Installation
 
 1. Download this repo as a zip
 2. Upload it to your WP install and activate it as a theme
+3. [Connect your install to Github or Gitlab](#github-gitlab-connection)
+4. [Follow the setup instructions for Wordsby](https://github.com/TylerBarnes/wordsby#set-up)
 
-## What does this theme do?
+## Github/Gitlab connection
 
-- Instant page previews from page/post edit screens with live rest api data.
-- Built in rest api endpoints tailored for Gatsby
-- Built in ACF support
-- Connects WordPress template picker to Gatsby templates.
-- Schema Builder post type so your gatsby builds don't fail when a client deletes all posts or flexible content sections
-- Adds the ability to use WP functionality in gatsby using the [PsychicWindow](https://github.com/TylerBarnes/PsychicWindow) component. Useful for displaying a contact form or WP gated content.
-- BetterAdmin UI skin / reorganized admin menu
-- Triggers a remote CI build on content updates via webhooks.
-- Fixes the ACF GraphQL error `GraphQL Error Unknown field {field} on type {type}`
-- Discourages search engines from indexing the WP install
-- Redirects all WP pages to the admin login
-- Uses TGM plugin activation to require mandatory plugins, and other useful plugins
-- Admin edit page links go to the build site instead of the current WP site.
-- Users get avatars downloaded from unsplash automatically.
+In `wp-config.php`, add any of the following applicable lines.
+```php
+// for Gitlab
+define('WORDLIFY_GITLAB_API_TOKEN', 'your-api-token');
+define('WORDLIFY_GITLAB_PROJECT_ID', 'your-project-id');
 
+// for Github
+define('WORDLIFY_GITHUB_API_TOKEN', '');
+define('WORDLIFY_GITHUB_OWNER', 'your-github-username');
+define('WORDLIFY_GITHUB_REPO', 'wordlifytest');
 
+// for both
+define('WORDLIFY_GIT_HOST', 'github'); // or "gitlab"
+define('WORDLIFY_BRANCH', 'master'); // pick the main branch.
+```
+
+When you upload media files, they'll be commited to a temporary branch. Once you save a post or page, the branch will be automatically merged into your main branch. This prevents your CI pipeline from building your gatsby site every time you upload a media file.
+
+## Screenshots
 ![Wordsby Admin dashboard screenshot](/screenshots/home.png?raw=true)
 ![Wordsby Admin page edit screenshot](/screenshots/page.png?raw=true)
