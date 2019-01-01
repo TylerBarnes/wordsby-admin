@@ -7,7 +7,7 @@ function admin_scripts() {
 
     wp_enqueue_script( 'preview' );
 
-    $available_templates = populate_templates_from_json_file(true);
+    $available_templates = populate_templates_from_json(true);
 
     wp_localize_script( 'preview', 'availableTemplates', $available_templates );
 }
