@@ -1,5 +1,4 @@
 <?php 
-
 function get_templates_from_github() {
     if (!defined('WORDLIFY_GITHUB_API_TOKEN')) return;
     if (!defined('WORDLIFY_GITHUB_OWNER')) return;
@@ -64,16 +63,19 @@ function populate_templates_from_json($keep_defaults = '') {
     // remove defaults unless $keep_defaults is set
     if ($keep_defaults === '') {
         foreach($templates_json as $key => $template) {
-        $match = preg_match($default_template_match, $template);
-        if ($match) {
-            unset($templates_json[$key]);
+            $match = preg_match($default_template_match, $template);
+            if ($match) {
+                unset($templates_json[$key]);
+            }
         }
-    }
     }
 
     foreach($templates_json as $template) {
         $templates[$template] = filenameToTitle($template);
     }
+
+    update_option('templates-collections', $templates);
+    update_option('templates-all', $templates_json);
 
     return $templates;
 }
