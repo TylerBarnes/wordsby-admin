@@ -4,7 +4,7 @@ function custom_preview_page_link($link) {
 	$user_id = get_current_user_id();
 	$nonce = wp_create_nonce( 'wp_rest' );
 
-	$available_templates = populate_templates_from_json_file(true);
+	$available_templates = populate_templates_from_json(true);
 	$default_template = "index";
 	
 	$post_type = get_post_type($id);
