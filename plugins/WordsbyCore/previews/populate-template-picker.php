@@ -1,8 +1,30 @@
 <?php 
+function get_templates_from_gitlab() {
+    if (!defined('WORDLIFY_GITLAB_API_TOKEN')) return false;
+    if (!defined('WORDLIFY_GITLAB_PROJECT_ID')) return false;
+
+    try {
+        $client = getGitlabClient(); if (!$client) return false;
+        global $branch;
+
+        $templates = $client->RepositoryFiles()->getRawFile(
+            WORDLIFY_GITLAB_PROJECT_ID,
+            'wordsby/data/templates.json',
+            $branch
+        );
+
+        return json_decode($templates); 
+    } catch (Exception $e) {
+        write_log("Couldn't get templates from gitlab."); 
+        write_log($e); 
+        return false;
+    }
+}
+
 function get_templates_from_github() {
-    if (!defined('WORDLIFY_GITHUB_API_TOKEN')) return;
-    if (!defined('WORDLIFY_GITHUB_OWNER')) return;
-    if (!defined('WORDLIFY_GITHUB_REPO')) return;
+    if (!defined('WORDLIFY_GITHUB_API_TOKEN')) return false;
+    if (!defined('WORDLIFY_GITHUB_OWNER')) return false;
+    if (!defined('WORDLIFY_GITHUB_REPO')) return false;
 
     $owner = WORDLIFY_GITHUB_OWNER;
     $repo = WORDLIFY_GITHUB_REPO;
@@ -36,6 +58,8 @@ function get_templates_from_git() {
 
     if (WORDLIFY_GIT_HOST === 'github') {
         return get_templates_from_github();
+    } elseif (WORDLIFY_GIT_HOST === 'gitlab') {
+        return get_templates_from_gitlab();
     } else {
         return false;
     }
@@ -53,11 +77,12 @@ function populate_templates_from_json($keep_defaults = '') {
     } elseif (file_exists($templates_json_path)) {
         $templates_json_str = file_get_contents($templates_json_path);
         $templates_json = json_decode($templates_json_str);
+    } elseif (get_option('templates-collections')) {
+        return get_option('templates-collections');
     } else {
         return;
     }
 
-        
     $default_template_match = '/single\/|taxonomy\/|archive\/|index/';
 
     // remove defaults unless $keep_defaults is set
