@@ -23,10 +23,8 @@ function createCommitMessage(
 
     $username = getCurrentUser()['name'];
 
-    return "
-            $post_type \"$title\" $action $id_message 
-            — by $username (from $site_url)
-    ";
+    return "$post_type \"$title\" $action $id_message 
+            — by $username (from $site_url)";
 }
 
 ?>
