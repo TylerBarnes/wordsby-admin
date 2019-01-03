@@ -1,4 +1,10 @@
 <?php 
+function add_sync_templates_menu_item() {
+    // $page_title, $menu_title, $capability, $menu_slug, $callback_function
+    add_menu_page(__('Sync Templates'), __('Sync Templates'), 'read', 'admin.php?page=wordsby&get_templates=true', 'get_templates_from_git');
+}
+add_action('admin_menu', 'add_sync_templates_menu_item');
+
 function get_templates_from_gitlab() {
     if (!defined('WORDLIFY_GITLAB_API_TOKEN')) return false;
     if (!defined('WORDLIFY_GITLAB_PROJECT_ID')) return false;
@@ -55,6 +61,11 @@ function get_templates_from_github() {
 
 function get_templates_from_git() {
     if (!defined('WORDLIFY_GIT_HOST') || !WORDLIFY_GIT_HOST) return false;
+
+    $get_templates = isset($_GET['get_templates']) 
+                            ? $_GET['get_templates'] : false;
+
+    if (!$get_templates) return;
 
     if (WORDLIFY_GIT_HOST === 'github') {
         return get_templates_from_github();
