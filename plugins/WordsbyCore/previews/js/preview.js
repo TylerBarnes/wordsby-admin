@@ -5,7 +5,7 @@
   $(document).ready(function() {
     const originalurl = $(".preview.button").attr("href");
 
-    if (originalurl.indexOf("localhost=true") !== -1) {
+    if (!!originalurl && originalurl.indexOf("localhost=true") !== -1) {
       $(".preview.button").html("Preview Changes Locally");
     }
 

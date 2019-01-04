@@ -14,8 +14,6 @@ function public_previews_reminder() {
 
 function custom_preview_page_link($link) {
 	global $develop_preview;
-	$base_url = $develop_preview ? 'http://localhost:8000' : get_home_url();
-	$localhost_queryvar = $develop_preview ? '&localhost=true' : '';
 
 	$id = get_the_ID();
 	$user_id = get_current_user_id();
@@ -52,8 +50,12 @@ function custom_preview_page_link($link) {
 	} else {
 		$available_template = $default_template;
 	}
-	
-	$link = $base_url . "/preview/$available_template/?rest_base=$rest_base&preview=$id&nonce=$nonce${localhost_queryvar}";
+
+	if ($develop_preview) {
+		$link = "http://localhost:8000/preview/$available_template/?rest_base=$rest_base&preview=$id&nonce=$nonce&localhost=true";
+	} else {
+		$link = get_home_url() . "/preview/?available_template=" . urlencode($available_template) . "&rest_base=$rest_base&preview=$id&id=$id&nonce=$nonce";
+	}
 
 	return $link;
 }
