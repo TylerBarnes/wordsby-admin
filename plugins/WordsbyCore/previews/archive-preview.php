@@ -17,6 +17,7 @@
             height: 100%;
         }
     </style>
+    <script src="<?php echo get_stylesheet_directory_uri(); ?>/plugins/WordsbyCore/previews/js/lib/post-robot.js"></script>
 </head>
 <body>
 <?php $available_template = htmlspecialchars($_GET['available_template']); ?>
@@ -51,6 +52,8 @@ const rest_url =
 `/wp-json/wp/v2/${rest_base}/${post_id}/preview/?_wpnonce=${nonce}`;
 console.log("rest_url", rest_url);
 
+const iframe = document.getElementById('preview');
+
 fetch(rest_url)
   .then(res => {
     console.log("response", res);
@@ -61,6 +64,26 @@ fetch(rest_url)
 
     if (res && res.ID) {
       console.log("Updating preview data");
+      postRobot.on('iframeReadyForData', event => {
+          console.log('iframe ready');
+
+          const iframe = document.getElementById('preview').contentWindow;
+          console.log(iframe);
+
+        postRobot
+            .send(
+                iframe,
+                "previewDataLoaded",
+                {
+                    previewData: res
+                },
+                { domain: "<?php echo $frontend_url; ?>" }
+            )
+            .then(event => {
+            //   this.loading.style.display = "none";
+            //   this.iframe.style.height = `${event.data.height}px`;
+            });
+      })
     //   this.setState({ previewData: res });
     } else if (res && res.code) {
     //   this.setState({
