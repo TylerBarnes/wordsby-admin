@@ -47,7 +47,7 @@ function check_diff_multi($array1, $array2){
     return $result;
 }
 
-$collections_blacklist = array('Psychic Window', 'Schema Builder');
+$collections_blacklist = array('Psychic Window', 'Schema Builder', 'preview');
 
 function get_collections_menu_items($menu_item) {
     global $wp_post_types, $collections_blacklist;
