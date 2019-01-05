@@ -3,6 +3,24 @@ $develop_preview =
 	defined('DANGEROUS__WORDSBY_PUBLIC_PREVIEWS') && DANGEROUS__WORDSBY_PUBLIC_PREVIEWS 
 		? DANGEROUS__WORDSBY_PUBLIC_PREVIEWS : false;
 
+global $pagenow;
+if ( 'post.php' == $pagenow || 'post-new.php' == $pagenow ) {
+    add_action( 'admin_head', 'wpse_125800_custom_publish_box' );
+    function wpse_125800_custom_publish_box() {
+        if (!is_admin()) return;
+			
+		if (get_field('build_site_url', 'option')) return;
+
+        $style = '';
+        $style .= '<style type="text/css">';
+        $style .= '#edit-slug-box, #minor-publishing-actions';
+        $style .= '{display: none; }';
+        $style .= '</style>';
+
+        echo $style;
+    }
+}
+
 add_action('admin_notices', 'public_previews_reminder');
 function public_previews_reminder() {
 	global $develop_preview;
