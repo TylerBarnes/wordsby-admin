@@ -5,6 +5,10 @@
   $(document).ready(function() {
     const originalurl = $(".preview.button").attr("href");
 
+    if (!!originalurl && originalurl.indexOf("localhost=true") !== -1) {
+      $(".preview.button").html("Preview Changes Locally");
+    }
+
     if (originalurl) {
       const querystring = originalurl.split("?")[1];
       const bodyClasses = $("body")
