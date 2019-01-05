@@ -25,6 +25,7 @@
 <?php $query_vars = htmlspecialchars($_SERVER['QUERY_STRING']); ?>
 <?php $frontend_url = get_field('build_site_url', 'option'); ?>
 <?php $frontend_url_trailing_slash = rtrim($frontend_url, '/') . '/'; ?>
+
 <?php if ($frontend_url): ?>
     <iframe 
     id='preview'
@@ -32,7 +33,7 @@
      echo $frontend_url_trailing_slash;
      ?>preview/<?php 
      echo $available_template; 
-     ?>" 
+     ?>?no-cache=1" 
      frameborder="0"></iframe>
 <?php endif; ?>
 </body>
@@ -49,10 +50,8 @@ const post_id = urlParams.get("id");
 const nonce = urlParams.get("nonce");
 
 const rest_url = 
-`/wp-json/wp/v2/${rest_base}/${post_id}/preview/?_wpnonce=${nonce}`;
+`/wp-json/wp/v2/${rest_base}/${post_id}/preview/?_wpnonce=${nonce}&no-cache=1`;
 console.log("rest_url", rest_url);
-
-const iframe = document.getElementById('preview');
 
 fetch(rest_url)
   .then(res => {
@@ -63,46 +62,24 @@ fetch(rest_url)
     console.log("json response", res);
 
     if (res && res.ID) {
-      console.log("Updating preview data");
-      postRobot.on('iframeReadyForData', event => {
-          console.log('iframe ready');
+        console.log("Updating preview data");
+        postRobot.on('iframeReadyForData', event => {
+            console.log('iframe ready');
 
-          const iframe = document.getElementById('preview').contentWindow;
-          console.log(iframe);
+            const iframe = document.getElementById('preview').contentWindow;
+            console.log(iframe);
 
-        postRobot
-            .send(
-                iframe,
-                "previewDataLoaded",
-                {
-                    previewData: res
-                },
-                { domain: "<?php echo $frontend_url; ?>" }
-            )
-            .then(event => {
-            //   this.loading.style.display = "none";
-            //   this.iframe.style.height = `${event.data.height}px`;
-            });
+            postRobot.send(iframe,
+                        "previewDataLoaded",
+                        {
+                            previewData: res
+                        },
+                        { domain: "<?php echo $frontend_url; ?>" }
+                    )
+                    .then(event => {
+                        console.log('preview data loaded and iframe responded');
+                    });
       })
-    //   this.setState({ previewData: res });
-    } else if (res && res.code) {
-    //   this.setState({
-    //     error: {
-    //       title: "Oh no! <br> There's been an error :(",
-    //       message: `To fix: <br>
-    //                 Close this page, log out of WordPress, log back in, and try again.<br>
-    //                 If the issue persists, copy this message and send it to your web developer.`,
-    //       error: res
-    //     }
-    //   });
-    } else {
-    //   this.setState({
-    //     error: {
-    //       title: "Dang,",
-    //       message:
-    //         "<h3>looks like something went wrong!</h3><br> There was no response from the server. <br>Contact your web developer for help."
-    //     }
-    //   });
     }
   })
   .catch(error => console.warn(error));
