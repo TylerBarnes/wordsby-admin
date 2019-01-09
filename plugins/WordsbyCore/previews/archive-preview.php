@@ -25,6 +25,7 @@
 <?php $query_vars = htmlspecialchars($_SERVER['QUERY_STRING']); ?>
 <?php $frontend_url = get_field('build_site_url', 'option'); ?>
 <?php $frontend_url_trailing_slash = rtrim($frontend_url, '/') . '/'; ?>
+<?php $frontend_url_no_trailing_slash = rtrim($frontend_url, '/'); ?>
 
 <?php if ($frontend_url): ?>
     <iframe 
@@ -69,12 +70,14 @@ fetch(rest_url)
             const iframe = document.getElementById('preview').contentWindow;
             console.log(iframe);
 
+            // console.log(`from wp, front end url <?php echo $frontend_url_no_trailing_slash; ?>`);
+
             postRobot.send(iframe,
                         "previewDataLoaded",
                         {
                             previewData: res
                         },
-                        { domain: "<?php echo $frontend_url; ?>" }
+                        { domain: "<?php echo $frontend_url_no_trailing_slash; ?>" }
                     )
                     .then(event => {
                         console.log('preview data loaded and iframe responded');
