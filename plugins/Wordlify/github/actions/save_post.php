@@ -33,7 +33,12 @@ function commitJSON($id) {
                 'path' => 'wordsby/data/site-meta.json',
                 'content' => getSiteMetaJSON(), 
                 'encoding' => 'utf-8'
-            ]
+            ],
+            [
+                'path' => 'wordsby/data/menus.json',
+                'content' => getMenusJSON(), 
+                'encoding' => 'utf-8'
+            ],
         ]
     );
 }

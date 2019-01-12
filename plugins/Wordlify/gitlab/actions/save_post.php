@@ -26,6 +26,16 @@ function commitData($id) {
         $used_branch = $branch;
     }
 
+    $menus = json_encode(
+        wordlify_get_menus(), JSON_UNESCAPED_SLASHES
+    );
+
+    $url = preg_quote(get_site_url(), "/");
+
+    $menus_content = preg_replace(
+        "/$url/", '', makeImagesRelative($menus)
+    );
+
     $base_path = "wordsby/data/";
     $user = getCurrentUser();
     $commit_message = createCommitMessage($id);
@@ -68,6 +78,14 @@ function commitData($id) {
                     'content' => getSiteMetaJSON(),
                     'encoding' => 'text'
                 ],
+                [
+                    'action' => updateOrCreate(
+                        $client, $base_path, 'menus.json'
+                    ),
+                    'file_path' => $base_path . "menus.json",
+                    'content' => $menus_content,
+                    'encoding' => 'text'
+                ]
             ],
             'author_email' => $user['name'],
             'author_name' => $user['email']
