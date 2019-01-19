@@ -57,23 +57,22 @@
                 style.appendChild(document.createTextNode(css));
                 head.appendChild(style);
 
-                sendSize();
+                setTimeout(() => {
+                    sendSize();
+                }, 500);
             }
         );
 
         function setUpResizeListener() {
-            new ResizeSensor(
-                document.getElementById('psychic-contents'), sendSize
+            var observer = new MutationObserver(sendSize);
+            observer.observe(
+                document.getElementById('psychic-contents'), 
+                { 
+                    attributes: true, 
+                    childList: false, 
+                    subtree: true 
+                }
             );
-            // var observer = new MutationObserver(sendSize);
-            // observer.observe(
-            //     document.getElementById('psychic-contents'), 
-            //     { 
-            //         attributes: true, 
-            //         childList: false, 
-            //         subtree: true 
-            //     }
-            // );
         }
 
         function eventName(name) {
@@ -87,21 +86,7 @@
 
         function sendSize() {
             var height = getHeight();
-
-            if (!!lastHeight && height === lastHeight) return;
-
-            postRobot.send(window.parent,
-                eventName("iframeHeightWillChange"),
-                {
-                    height: 'unset'
-                },
-                { 
-                    domain: "<?php echo $frontend_url_no_trailing_slash; ?>" 
-                }
-            )
-            .then(event => {
-                heightChange(getHeight());
-            });
+            if (height !== lastHeight) heightChange(height);
         }
 
         function heightChange(height) {
