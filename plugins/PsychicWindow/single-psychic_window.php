@@ -1,6 +1,13 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+</head>
+<body>
 <?php get_header(); ?>
 <script src="<?php echo get_stylesheet_directory_uri(); ?>/plugins/PsychicWindow/post-robot.js"></script>
-<script src="<?php echo get_stylesheet_directory_uri(); ?>/plugins/PsychicWindow/ResizeSensor.js"></script>
 <style>
     html, body {
         margin-top: 0 !important;
@@ -12,76 +19,121 @@
 </style>
 
 <div id="psychic-contents">
-<?php 
+<?php
     if ( have_posts() ) {
-        
-        while ( have_posts() ) { 
+
+        while ( have_posts() ) {
             the_post();
             the_content();
         }
 
         wp_reset_postdata();
-    } 
+    }
 ?>
 </div>
 
 <?php get_footer(); ?>
 
 <script>
-    function getHeight() {
-        return jQuery('#psychic-contents').height() + 50;
-    }
-    postRobot.on('iframeDomElementLoaded', function(event) {
-        var css = event.data.css;
+    jQuery(document).ready(function() {
+        let lastHeight = false;
+        let lastHeightRecurse = 0;
 
-        var head = document.head || document.getElementsByTagName('head')[0],
-        style = document.createElement('style');
+        postRobot.on(
+            'iframeDomElementLoaded',
+            { 
+                domain: "<?php echo $frontend_url_no_trailing_slash; ?>" 
+            },  
+            function(event) {
+                var css = event.data.css;
 
-        style.type = 'text/css';
-        style.appendChild(document.createTextNode(css));
-        head.appendChild(style);
-    
+                var head = document.head || document.getElementsByTagName('head')[0],
+                style = document.createElement('style');
 
-        return {
-            height: getHeight()
-        };
-    });
+                style.type = 'text/css';
+                style.appendChild(document.createTextNode(css));
+                head.appendChild(style);
 
-    // jQuery(window).bind("load", function() {
-    //     postRobot.send(window.parent,
-    //             "iframeWindowOnload" + "<?php echo $_SERVER['REQUEST_URI']; ?>",
-    //             {
-    //                 height: getHeight()
-    //             }
-    //             // { domain: "<?php echo $frontend_url_no_trailing_slash; ?>" }
-    //         )
-    // });
+                var height = getHeight();
 
-    // console.log("Child: <?php echo $_SERVER['REQUEST_URI']; ?>");
+                setUpResizeListener();
 
-    function sendSize() {
-        postRobot.send(window.parent,
-            "iframeHeightWillChange" + "<?php echo $_SERVER['REQUEST_URI']; ?>",
-            {
-                height: 'unset'
+                if (height === 50 || !height || height === 0) {
+                    setTimeout(() => {
+                        sendSize();
+                    }, 300);
+                }
+
+                return {
+                    height: height
+                };
             }
-            // { domain: "<?php echo $frontend_url_no_trailing_slash; ?>" }
-        )
-        .then(event => {
-            // setTimeout(() => {
-                postRobot.send(window.parent,
-                    "iframeHeightChanged" + "<?php echo $_SERVER['REQUEST_URI']; ?>",
-                    {
-                        height: getHeight()
-                    }
-                    // { domain: "<?php echo $frontend_url_no_trailing_slash; ?>" }
-                )
-                .then(event => {
-                    // console.log('Child: sent changed height ' + getHeight() + ' from the iframe to the parent.');
-                });
-            // }, 10);
-        });
-    }
+        );
 
-    new ResizeSensor(document.getElementById('psychic-contents'), sendSize);
+        function setUpResizeListener() {
+            new MutationObserver(sendSize).observe(
+                document.getElementById('psychic-contents'), 
+                { 
+                    attributes: true, 
+                    childList: false, 
+                    subtree: true 
+                }
+            );
+        }
+
+        function eventName(name) {
+            // this scopes these events to this window in case of multiple psychic windows
+            return name + "<?php echo $_SERVER['REQUEST_URI']; ?>";
+        }
+
+        function getHeight() {
+            return document.getElementById('psychic-contents').clientHeight + 50;
+        }
+
+        function sendSize() {
+            var height = getHeight();
+
+            if (!!lastHeight && height === lastHeight) return;
+
+            postRobot.send(window.parent,
+                eventName("iframeHeightWillChange"),
+                {
+                    height: 'unset'
+                },
+                { 
+                    domain: "<?php echo $frontend_url_no_trailing_slash; ?>" 
+                }
+            )
+            .then(event => {
+                heightChange(height);
+            });
+        }
+
+        function heightChange(height) {
+            postRobot.send(window.parent,
+                eventName("iframeHeightChanged"),
+                {
+                    height: height
+                },
+                { 
+                    domain: "<?php echo $frontend_url_no_trailing_slash; ?>" 
+                }
+            ).then(function() {
+                // this fixes browsers that return a height of 0.
+                if (height === 50 || !height || height === 0) {
+                    if (lastHeightRecurse <= 5) {
+                        lastHeightRecurse++;
+                        setTimeout(function() {
+                            heightChange(getHeight());
+                        }, 50);
+                    }
+                } else {
+                    lastHeight = height;
+                }
+            })
+        }
+    });
 </script>
+
+</body>
+</html>
