@@ -8,6 +8,7 @@
 <body>
 <?php get_header(); ?>
 <script src="<?php echo get_stylesheet_directory_uri(); ?>/plugins/PsychicWindow/post-robot.js"></script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/plugins/PsychicWindow/ResizeSensor.js"></script>
 <style>
     html, body {
         margin-top: 0 !important;
@@ -39,6 +40,8 @@
         let lastHeight = false;
         let lastHeightRecurse = 0;
 
+        setUpResizeListener();
+
         postRobot.on(
             'iframeDomElementLoaded',
             { 
@@ -54,31 +57,23 @@
                 style.appendChild(document.createTextNode(css));
                 head.appendChild(style);
 
-                var height = getHeight();
-
-                setUpResizeListener();
-
-                if (height === 50 || !height || height === 0) {
-                    setTimeout(() => {
-                        sendSize();
-                    }, 300);
-                }
-
-                return {
-                    height: height
-                };
+                sendSize();
             }
         );
 
         function setUpResizeListener() {
-            new MutationObserver(sendSize).observe(
-                document.getElementById('psychic-contents'), 
-                { 
-                    attributes: true, 
-                    childList: false, 
-                    subtree: true 
-                }
+            new ResizeSensor(
+                document.getElementById('psychic-contents'), sendSize
             );
+            // var observer = new MutationObserver(sendSize);
+            // observer.observe(
+            //     document.getElementById('psychic-contents'), 
+            //     { 
+            //         attributes: true, 
+            //         childList: false, 
+            //         subtree: true 
+            //     }
+            // );
         }
 
         function eventName(name) {
@@ -105,7 +100,7 @@
                 }
             )
             .then(event => {
-                heightChange(height);
+                heightChange(getHeight());
             });
         }
 
