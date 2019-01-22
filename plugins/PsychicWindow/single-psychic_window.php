@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,83 +37,82 @@
 <?php get_footer(); ?>
 
 <script>
-    jQuery(document).ready(function() {
-        let lastHeight = false;
-        let lastHeightRecurse = 0;
+    let lastHeight = false;
+    let lastHeightRecurse = 0;
 
-        setUpResizeListener();
+    postRobot.on(
+        'iframeDomElementLoaded',
+        { 
+            domain: "<?php echo $frontend_url_no_trailing_slash; ?>" 
+        },  
+        function(event) {
+            var css = event.data.css;
 
-        postRobot.on(
-            'iframeDomElementLoaded',
+            var head = 
+                document.head || document.getElementsByTagName('head')[0];
+            var style = document.createElement('style');
+
+            style.type = 'text/css';
+            style.appendChild(document.createTextNode(css));
+            head.appendChild(style);
+
+            sendSize();
+        }
+    );
+
+    function eventName(name) {
+        // this scopes these events to this window in case of multiple psychic windows
+        return name + "<?php echo $_SERVER['REQUEST_URI']; ?>";
+    }
+
+    function getHeight() {
+        var page = document.getElementById('psychic-contents');
+        var height = page.clientHeight;
+
+        return height + 50;
+    }
+
+    function sendSize() {
+        var height = getHeight();
+        if (height !== lastHeight) heightChange(height);
+    }
+
+    function heightChange(height) {
+        postRobot.send(window.parent,
+            eventName("iframeHeightChanged"),
+            {
+                height: height
+            },
             { 
                 domain: "<?php echo $frontend_url_no_trailing_slash; ?>" 
-            },  
-            function(event) {
-                var css = event.data.css;
+            }
+        ).then(function() {
+            // this fixes browsers that return a height of 0.
+            if (height === 50 || !height || height === 0) {
+                if (lastHeightRecurse <= 10) {
+                    lastHeightRecurse++;
+                    setTimeout(function() {
+                        heightChange(getHeight());
+                    }, 100);
+                }
+            } else {
+                lastHeight = height;
+            }
+        })
+    }
 
-                var head = document.head || document.getElementsByTagName('head')[0],
-                style = document.createElement('style');
-
-                style.type = 'text/css';
-                style.appendChild(document.createTextNode(css));
-                head.appendChild(style);
-
-                setTimeout(() => {
-                    sendSize();
-                }, 500);
+    function setUpResizeListener() {
+        new MutationObserver(sendSize).observe(
+            document.getElementById('psychic-contents'), 
+            { 
+                attributes: true, 
+                childList: false, 
+                subtree: true 
             }
         );
+    }
 
-        function setUpResizeListener() {
-            var observer = new MutationObserver(sendSize);
-            observer.observe(
-                document.getElementById('psychic-contents'), 
-                { 
-                    attributes: true, 
-                    childList: false, 
-                    subtree: true 
-                }
-            );
-        }
-
-        function eventName(name) {
-            // this scopes these events to this window in case of multiple psychic windows
-            return name + "<?php echo $_SERVER['REQUEST_URI']; ?>";
-        }
-
-        function getHeight() {
-            return document.getElementById('psychic-contents').clientHeight + 50;
-        }
-
-        function sendSize() {
-            var height = getHeight();
-            if (height !== lastHeight) heightChange(height);
-        }
-
-        function heightChange(height) {
-            postRobot.send(window.parent,
-                eventName("iframeHeightChanged"),
-                {
-                    height: height
-                },
-                { 
-                    domain: "<?php echo $frontend_url_no_trailing_slash; ?>" 
-                }
-            ).then(function() {
-                // this fixes browsers that return a height of 0.
-                if (height === 50 || !height || height === 0) {
-                    if (lastHeightRecurse <= 5) {
-                        lastHeightRecurse++;
-                        setTimeout(function() {
-                            heightChange(getHeight());
-                        }, 50);
-                    }
-                } else {
-                    lastHeight = height;
-                }
-            })
-        }
-    });
+    jQuery(document).ready(setUpResizeListener);
 </script>
 
 </body>
