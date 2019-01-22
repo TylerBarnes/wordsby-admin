@@ -87,7 +87,7 @@
                 domain: "<?php echo $frontend_url_no_trailing_slash; ?>" 
             }
         ).then(function() {
-            // this fixes browsers that return a height of 0.
+            // this attempts to get the height again if it returns 0.
             if (height === 50 || !height || height === 0) {
                 if (lastHeightRecurse <= 10) {
                     lastHeightRecurse++;
