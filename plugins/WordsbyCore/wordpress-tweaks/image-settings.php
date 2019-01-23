@@ -28,12 +28,12 @@ function unsetSizes($sizes) {
 
 function sgr_filter_image_sizes( $sizes) {
 	if (!function_exists('get_field')) {
-		write_log('no get field'); 
+		// write_log('no get field'); 
 		return unsetSizes($sizes);
 	} else if (
 		function_exists('get_field') && get_field('disable_generate_thumbnails', 'option')
 	) {
-		write_log('no get field and dont generate thumbnails'); 
+		// write_log('no get field and dont generate thumbnails'); 
 		return unsetSizes($sizes);
 	}
 	return $sizes;
