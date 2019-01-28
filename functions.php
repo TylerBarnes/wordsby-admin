@@ -19,7 +19,6 @@ require_once dirname( __FILE__ ) . "/plugins/BetterAdmin/better-admin.php";
 
 require_once dirname( __FILE__ ) . "/plugins/AlwaysAvatars/always-avatars.php";
 
-
 require_once dirname( __FILE__ ) . "/plugins/PsychicWindow/psychic-window-posttype.php";
 
 require_once dirname( __FILE__ ) . "/functions/acf-google-map-key.php";
