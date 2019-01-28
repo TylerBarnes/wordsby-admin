@@ -8,6 +8,23 @@ function custom_api_get_all_posts() {
     ));
 }
 
+add_action( 'rest_api_init', 'custom_api_get_post_by_id' );   
+
+function custom_api_get_post_by_id() {
+    register_rest_route( 'wordsby/v1', '/collections/(?P<id>\\d+)', array(
+        'methods' => 'GET',
+        'callback' => 'custom_api_get_all_posts_callback',
+        'args' => array(
+            'id' => array(
+            'validate_callback' => 
+                function($param, $request, $key) {
+                    return is_numeric( $param );
+                }
+            ),
+        ),
+    ));
+}
+
 function custom_api_get_all_posts_callback( $data ) {
     $id_param = $data->get_param('id');
 
