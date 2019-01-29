@@ -8,30 +8,41 @@ function custom_api_get_all_posts() {
     ));
 }
 
-add_action( 'rest_api_init', 'custom_api_get_post_by_id' );   
-
-function custom_api_get_post_by_id() {
-    register_rest_route( 'wordsby/v1', '/collections/(?P<id>\\d+)', array(
-        'methods' => 'GET',
-        'callback' => 'custom_api_get_all_posts_callback',
-        'args' => array(
-            'id' => array(
-            'validate_callback' => 
-                function($param, $request, $key) {
-                    return is_numeric( $param );
-                }
-            ),
-        ),
-    ));
-}
-
 function custom_api_get_all_posts_callback( $data ) {
     $id_param = $data->get_param('id');
 
     return posts_formatted_for_gatsby($id_param);    
 } 
 
-function posts_formatted_for_gatsby($id_param, $revision = "") {
+
+add_action( 'rest_api_init', 'custom_api_get_instant_publish_post_by_id' );   
+
+function custom_api_get_instant_publish_post_by_id() {
+    register_rest_route( 
+        'wordsby/v1', 
+        '/instant_publish_collections/(?P<id>\\d+)', 
+        array(
+            'methods' => 'GET',
+            'callback' => 'custom_api_get_all_posts_instant_publish_callback',
+            'args' => array(
+                'id' => array(
+                'validate_callback' => 
+                    function($param, $request, $key) {
+                        return is_numeric( $param );
+                    }
+                ),
+        ),
+    ));
+}
+
+function custom_api_get_all_posts_instant_publish_callback( $data ) {
+    $id_param = $data->get_param('id');
+
+    return posts_formatted_for_gatsby($id_param, "", true);    
+} 
+
+
+function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
     // Initialize the array that will receive the posts' data. 
     $posts_data = array();
 
@@ -107,7 +118,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "") {
             // removing site urls from links to create pathnames in gatsby
             array_walk_recursive($all_acf, 'remove_urls');
 
-            if ($revision !== "") {
+            if ($revision !== "" || $liveData !== "") {
                 // checking for flexible content and manipulating flexible fields to mimic gatsby's graphql fragment output structure.
                 foreach ($all_acf as $key=>$field) {
                     if (
