@@ -8,9 +8,4 @@ require_once dirname( __FILE__ ) . "/options-page/options-page.php";
 require_once dirname( __FILE__ ) . "/wordpress-tweaks/wordpress-tweaks.php";
 require_once dirname( __FILE__ ) . "/instant-build/instant-build.php";
 require_once dirname( __FILE__ ) . "/wordsby-yoast/wordsby-yoast.php";
-
-function add_all_settings_menu() {  
-    add_options_page(__('All Settings'), __('All Settings'), 'administrator', 'options.php');  
-}  
-add_action( 'admin_menu', 'add_all_settings_menu' );  
 ?>
