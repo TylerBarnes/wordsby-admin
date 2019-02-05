@@ -1,4 +1,8 @@
 <?php 
+function make_url_path($path) {
+    return str_replace(home_url(), "", $path);
+}
+
 add_action( 'rest_api_init', 'custom_api_get_all_posts' );   
 
 function custom_api_get_all_posts() {
@@ -64,11 +68,24 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
         )
     ); 
     }
+
+    // yoast
+    $Yoast_To_Wordsby = Wordsby_Yoast_init();
+    $og_default_image_url = $Yoast_To_Wordsby ? 
+        WPSEO_Options::get( 'og_default_image', '' ) : null;
+    $og_default_image_id  = $Yoast_To_Wordsby ? 
+        WPSEO_Options::get( 'og_default_image_id', '' ) : null;
+    // end yoast
+
+
     // Loop through the posts and push the desired data to the array we've initialized earlier in the form of an object
     foreach( $posts as $post ) {
         $id = $post->ID; 
 
-        $post_thumbnail = ( has_post_thumbnail( $id ) ) ? get_the_post_thumbnail_url( $id ) : null;
+        $post_thumbnail = 
+            ( has_post_thumbnail( $id ) ) ? 
+                get_the_post_thumbnail_url( $id ) : 
+                null;
 
         if (!$post_thumbnail) {
             $post_thumbnail = ( has_post_thumbnail( $id_param ) ) ? get_the_post_thumbnail_url( $id_param ) : null;
@@ -91,7 +108,9 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
             if (!$terms) continue;
 
             foreach($terms as $term) {
-                $term->pathname = str_replace(home_url(), "", get_term_link($term));
+                $term->pathname = make_url_path(
+                    get_term_link($term)
+                );
                 array_push($post_terms, $term->slug);
             }
             
@@ -141,6 +160,19 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
             }
         }
 
+        if ($Yoast_To_Wordsby) {
+            $yoast_meta = $Yoast_To_Wordsby->json_encode_yoast($id);
+            $yoast_meta['og_default_image'] = 
+                $og_default_image_url ? 
+                    $og_default_image_url : null;
+            $yoast_meta['og_default_image_id'] = 
+                $og_default_image_id ? 
+                    $og_default_image_id : null;
+        } else {
+            $yoast_meta = null;
+        }
+        
+        $post->yoast = $yoast_meta;
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
         $post->term_slugs = $post_terms;
