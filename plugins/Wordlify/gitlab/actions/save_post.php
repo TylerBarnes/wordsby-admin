@@ -18,6 +18,7 @@ function commitData($id) {
 
     // if the media branch exists we're going to commit there
     $media_branch_exists = desiredBranchExists($client);
+    
     if ($media_branch_exists) {
         global $mediaBranch;
         $used_branch = $mediaBranch;
