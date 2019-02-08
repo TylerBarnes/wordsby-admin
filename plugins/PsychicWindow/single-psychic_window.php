@@ -67,13 +67,21 @@
             $port = $url['port'];
             $frontend_url_no_trailing_slash = "${scheme}://${host}:${port}";
         }
+
+        if (
+            defined('DANGEROUS__PSYCHIC_WINDOW_DEBUG') && DANGEROUS__PSYCHIC_WINDOW_DEBUG
+            ) {
+            $frontend_url_no_trailing_slash = "";
+        }
+
             ?>
 		<script>
 		let lastHeight = false;
 		let lastHeightRecurse = 0;
+		let domain = "<?php echo $frontend_url_no_trailing_slash; ?>";
 		postRobot.on(
 			'iframeDomElementLoaded', {
-				domain: "<?php echo $frontend_url_no_trailing_slash; ?>"
+				domain: domain
 			},
 			function(event) {
 				var css = event.data.css;
@@ -108,7 +116,7 @@
 				eventName("iframeHeightChanged"), {
 					height: height
 				}, {
-					domain: "<?php echo $frontend_url_no_trailing_slash; ?>"
+					domain: domain
 				}
 			).then(function() {
 				// this attempts to get the height again if it returns 0.
