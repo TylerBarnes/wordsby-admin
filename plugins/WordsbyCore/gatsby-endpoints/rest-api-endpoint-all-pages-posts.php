@@ -69,14 +69,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
     ); 
     }
 
-    // yoast
     $Yoast_To_Wordsby = Wordsby_Yoast_init();
-    $og_default_image_url = $Yoast_To_Wordsby ? 
-        WPSEO_Options::get( 'og_default_image', '' ) : null;
-    $og_default_image_id  = $Yoast_To_Wordsby ? 
-        WPSEO_Options::get( 'og_default_image_id', '' ) : null;
-    // end yoast
-
 
     // Loop through the posts and push the desired data to the array we've initialized earlier in the form of an object
     foreach( $posts as $post ) {
@@ -162,12 +155,6 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
 
         if ($Yoast_To_Wordsby) {
             $yoast_meta = $Yoast_To_Wordsby->json_encode_yoast($id);
-            $yoast_meta['og_default_image'] = 
-                $og_default_image_url ? 
-                    $og_default_image_url : null;
-            $yoast_meta['og_default_image_id'] = 
-                $og_default_image_id ? 
-                    $og_default_image_id : null;
         } else {
             $yoast_meta = null;
         }

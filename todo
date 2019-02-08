@@ -6,3 +6,7 @@
 ✔ make sure there is a private API key for uploading preview files @done(18-11-09 18:01)
 ✔ move receivePreviews.php to the root automatically. @done(18-11-09 18:01)
 ✔ Add a "public" api key and just use this to set the name of this file. @done(18-11-09 18:01)
+
+✔ Add active plugins list to github @done(19-02-05 19:15)
+✔ Hook up all meta tags in Yoast component @done(19-02-05 19:15)
+✔ Add Yoast component to wordsby-components @done(19-02-06 16:45)

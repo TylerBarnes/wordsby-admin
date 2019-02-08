@@ -1,7 +1,4 @@
 <?php
-
-// add_action( 'plugins_loaded', 'Wordsy_Yoast_init' );
-
 /**
  * Plugin Name: Yoast to REST API
  * Description: Adds Yoast fields to page and post metadata to WP REST API responses
@@ -126,9 +123,30 @@ class Yoast_To_Wordsby {
 
 		the_post();
 
+		$og_image = get_post_meta(
+			$id, '_yoast_wpseo_opengraph-image', true
+		);
+		$og_image_id = get_post_meta(
+			$id, '_yoast_wpseo_opengraph-image-id', true
+		);
+
+		$og_default_image_url = WPSEO_Options::get( 'og_default_image', '' );
+    $og_default_image_id  = WPSEO_Options::get( 'og_default_image_id', '' );
+				
+		if ($og_image === "") {
+			$og_image = $og_default_image_url ? $og_default_image_url : "";
+		}
+				
+		if ($og_image_id === "") {
+			$og_image_id = $og_default_image_id ? $og_default_image_id : "";
+		}
+				
+
 		$yoast_meta = [
 			'seo_title'     => $wpseo_frontend->get_content_title(),
 			'seo_metadesc'  => $wpseo_frontend->metadesc( false ),
+			'og_image' =>  $og_image,
+			'og_image-id' => $og_image_id,
 			'og_title' => 
 				get_post_meta(
 					$id, '_yoast_wpseo_opengraph-title', true
@@ -136,14 +154,6 @@ class Yoast_To_Wordsby {
 			'og_description' => 
 				get_post_meta(
 					$id, '_yoast_wpseo_opengraph-description', true
-				),
-			'og_image' => 
-				get_post_meta(
-					$id, '_yoast_wpseo_opengraph-image', true
-				),
-			'og_image-id' => 
-				get_post_meta(
-					$id, '_yoast_wpseo_opengraph-image-id', true
 				),
 			'content_score' => 
 				get_post_meta(
