@@ -92,6 +92,9 @@
 				style.appendChild(document.createTextNode(css));
 				head.appendChild(style);
 				sendSize();
+				return {
+					url: "<?php echo $_SERVER['REQUEST_URI']; ?>"
+				};
 			}
 		);
 
@@ -142,9 +145,10 @@
 				}
 			);
 		}
-		jQuery(document).ready(setUpResizeListener);
+		setUpResizeListener();
 		</script>
 
 	</body>
 
 </html>
+<?php get_footer(); ?>
