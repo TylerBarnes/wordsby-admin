@@ -1,6 +1,8 @@
 <?php 
-
+// on post save, trash, or untrash, commit the collections endpoint to the gatsby repo.
 add_action('acf/save_post', 'commitData');
+add_action('trashed_post', 'commitData');
+add_action('untrashed_post', 'commitData');
 
 function commitData($id) {
     // dont create commits when saving menus
