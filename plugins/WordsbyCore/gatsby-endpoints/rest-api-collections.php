@@ -158,6 +158,8 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
         } else {
             $yoast_meta = null;
         }
+
+        write_log($yoast_meta);
         
         $post->yoast = $yoast_meta;
         $post->type = "collection";
