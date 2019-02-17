@@ -23,11 +23,6 @@ function my_theme_register_required_plugins() {
 			'force_activation'   => true
 		),
 		array(
-			'name'      => 'Classic Editor',
-			'slug'      => 'classic-editor',
-			'force_activation'  => false,
-		),
-		array(
 			'name'      => 'Post Type Select for Advanced Custom Fields',
 			'slug'      => 'post-type-select-for-advanced-custom-fields',
 			'force_activation'  => true,
@@ -38,13 +33,7 @@ function my_theme_register_required_plugins() {
 			'slug'      => 'custom-post-type-ui',
 			'required'  => true,
 			'force_activation'  => true,
-		),
-		array(
-			'name'      => 'WP API Menus',
-			'slug'      => 'wp-api-menus',
-			'required'  => true,
-			'force_activation'  => true,
-		),
+		)
 	);
 
 	/*
