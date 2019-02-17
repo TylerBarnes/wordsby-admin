@@ -54,7 +54,7 @@ acf_add_local_field_group(array(
 				'class' => '',
 				'id' => '',
 			),
-			'default_value' => '',
+			'default_value' => 'http://localhost:8000',
 			'placeholder' => '',
 		),
 		array(
