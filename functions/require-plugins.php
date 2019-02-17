@@ -23,6 +23,13 @@ function my_theme_register_required_plugins() {
 			'force_activation'   => true
 		),
 		array(
+			'name'               => 'Github Updater',
+			'slug'               => 'github-updater',
+			'source'             => "https://github.com/afragen/github-updater/archive/master.zip", 
+			'required'           => true, 
+			'force_activation'   => true
+		),
+		array(
 			'name'      => 'Post Type Select for Advanced Custom Fields',
 			'slug'      => 'post-type-select-for-advanced-custom-fields',
 			'force_activation'  => true,
