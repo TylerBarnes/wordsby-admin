@@ -67,4 +67,25 @@ function createMediaBranchIfItDoesntExist($client) {
     return $response;
 }
 
+function mergeMediaBranch($client, $branch, $mediaBranch, $commit_message) {
+    $owner = WORDLIFY_GITHUB_OWNER;
+    $repo = WORDLIFY_GITHUB_REPO;
+
+    // merge the media branch to the main branch.
+    $merge_media = $client->getHttpClient()->post(
+        "repos/$owner/$repo/merges",
+        [],
+        json_encode([
+            'base' => $branch,
+            'head' => $mediaBranch,
+            'commit_message' => "$commit_message [MERGE MEDIA]"
+        ])
+    );
+
+    // remove the media branch
+    $delete_branch = $client->getHttpClient()->delete(
+        "repos/$owner/$repo/git/refs/heads/$mediaBranch"
+    );
+}
+
 ?>

@@ -114,25 +114,9 @@ function commit($commit_message, $files) {
             ]
         );
 
+        // if the media branch exists and this commit included post updates.
         if (!$is_media_only_commit && $media_branch_exists) {
-            $owner = WORDLIFY_GITHUB_OWNER;
-            $repo = WORDLIFY_GITHUB_REPO;
-
-            // merge the media branch to the main branch.
-            $merge_media = $client->getHttpClient()->post(
-                "repos/$owner/$repo/merges",
-                [],
-                json_encode([
-                    'base' => $branch,
-                    'head' => $mediaBranch,
-                    'commit_message' => "$commit_message [MERGE MEDIA]"
-                ])
-            );
-
-            // remove the media branch
-            $delete_branch = $client->getHttpClient()->delete(
-                "repos/$owner/$repo/git/refs/heads/$mediaBranch"
-            );
+            mergeMediaBranch($client, $branch, $mediaBranch, $commit_message);
         }
 
     } catch (Exception $e) {
