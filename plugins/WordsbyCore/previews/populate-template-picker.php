@@ -94,17 +94,17 @@ function populate_templates_from_json($keep_defaults = '') {
         return;
     }
 
-    $default_template_match = '/single\/|taxonomy\/|archive\/|index/';
+    $default_template_match = '/single\/|taxonomy\/|archive\/|index\/|index/';
 
-    // remove defaults unless $keep_defaults is set
-    if ($keep_defaults === '') {
-        foreach($templates_json as $key => $template) {
-            $match = preg_match($default_template_match, $template);
-            if ($match) {
-                unset($templates_json[$key]);
-            }
+    // if ($keep_defaults === '') {
+    foreach($templates_json as $key => $template) {
+        $match_arr = [];
+        $match = preg_match($default_template_match, $template, $match_arr);
+        if ($match) {
+            unset($templates_json[$key]);
         }
     }
+    // }
 
     foreach($templates_json as $template) {
         $templates[$template] = filenameToTitle($template);
