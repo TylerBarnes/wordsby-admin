@@ -51,7 +51,10 @@ function custom_preview_page_link($link) {
 	
 	$rest_base = !empty($obj->rest_base) ? $obj->rest_base : $obj->name;
 
-	if($post_type == 'page'){
+	if($is_archive){
+		$available_template = "archive/$archive_post_type";
+
+	}elseif($post_type == 'page'){
 
 		if (array_key_exists($assigned_template, $available_templates)) {
 			$available_template = $assigned_template;
@@ -59,8 +62,6 @@ function custom_preview_page_link($link) {
 			$available_template = $default_template;
 		}
 
-	}elseif($is_archive){
-		$available_template = "archive/$archive_post_type";
 	}else{
 		$available_template = "single/$post_type";
 	}
