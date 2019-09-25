@@ -1,3 +1,5 @@
+__NOTE: I've joined the Gatsby core team to work on Gatsby and WordPress. For that reason this package will no longer be maintained. Watch out for good things coming to the Gatsby/WordPress world from the core team!__
+
 # Wordsby Admin (WIP)
 
 A WordPress theme to make Gatsby development and content creation in WordPress easier.
