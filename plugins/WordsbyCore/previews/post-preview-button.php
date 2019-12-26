@@ -49,24 +49,21 @@ function custom_preview_page_link($link) {
 
 	$assigned_template = get_post_meta($id, "_wp_page_template", true);
 	
-	if ($is_archive) {
-		$assigned_template = "archive/$archive_post_type";
-	} elseif ($assigned_template === "") {
-		$assigned_template = "single/$post_type";
-	}
-
 	$rest_base = !empty($obj->rest_base) ? $obj->rest_base : $obj->name;
-	
-	if ($assigned_template === 'default' && !$is_archive) {
-		$desired_template = "single/$post_type";
-	} else {
-		$desired_template = $assigned_template;
-	}
 
-	if (array_key_exists($desired_template, $available_templates)) {
-		$available_template = $desired_template;
-	} else {
-		$available_template = $default_template;
+	if($is_archive){
+		$available_template = "archive/$archive_post_type";
+
+	}elseif($post_type == 'page'){
+
+		if (array_key_exists($assigned_template, $available_templates)) {
+			$available_template = $assigned_template;
+		} else {
+			$available_template = $default_template;
+		}
+
+	}else{
+		$available_template = "single/$post_type";
 	}
 
 	if ($develop_preview) {
